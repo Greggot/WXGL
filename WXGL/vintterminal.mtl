@@ -1,0 +1,20 @@
+# 
+# Wavefront material file
+# Created with Kaydara FBX
+# 
+
+newmtl VintTerminalMaterial0
+Ka 0.392157 0.600000 0.392157
+Kd 0.392157 0.600000 0.392157
+Ks 0.000000 0.000000 0.000000
+illum 2
+Ns 20.000000
+Tr 1.000000
+
+newmtl VintTerminalMaterial1
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+illum 2
+Ns 20.000000
+Tr 1.000000

@@ -75,6 +75,9 @@ void ModelViewer::Render(wxPaintEvent& event)
     {
         glPushMatrix();
         
+        // Translation before Rotation because otherwise
+        // it would be rotating aroung absolute zero coordinate.
+        // Not the model's one
         glTranslatef(Model->Translation.x, Model->Translation.y, Model->Translation.z);
         glRotatef(Model->Rotation.x, 1.0, 0.0, 0.0);
         glRotatef(Model->Rotation.y, 0.0, 1.0, 0.0);

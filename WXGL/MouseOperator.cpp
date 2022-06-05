@@ -65,28 +65,22 @@ void MouseOperator::Move(wxKeyEvent& event)
     switch (key)
     {
     case WXK_LEFT:
-        for (auto& point : Model->Points)
-            ++point.x;
+        ++Model->Translation.x;
         break;
     case WXK_RIGHT:
-        for (auto& point : Model->Points)
-            --point.x;
+        --Model->Translation.x;
         break;
     case WXK_UP:
-        for (auto& point : Model->Points)
-            ++point.y;
+        ++Model->Translation.y;
         break;
     case WXK_DOWN:
-        for (auto& point : Model->Points)
-            --point.y;
+        --Model->Translation.y;
         break;
     case WXK_SPACE:
-        for (auto& point : Model->Points)
-            ++point.z;
+        ++Model->Translation.z;
         break;
     case WXK_CONTROL:
-        for (auto& point : Model->Points)
-            --point.z;
+        --Model->Translation.z;
         break;
     case WXK_HOME:
         ++Model->Rotation.z;

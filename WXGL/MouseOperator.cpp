@@ -7,7 +7,7 @@ const rotateVector RotationMatrices[Buttons::Amount] = { {2, 1, 0, 0}, {2, 0, 1,
 OBJmodel* MouseOperator::Model;
 void MouseOperator::Init(OBJmodel* _Model)
 {
-    Model = _Model;
+    Model = _Model; 
 }
 
 void MouseOperator::Zoom(wxMouseEvent& event)
@@ -65,10 +65,10 @@ void MouseOperator::Move(wxKeyEvent& event)
     switch (key)
     {
     case WXK_LEFT:
-        ++Model->Translation.x;
+        --Model->Translation.x;
         break;
     case WXK_RIGHT:
-        --Model->Translation.x;
+        ++Model->Translation.x;
         break;
     case WXK_UP:
         ++Model->Translation.y;

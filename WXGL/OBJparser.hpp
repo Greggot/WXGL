@@ -22,17 +22,23 @@ struct poly
 
 struct color
 {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
+    float r;
+    float g;
+    float b;
+};
+
+struct Part
+{
+    std::list<poly> Polygons;
+    color Color;
 };
 
 struct OBJmodel
 {
 	std::vector<point> Points;
-	std::list<std::list<poly>> Polygons;
+	std::list<Part> Parts;
+    
     bool Active;
-    color Color;
 
     point Translation;
     point Rotation;

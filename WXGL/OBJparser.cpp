@@ -10,7 +10,10 @@ OBJmodel ParseFile(const char* path)
 
 	point p;
 	std::vector<point> points;
-	std::list<std::list<poly>> overallpolies;
+	std::list<Part> overallparts;
+	
+	static const color standardColor = { 0.5, 0, 1 };
+	Part part;
 	std::list<poly> polies;
 	
 	while (fgets(buffer, 0xFF, in))
@@ -48,7 +51,8 @@ OBJmodel ParseFile(const char* path)
 		case 'u':
 			if (polies.size())
 			{
-				overallpolies.push_back(polies);
+				part = { polies, standardColor };
+				overallparts.push_back(part);
 				polies.clear();
 			}
 			break;
@@ -57,6 +61,7 @@ OBJmodel ParseFile(const char* path)
 		for (auto& s : data)
 			s = "";
 	}
-	overallpolies.push_back(polies);
-	return { points, overallpolies, false, {0, 0, 0xFF}, {0, 0, 0}, {0, 0, 0} };
+	part = { polies, standardColor };
+	overallparts.push_back(part);
+	return { points, overallparts, false, {0, 0, 0}, {0, 0, 0} };
 }

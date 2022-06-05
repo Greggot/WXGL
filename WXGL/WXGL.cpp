@@ -80,30 +80,28 @@ void ModelViewer::Render(wxPaintEvent& event)
         glRotatef(Model->Rotation.z, 0.0, 0.0, 1.0);
         glTranslatef(Model->Translation.x, Model->Translation.y, Model->Translation.z);
 
-        for (auto polies : Model->Polygons)
+        for (auto polies : Model->Parts)
         {
-            int gradientscale = polies.size();
-            GLfloat r = 0;
-            GLfloat g = 0;
-            GLfloat b = 1.0;
+            color Color = polies.Color;
+            int gradientscale = polies.Polygons.size();
 
             glBegin(GL_TRIANGLES);
-            for (auto triangle : polies)
+            for (auto triangle : polies.Polygons)
             {
-                glColor3f(r, g, b);
-                g += 1.0 / gradientscale;
+                glColor3f(Color.r, Color.g, Color.b);
+                Color.g += 1.0 / gradientscale;
                 DrawPoly(Model->Points, triangle);
             }
             glEnd();
         }
         if (Model->Active)
         {
-            for (auto polies : Model->Polygons)
+            for (auto polies : Model->Parts)
             {
                 glBegin(GL_LINES);
                 glLineWidth(1);
                 glColor3f(0, 0, 0);
-                for (auto triangle : polies)
+                for (auto triangle : polies.Polygons)
                     DrawPolyOutline(Model->Points, triangle);
                 glEnd();
             }

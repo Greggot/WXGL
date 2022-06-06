@@ -13,8 +13,8 @@ enum Buttons : uint8_t
 
 class MouseOperator : public ModelViewer
 {
-    static OBJmodel* Model;
-    static void Init(OBJmodel* Model);
+    static OBJ::Model* Model;
+    static void Init(OBJ::Model* Model);
 
     void Zoom(wxMouseEvent& event);
     void StartRotateX(wxMouseEvent& event);

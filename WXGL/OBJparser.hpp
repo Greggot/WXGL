@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-struct point
+struct vertex
 {
     float x;
     float y;
@@ -19,7 +19,6 @@ struct poly
     int mid;
     int end;
 };
-
 struct color
 {
     float r;
@@ -27,21 +26,26 @@ struct color
     float b;
 };
 
+namespace OBJ
+{
+
 struct Part
 {
     std::list<poly> Polygons;
     color Color;
 };
 
-struct OBJmodel
+struct Model
 {
-	std::vector<point> Points;
-	std::list<Part> Parts;
-    
+    std::vector<vertex> Points;
+    std::list<Part> Parts;
+
     bool Active;
 
-    point Translation;
-    point Rotation;
+    vertex Translation;
+    vertex Rotation;
 };
 
-OBJmodel ParseFile(const char* path);
+Model Parse(const char* FilePath);
+
+}

@@ -1,6 +1,9 @@
 #include "OBJparser.hpp"
 
-OBJmodel ParseFile(const char* path)
+/*
+* @brief Open .obj file and get vertexes/indexes from it
+**/
+OBJ::Model OBJ::Parse(const char* path)
 {
 	FILE* in = fopen(path, "r");
 	
@@ -8,8 +11,8 @@ OBJmodel ParseFile(const char* path)
 	std::string data[4];
 	std::string temp;
 
-	point p;
-	std::vector<point> points;
+	vertex p;
+	std::vector<vertex> points;
 	std::list<Part> overallparts;
 	
 	static const color standardColor = { 0.5, 0, 1 };

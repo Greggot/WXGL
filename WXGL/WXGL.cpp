@@ -41,14 +41,14 @@ void ModelViewer::Close(wxCloseEvent& event)
     Update.join();
 }
 
-static inline void DrawPoly(std::vector<point> V, poly p)
+static inline void DrawPoly(std::vector<vertex> V, poly p)
 {
     glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
     glVertex3f(V[p.mid - 1].x, V[p.mid - 1].y, V[p.mid - 1].z);
     glVertex3f(V[p.end - 1].x, V[p.end - 1].y, V[p.end - 1].z);
 }
 
-static inline void DrawPolyOutline(std::vector<point>V, poly p)
+static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
 {
     glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
     glVertex3f(V[p.mid - 1].x,   V[p.mid - 1].y,   V[p.mid - 1].z);
@@ -116,9 +116,9 @@ void ModelViewer::Render(wxPaintEvent& event)
     SwapBuffers();
 }
 
-void ModelViewer::Append(OBJmodel model)
+void ModelViewer::Append(OBJ::Model model)
 {
-    OBJmodel* allocmodel = new OBJmodel(model);
+    OBJ::Model* allocmodel = new OBJ::Model(model);
     Assembly.push_back(allocmodel);
     ++ModelAmount;
     

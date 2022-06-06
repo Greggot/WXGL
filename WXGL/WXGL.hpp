@@ -41,7 +41,7 @@ class ModelViewer : public wxGLCanvas
         wxGLContext* m_context;
         std::thread Update;
 
-        std::vector<OBJmodel*> Assembly;
+        std::vector<OBJ::Model*> Assembly;
         size_t ModelAmount;
         int ActiveIndex;
 
@@ -52,7 +52,7 @@ class ModelViewer : public wxGLCanvas
     public:
         ModelViewer(wxFrame* parent);
 
-        void Append(OBJmodel model);
+        void Append(OBJ::Model model);
     protected:
         void SwitchActive();
         DECLARE_EVENT_TABLE()

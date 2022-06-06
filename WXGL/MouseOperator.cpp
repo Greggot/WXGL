@@ -4,8 +4,8 @@ Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
 const rotateVector RotationMatrices[Buttons::Amount] = { {2, 1, 0, 0}, {2, 0, 1, 0}, {-2, 0, 0, 1} };
 
-OBJmodel* MouseOperator::Model;
-void MouseOperator::Init(OBJmodel* _Model)
+OBJ::Model* MouseOperator::Model;
+void MouseOperator::Init(OBJ::Model* _Model)
 {
     Model = _Model; 
 }

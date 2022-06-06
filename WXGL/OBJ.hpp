@@ -47,11 +47,11 @@ class Model
     vertex Translation;
     vertex Rotation;
     
-    Model* Host;
+    Model* Host = nullptr;
 public:
-    bool Active;
+    bool Active = false;
 
-    Model() { Active = false; }
+    Model() { }
     Model(const char* FilePath);
 
     void Draw() const;
@@ -59,6 +59,7 @@ public:
     vertex* getRotationVector() { return &Rotation; }
 
     void LinkTo(Model* Host) { this->Host = Host; };
+    Model* getHost() const { return Host; };
 };
 
 }

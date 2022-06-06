@@ -61,9 +61,6 @@ Model::Model(const char* path)
 			s = "";
 	}
 	Parts.push_back(part);
-
-	Host = nullptr;
-	Active = false;
 }
 
 static inline void DrawPoly(std::vector<vertex> V, poly p)
@@ -98,8 +95,12 @@ void Model::Draw() const
 {
 	glPushMatrix();
 
-	if (Host)
-		ApplyTransfromRotation(*Host->getTransformVector(), *Host->getRotationVector());
+	Model* host = Host;
+	while (host)
+	{
+		ApplyTransfromRotation(*host->getTransformVector(), *host->getRotationVector());
+		host = host->getHost();
+	}
 	ApplyTransfromRotation(Translation, Rotation);
 
 	for (auto part : Parts)

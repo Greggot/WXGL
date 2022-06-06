@@ -32,10 +32,11 @@ struct rotateVector
     GLfloat z;
 };
 
-
-
-class ModelViewer : public wxGLCanvas
+namespace Assembly
 {
+
+    class Viewer : public wxGLCanvas
+    {
     private:
         bool isUpdating = true;
         wxGLContext* m_context;
@@ -50,10 +51,11 @@ class ModelViewer : public wxGLCanvas
 
         void GeneralCommands(wxKeyEvent& event);
     public:
-        ModelViewer(wxFrame* parent);
+        Viewer(wxFrame* parent);
 
         void Append(OBJ::Model model);
     protected:
         void SwitchActive();
         DECLARE_EVENT_TABLE()
-};
+    };
+}

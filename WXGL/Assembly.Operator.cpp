@@ -1,21 +1,22 @@
-#include "MouseOperator.hpp"
+#include "Assembly.Operator.hpp"
+using namespace Assembly;
 
 Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
 const rotateVector RotationMatrices[Buttons::Amount] = { {2, 1, 0, 0}, {2, 0, 1, 0}, {-2, 0, 0, 1} };
 
-OBJ::Model* MouseOperator::Model;
+OBJ::Model* Operator::Model;
 vertex* Rotation;
 vertex* Transform;
 
-void MouseOperator::Init(OBJ::Model* _Model)
+void Operator::Init(OBJ::Model* _Model)
 {
     Model = _Model;
     Rotation = Model->getRotationVector();
     Transform = Model->getTransformVector();
 }
 
-void MouseOperator::Zoom(wxMouseEvent& event)
+void Operator::Zoom(wxMouseEvent& event)
 {
     static const GLfloat downscale = 0.9;
     static const GLfloat upscale = 1.1;
@@ -27,23 +28,23 @@ void MouseOperator::Zoom(wxMouseEvent& event)
         glScalef(upscale, upscale, upscale);
 }
 
-void MouseOperator::StartRotateX(wxMouseEvent& event)
+void Operator::StartRotateX(wxMouseEvent& event)
 {
     ActiveOne = Buttons::Left;
     ButtonMovements[Buttons::Left].before = event.GetPosition();
 }
-void MouseOperator::StartRotateY(wxMouseEvent& event)
+void Operator::StartRotateY(wxMouseEvent& event)
 {
     ActiveOne = Buttons::Right;
     ButtonMovements[Buttons::Right].before = event.GetPosition();
 }
-void MouseOperator::StartRotateZ(wxMouseEvent& event)
+void Operator::StartRotateZ(wxMouseEvent& event)
 {
     ActiveOne = Buttons::Middle;
     ButtonMovements[Buttons::Middle].before = event.GetPosition();
 }
 
-void MouseOperator::Rotate(wxMouseEvent& event)
+void Operator::Rotate(wxMouseEvent& event)
 {
     static rotateVector vector;
     if (event.Dragging())
@@ -61,7 +62,7 @@ void MouseOperator::Rotate(wxMouseEvent& event)
     }
 }
 std::map < wxKeyCode, std::function<void(wxKeyEvent&)>> KeyEvents;
-void MouseOperator::Move(wxKeyEvent& event)
+void Operator::Move(wxKeyEvent& event)
 {
     int key = event.GetKeyCode();
     auto evt = KeyEvents.find((wxKeyCode)key);
@@ -98,7 +99,7 @@ void MouseOperator::Move(wxKeyEvent& event)
     }
 }
 
-void MouseOperator::AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call)
+void Operator::AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call)
 {
     auto evt = KeyEvents.find(key);
     if (evt == KeyEvents.end())

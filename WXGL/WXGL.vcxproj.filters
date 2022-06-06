@@ -30,7 +30,7 @@
     <ClInclude Include="MouseOperator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="OBJparser.hpp">
+    <ClInclude Include="OBJ.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="ModelLoader.hpp">
@@ -47,7 +47,7 @@
     <ClCompile Include="MouseOperator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="OBJparser.cpp">
+    <ClCompile Include="OBJ.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="ModelLoader.cpp">

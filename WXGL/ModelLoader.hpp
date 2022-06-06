@@ -1,5 +1,5 @@
 #pragma once
-#include "OBJparser.hpp"
+#include "OBJ.hpp"
 #include "WXGL.hpp"
 
 enum LoaderItem

@@ -1,6 +1,6 @@
 ﻿#include "WXGL.hpp"
 #include "MouseOperator.hpp"
-#include "OBJparser.hpp"
+#include "OBJ.hpp"
 
 BEGIN_EVENT_TABLE(ModelViewer, wxGLCanvas)
 EVT_PAINT(ModelViewer::Render)
@@ -41,24 +41,6 @@ void ModelViewer::Close(wxCloseEvent& event)
     Update.join();
 }
 
-static inline void DrawPoly(std::vector<vertex> V, poly p)
-{
-    glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
-    glVertex3f(V[p.mid - 1].x, V[p.mid - 1].y, V[p.mid - 1].z);
-    glVertex3f(V[p.end - 1].x, V[p.end - 1].y, V[p.end - 1].z);
-}
-
-static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
-{
-    glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
-    glVertex3f(V[p.mid - 1].x,   V[p.mid - 1].y,   V[p.mid - 1].z);
-    glVertex3f(V[p.mid - 1].x,   V[p.mid - 1].y,   V[p.mid - 1].z);
-    glVertex3f(V[p.end - 1].x,   V[p.end - 1].y,   V[p.end - 1].z);
-    glVertex3f(V[p.end - 1].x,   V[p.end - 1].y,   V[p.end - 1].z);
-    glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
-}
-
-
 void ModelViewer::Render(wxPaintEvent& event)
 {
     wxPaintDC(this);
@@ -72,45 +54,7 @@ void ModelViewer::Render(wxPaintEvent& event)
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
     for (auto Model : Assembly)
-    {
-        glPushMatrix();
-        
-        // Translation before Rotation because otherwise
-        // it would be rotating aroung absolute zero coordinate.
-        // Not the model's one
-        glTranslatef(Model->Translation.x, Model->Translation.y, Model->Translation.z);
-        glRotatef(Model->Rotation.x, 1.0, 0.0, 0.0);
-        glRotatef(Model->Rotation.y, 0.0, 1.0, 0.0);
-        glRotatef(Model->Rotation.z, 0.0, 0.0, 1.0);
-
-        for (auto polies : Model->Parts)
-        {
-            color Color = polies.Color;
-            int gradientscale = polies.Polygons.size();
-
-            glBegin(GL_TRIANGLES);
-            for (auto triangle : polies.Polygons)
-            {
-                glColor3f(Color.r, Color.g, Color.b);
-                Color.g += 1.0 / gradientscale;
-                DrawPoly(Model->Points, triangle);
-            }
-            glEnd();
-        }
-        if (Model->Active)
-        {
-            for (auto polies : Model->Parts)
-            {
-                glBegin(GL_LINES);
-                glLineWidth(1);
-                glColor3f(0, 0, 0);
-                for (auto triangle : polies.Polygons)
-                    DrawPolyOutline(Model->Points, triangle);
-                glEnd();
-            }
-        }
-        glPopMatrix();
-    }
+        Model->Draw();
 
     glFlush();
     SwapBuffers();
@@ -119,6 +63,8 @@ void ModelViewer::Render(wxPaintEvent& event)
 void ModelViewer::Append(OBJ::Model model)
 {
     OBJ::Model* allocmodel = new OBJ::Model(model);
+    if(ModelAmount)
+        allocmodel->LinkTo(Assembly[ModelAmount - 1]);
     Assembly.push_back(allocmodel);
     ++ModelAmount;
     

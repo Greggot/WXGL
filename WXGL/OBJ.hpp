@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 
+#include <wx/glcanvas.h>
+#include <gl/GLU.h>
+#include <gl/GL.h>
+
 struct vertex
 {
     float x;
@@ -35,17 +39,26 @@ struct Part
     color Color;
 };
 
-struct Model
+class Model
 {
     std::vector<vertex> Points;
     std::list<Part> Parts;
 
-    bool Active;
-
     vertex Translation;
     vertex Rotation;
-};
+    
+    Model* Host;
+public:
+    bool Active;
 
-Model Parse(const char* FilePath);
+    Model() { Active = false; }
+    Model(const char* FilePath);
+
+    void Draw() const;
+    vertex* getTransformVector() { return &Translation; }
+    vertex* getRotationVector() { return &Rotation; }
+
+    void LinkTo(Model* Host) { this->Host = Host; };
+};
 
 }

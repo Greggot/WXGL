@@ -22,5 +22,5 @@ void ModelLoader::Open(wxCommandEvent& event)
         return;
     
     wxString modelPath = openFile.GetPath();
-    Viewer.Append(OBJ::Parse(modelPath.mb_str().data()));
+    Viewer.Append(OBJ::Model(modelPath.mb_str().data()));
 }

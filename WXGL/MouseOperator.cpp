@@ -5,9 +5,14 @@ MouseMovement ButtonMovements[Buttons::Amount];
 const rotateVector RotationMatrices[Buttons::Amount] = { {2, 1, 0, 0}, {2, 0, 1, 0}, {-2, 0, 0, 1} };
 
 OBJ::Model* MouseOperator::Model;
+vertex* Rotation;
+vertex* Transform;
+
 void MouseOperator::Init(OBJ::Model* _Model)
 {
-    Model = _Model; 
+    Model = _Model;
+    Rotation = Model->getRotationVector();
+    Transform = Model->getTransformVector();
 }
 
 void MouseOperator::Zoom(wxMouseEvent& event)
@@ -62,31 +67,33 @@ void MouseOperator::Move(wxKeyEvent& event)
     auto evt = KeyEvents.find((wxKeyCode)key);
     if (evt != KeyEvents.end())
         evt->second(event);
+
+
     switch (key)
     {
     case WXK_LEFT:
-        --Model->Translation.x;
+        --Transform->x;
         break;
     case WXK_RIGHT:
-        ++Model->Translation.x;
+        ++Transform->x;
         break;
     case WXK_UP:
-        ++Model->Translation.y;
+        ++Transform->y;
         break;
     case WXK_DOWN:
-        --Model->Translation.y;
+        --Transform->y;
         break;
     case WXK_SPACE:
-        ++Model->Translation.z;
+        ++Transform->z;
         break;
     case WXK_CONTROL:
-        --Model->Translation.z;
+        --Transform->z;
         break;
     case WXK_HOME:
-        ++Model->Rotation.z;
+        ++Rotation->z;
         break;
     case WXK_END:
-        --Model->Rotation.z;
+        --Rotation->z;
         break;
     }
 }

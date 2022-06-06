@@ -12,7 +12,7 @@
 #include <gl/GL.h>
 
 #include <thread>
-#include "OBJparser.hpp"
+#include "OBJ.hpp"
 
 #ifndef WIN32
 #include <unistd.h> // FIXME: This work/necessary in Windows?

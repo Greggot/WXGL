@@ -16,6 +16,21 @@ struct vertex
     float x;
     float y;
     float z;
+
+    vertex& operator+=(const vertex& rhs) 
+    {
+        this->x += rhs.x;
+        this->y += rhs.y;
+        this->z += rhs.z;
+        return *this;
+    }
+    vertex& operator-=(const vertex& rhs)
+    {
+        this->x -= rhs.x;
+        this->y -= rhs.y;
+        this->z -= rhs.z;
+        return *this;
+    }
 };
 struct poly
 {
@@ -48,6 +63,7 @@ class Model
     vertex Rotation;
     
     Model* Host = nullptr;
+    Model* Leaf = nullptr;
 public:
     bool Active = false;
 
@@ -58,8 +74,10 @@ public:
     vertex* getTransformVector() { return &Translation; }
     vertex* getRotationVector() { return &Rotation; }
 
-    void LinkTo(Model* Host) { this->Host = Host; };
-    Model* getHost() const { return Host; };
+    void LinkTo(Model* Host) { this->Host = Host; Host->setLeaf(this); }
+    void setLeaf(Model* Leaf) { this->Leaf = Leaf; }
+    Model* getHost() const { return Host; }
+    Model* getLeaf() const { return Leaf; }
 };
 
 }

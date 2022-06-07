@@ -80,12 +80,16 @@ static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
 	glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
 }
 
-static inline void ApplyTransfromRotation(vertex Transform, vertex Rotation)
+static inline void ApplyTransfrom(vertex Transform)
 {
 	// Translation before Rotation because otherwise
 	// it would be rotating aroung absolute zero coordinate.
 	// Not the model's one
 	glTranslatef(Transform.x, Transform.y, Transform.z);
+}
+
+static inline void ApplyRotation(vertex Rotation)
+{
 	glRotatef(Rotation.x, 1.0, 0.0, 0.0);
 	glRotatef(Rotation.y, 0.0, 1.0, 0.0);
 	glRotatef(Rotation.z, 0.0, 0.0, 1.0);
@@ -96,12 +100,21 @@ void Model::Draw() const
 	glPushMatrix();
 
 	Model* host = Host;
-	while (host)
+	if (host)
 	{
-		ApplyTransfromRotation(*host->getTransformVector(), *host->getRotationVector());
-		host = host->getHost();
+		while (host->getHost())
+			host = host->getHost();
+		Model* Leaf = host;
+		do
+		{
+			ApplyTransfrom(*Leaf->getTransformVector());
+			ApplyRotation(*Leaf->getRotationVector());
+			Leaf = Leaf->getLeaf();
+		} while (Leaf != this);
 	}
-	ApplyTransfromRotation(Translation, Rotation);
+	
+	ApplyTransfrom(Translation);
+	ApplyRotation(Rotation);
 
 	for (auto part : Parts)
 	{

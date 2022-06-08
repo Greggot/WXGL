@@ -68,9 +68,11 @@ void Viewer::Append(OBJ::Model model)
     if(ModelAmount)
         allocmodel->LinkTo(Assembly[ModelAmount - 1]);
     Assembly.push_back(allocmodel);
-    ++ModelAmount;
     
-    SwitchActive();
+    Assembly[ActiveIndex]->Active = false;
+    ActiveIndex = ModelAmount++;
+    allocmodel->Active = true;
+    Operator::Init(allocmodel);
 }
 
 void Viewer::SwitchActive()

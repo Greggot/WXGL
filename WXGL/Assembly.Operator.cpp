@@ -96,6 +96,18 @@ void Operator::Move(wxKeyEvent& event)
     case WXK_END:
         --Rotation->z;
         break;
+    case WXK_PAGEUP:
+        ++Rotation->x;
+        break;
+    case WXK_PAGEDOWN:
+        --Rotation->x;
+        break;
+    case WXK_NUMPAD4:
+        ++Rotation->y;
+        break;
+    case WXK_NUMPAD6:
+        --Rotation->y;
+        break;
     }
 }
 

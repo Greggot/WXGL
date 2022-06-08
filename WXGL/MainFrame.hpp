@@ -15,4 +15,9 @@ public:
 private:
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;
+    
+    std::thread Update;
+    bool isUpdating;
+
+    void CloseEvent(wxCloseEvent& event);
 };

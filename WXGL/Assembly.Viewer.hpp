@@ -38,18 +38,13 @@ namespace Assembly
     class Viewer : public wxGLCanvas
     {
     private:
-        bool isUpdating = true;
         wxGLContext* m_context;
-        std::thread Update;
 
         std::vector<OBJ::Model*> Assembly;
         size_t ModelAmount;
         int ActiveIndex;
 
         void Render(wxPaintEvent& event);
-        void Close(wxCloseEvent& event);
-
-        void GeneralCommands(wxKeyEvent& event);
     public:
         Viewer(wxFrame* parent);
 

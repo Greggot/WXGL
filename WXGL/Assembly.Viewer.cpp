@@ -1,4 +1,4 @@
-#include "Assembly.Viewer.hpp"
+﻿#include "Assembly.Viewer.hpp"
 #include "Assembly.Operator.hpp"
 #include "OBJ.hpp"
 
@@ -6,7 +6,6 @@ using namespace Assembly;
 
 BEGIN_EVENT_TABLE(Viewer, wxGLCanvas)
 EVT_PAINT(Viewer::Render)
-EVT_CLOSE(Viewer::Close)
 
 EVT_MOUSEWHEEL(Operator::Zoom)
 EVT_LEFT_DOWN(Operator::StartRotateX)
@@ -22,13 +21,6 @@ Viewer::Viewer(wxFrame* parent)
     :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas"))
 {
     m_context = new wxGLContext(this);
-    Update = std::thread([this] {
-        while (isUpdating)
-        {
-            Refresh();
-            std::this_thread::sleep_for(std::chrono::milliseconds(15));
-        }
-    });
     ModelAmount = 0;
     ActiveIndex = 0;
 
@@ -36,13 +28,6 @@ Viewer::Viewer(wxFrame* parent)
         SwitchActive();
     });
 }
-
-void Viewer::Close(wxCloseEvent& event)
-{
-    isUpdating = false;
-    Update.join();
-}
-
 void Viewer::Render(wxPaintEvent& event)
 {
     wxPaintDC(this);

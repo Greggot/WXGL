@@ -9,9 +9,13 @@ OBJ::Model* Operator::Model;
 vertex* Rotation;
 vertex* Transform;
 
-void Operator::Init(OBJ::Model* _Model)
+void Operator::Init(OBJ::Model* Model)
 {
-    Model = _Model;
+    if (Operator::Model)
+        Operator::Model->Active = false;
+    Model->Active = true;
+    
+    Operator::Model = Model;
     Rotation = Model->getRotationVector();
     Transform = Model->getTransformVector();
 }

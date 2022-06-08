@@ -61,6 +61,7 @@ Model::Model(const char* path)
 			s = "";
 	}
 	Parts.push_back(part);
+	fclose(in);
 }
 
 static inline void DrawPoly(std::vector<vertex> V, poly p)
@@ -82,9 +83,6 @@ static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
 
 static inline void ApplyTransfrom(vertex Transform)
 {
-	// Translation before Rotation because otherwise
-	// it would be rotating aroung absolute zero coordinate.
-	// Not the model's one
 	glTranslatef(Transform.x, Transform.y, Transform.z);
 }
 

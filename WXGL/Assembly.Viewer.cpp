@@ -1,4 +1,4 @@
-﻿#include "Assembly.Viewer.hpp"
+#include "Assembly.Viewer.hpp"
 #include "Assembly.Operator.hpp"
 #include "OBJ.hpp"
 
@@ -80,4 +80,10 @@ void Viewer::SwitchActive()
         ActiveIndex = 0;
     Assembly[ActiveIndex]->Active = true;
     Operator::Init(Assembly[ActiveIndex]);
+}
+
+Viewer::~Viewer()
+{
+    for (auto model : Assembly)
+        delete model;
 }

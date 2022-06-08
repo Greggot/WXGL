@@ -54,6 +54,7 @@ namespace Assembly
         Viewer(wxFrame* parent);
 
         void Append(OBJ::Model model);
+        ~Viewer();
     protected:
         void SwitchActive();
         DECLARE_EVENT_TABLE()

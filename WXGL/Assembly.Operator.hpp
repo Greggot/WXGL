@@ -40,6 +40,7 @@ namespace Assembly
         
         void RightClickOnModel(wxMouseEvent& event);
         inline void RotateCamera(Sign sign, Ort ort);
+        inline void ApplyMovementTo(const int end, const int start, const Ort ort);
 
         friend class Viewer;
     };

@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assemly.Configurator.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="Assembly.Loader.hpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Assembly.Viewer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assembly.Configurator.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="Assembly.Loader.cpp" />
     <ClCompile Include="Assembly.Operator.cpp" />

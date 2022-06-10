@@ -13,6 +13,7 @@
 
 #include <thread>
 #include "OBJ.hpp"
+#include "Assemly.Configurator.hpp"
 
 #ifndef WIN32
 #include <unistd.h> // FIXME: This work/necessary in Windows?

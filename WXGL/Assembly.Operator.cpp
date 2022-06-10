@@ -45,6 +45,12 @@ void Operator::StartRotateZ(wxMouseEvent& event)
     ButtonMovements[Buttons::Middle].before = event.GetPosition();
 }
 
+void Operator::RightClickOnModel(wxMouseEvent& event)
+{
+    Configurator* config = new Configurator("Name.obj");
+    PopupMenu(config, event.GetPosition());
+}
+
 #define PI 3.14159265
 #define angleStep 2
 static inline void ModifyRotationOrts(int angleZ, int complimentaryAngle, rotateVector& Ort)

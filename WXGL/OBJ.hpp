@@ -43,6 +43,29 @@ struct color
     float r;
     float g;
     float b;
+
+    color& operator+=(const color& rhs)
+    {
+        this->r += rhs.r;
+        this->g += rhs.g;
+        this->b += rhs.b;
+        return *this;
+    }
+    color& operator-=(const color& rhs)
+    {
+        this->r -= rhs.r;
+        this->g -= rhs.g;
+        this->b -= rhs.b;
+        return *this;
+    }
+    color(float single)
+        : r(single), g(single), b(single)
+    {
+    }
+    color(float r, float g, float b)
+        : r(r), g(g), b(b)
+    {
+    }
 };
 
 namespace OBJ

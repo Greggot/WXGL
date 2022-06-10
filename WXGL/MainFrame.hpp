@@ -6,12 +6,18 @@
 #include <wx/wx.h>
 #endif
 
-#include "ModelLoader.hpp"
+#include "Assembly.Loader.hpp"
 
 class MainFrame : public wxFrame
 {
 public:
     MainFrame();
 private:
-    ModelViewer* Viewer;
+    Assembly::Viewer* Viewer;
+    Assembly::Loader* Loader;
+    
+    std::thread Update;
+    bool isUpdating;
+
+    void CloseEvent(wxCloseEvent& event);
 };

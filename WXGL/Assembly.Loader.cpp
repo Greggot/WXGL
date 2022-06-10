@@ -1,26 +1,27 @@
-#include "ModelLoader.hpp"
+#include "Assembly.Loader.hpp"
+using namespace Assembly;
 
-inline void ModelLoader::AppendMenuItem(int ID, wxString Name, wxString Description)
+inline void Loader::AppendMenuItem(int ID, wxString Name, wxString Description)
 {
 	Append(new wxMenuItem(NULL, ID, Name, Description, wxITEM_NORMAL, NULL));
 }
 
-ModelLoader::ModelLoader(wxFrame* Host, ModelViewer& Viewer)
-	: wxMenu(), Host(Host), Viewer(Viewer)
+Loader::Loader(wxFrame* Host, Viewer& viewer)
+	: wxMenu(), Host(Host), viewer(viewer)
 {
 	AppendMenuItem(LoaderItem::Open, "Open...", "Load OBJ model");
 	AppendMenuItem(LoaderItem::Close, "Close", "Close model");
     
-	Bind(wxEVT_MENU, &ModelLoader::Open, this, LoaderItem::Open);
+	Bind(wxEVT_MENU, &Loader::Open, this, LoaderItem::Open);
 }
 
 
-void ModelLoader::Open(wxCommandEvent& event)
+void Loader::Open(wxCommandEvent& event)
 {
     wxFileDialog openFile(Host, wxString("Open Model"), wxEmptyString, wxEmptyString, "OBJ files(*.obj)|*.obj", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (openFile.ShowModal() == wxID_CANCEL)
         return;
     
     wxString modelPath = openFile.GetPath();
-    Viewer.Append(OBJ::Parse(modelPath.mb_str().data()));
+    viewer.Append(OBJ::Model(modelPath.mb_str().data()));
 }

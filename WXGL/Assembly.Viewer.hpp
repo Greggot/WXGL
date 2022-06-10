@@ -12,7 +12,8 @@
 #include <gl/GL.h>
 
 #include <thread>
-#include "OBJparser.hpp"
+#include "OBJ.hpp"
+#include "Assemly.Configurator.hpp"
 
 #ifndef WIN32
 #include <unistd.h> // FIXME: This work/necessary in Windows?
@@ -32,28 +33,26 @@ struct rotateVector
     GLfloat z;
 };
 
-
-
-class ModelViewer : public wxGLCanvas
+namespace Assembly
 {
+
+    class Viewer : public wxGLCanvas
+    {
     private:
-        bool isUpdating = true;
         wxGLContext* m_context;
-        std::thread Update;
 
         std::vector<OBJ::Model*> Assembly;
         size_t ModelAmount;
         int ActiveIndex;
 
         void Render(wxPaintEvent& event);
-        void Close(wxCloseEvent& event);
-
-        void GeneralCommands(wxKeyEvent& event);
     public:
-        ModelViewer(wxFrame* parent);
+        Viewer(wxFrame* parent);
 
         void Append(OBJ::Model model);
+        ~Viewer();
     protected:
         void SwitchActive();
         DECLARE_EVENT_TABLE()
-};
+    };
+}

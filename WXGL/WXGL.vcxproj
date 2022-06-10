@@ -142,21 +142,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assemly.Configurator.hpp" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Lamp.hpp" />
     <ClInclude Include="MainFrame.hpp" />
-    <ClInclude Include="ModelLoader.hpp" />
-    <ClInclude Include="MouseOperator.hpp" />
-    <ClInclude Include="OBJparser.hpp" />
+    <ClInclude Include="Assembly.Loader.hpp" />
+    <ClInclude Include="Assembly.Operator.hpp" />
+    <ClInclude Include="OBJ.hpp" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="WXGL.hpp" />
+    <ClInclude Include="Assembly.Viewer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assembly.Configurator.cpp" />
+    <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="MainFrame.cpp" />
-    <ClCompile Include="ModelLoader.cpp" />
-    <ClCompile Include="MouseOperator.cpp" />
-    <ClCompile Include="OBJparser.cpp" />
-    <ClCompile Include="WXGL.cpp" />
+    <ClCompile Include="Assembly.Loader.cpp" />
+    <ClCompile Include="Assembly.Operator.cpp" />
+    <ClCompile Include="OBJ.cpp" />
+    <ClCompile Include="Assembly.Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WXGL.rc" />

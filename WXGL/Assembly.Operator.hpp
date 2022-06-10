@@ -5,10 +5,20 @@
 enum Buttons : uint8_t
 {
     Left,
-    Right,
     Middle,
 
     Amount,
+};
+enum Ort : uint8_t
+{
+    X,
+    Y,
+    Z,
+};
+enum Sign
+{
+    positive,
+    negative,
 };
 
 namespace Assembly
@@ -16,17 +26,20 @@ namespace Assembly
 
     class Operator : public Viewer
     {
+        static int cameraangle[3];
         static OBJ::Model* Model;
         static void Init(OBJ::Model* Model);
 
         void Zoom(wxMouseEvent& event);
-        void StartRotateX(wxMouseEvent& event);
-        void StartRotateY(wxMouseEvent& event);
+        void StartRotateXY(wxMouseEvent& event);
         void StartRotateZ(wxMouseEvent& event);
         void Rotate(wxMouseEvent& event);
 
         void Move(wxKeyEvent& event);
         static void AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call);
+        
+        void RightClickOnModel(wxMouseEvent& event);
+        inline void RotateCamera(Sign sign, Ort ort);
 
         friend class Viewer;
     };

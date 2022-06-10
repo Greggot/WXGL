@@ -1,9 +1,11 @@
 #include "Assembly.Operator.hpp"
+#include <cmath>
 using namespace Assembly;
 
 Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
-const rotateVector RotationMatrices[Buttons::Amount] = { {2, 1, 0, 0}, {2, 0, 1, 0}, {-2, 0, 0, 1} };
+
+int Operator::cameraangle[3] = {0,0,0};
 
 OBJ::Model* Operator::Model;
 vertex* Rotation;
@@ -32,20 +34,54 @@ void Operator::Zoom(wxMouseEvent& event)
         glScalef(upscale, upscale, upscale);
 }
 
-void Operator::StartRotateX(wxMouseEvent& event)
+void Operator::StartRotateXY(wxMouseEvent& event)
 {
     ActiveOne = Buttons::Left;
     ButtonMovements[Buttons::Left].before = event.GetPosition();
-}
-void Operator::StartRotateY(wxMouseEvent& event)
-{
-    ActiveOne = Buttons::Right;
-    ButtonMovements[Buttons::Right].before = event.GetPosition();
 }
 void Operator::StartRotateZ(wxMouseEvent& event)
 {
     ActiveOne = Buttons::Middle;
     ButtonMovements[Buttons::Middle].before = event.GetPosition();
+}
+
+#define PI 3.14159265
+#define angleStep 2
+static inline void ModifyRotationOrts(int angleZ, int complimentaryAngle, rotateVector& Ort)
+{
+    float angle = complimentaryAngle % 360;
+    if (angle < 0)
+        angle = -angle;
+    bool sign = angle > 90 && angle < 270;
+
+    Ort.angle = sign ? angleStep : -angleStep;
+    Ort.x = sin((float)angleZ * PI / 180);
+    Ort.y = cos((float)angleZ * PI / 180);
+    Ort.z = 0;
+}
+
+inline void Operator::RotateCamera(Sign sign, Ort ort)
+{
+    static rotateVector RotationMatrices[] = { {-angleStep, 1,0,0},
+                                               {-angleStep, 0,1,0},
+                                               {-angleStep, 0,0,1} };
+    ModifyRotationOrts(cameraangle[Z], cameraangle[Y], RotationMatrices[X]);
+    ModifyRotationOrts(cameraangle[Z] + 90, cameraangle[X], RotationMatrices[Y]);
+
+    rotateVector vector = RotationMatrices[ort];
+    if (sign)
+        vector.angle = -vector.angle;
+    glRotatef(vector.angle, vector.x, vector.y, vector.z);
+    cameraangle[ort] += vector.angle;
+}
+
+inline void Operator::ApplyMovementTo(const int end, const int start, const Ort ort)
+{
+    static const uint8_t amplitude = 5;
+    if (end - start > amplitude)
+        RotateCamera(positive, ort);
+    else if (end - start < -amplitude)
+        RotateCamera(negative, ort);
 }
 
 void Operator::Rotate(wxMouseEvent& event)
@@ -54,14 +90,15 @@ void Operator::Rotate(wxMouseEvent& event)
     if (event.Dragging())
     {
         MouseMovement& mov = ButtonMovements[ActiveOne];
-        vector = RotationMatrices[ActiveOne];
         mov.after = event.GetPosition();
 
-        if (mov.after.x - mov.before.x > 5)
-            glRotatef(vector.angle, vector.x, vector.y, vector.z);
-        else if (mov.after.x - mov.before.x < -5)
-            glRotatef(-vector.angle, vector.x, vector.y, vector.z);
-
+        if (ActiveOne == Buttons::Middle)
+            ApplyMovementTo(mov.after.x, mov.before.x, Z);
+        else
+        {
+            ApplyMovementTo(mov.after.x, mov.before.x, X);
+            ApplyMovementTo(mov.after.y, mov.before.y, Y);
+        }
         mov.before = mov.after;
     }
 }
@@ -72,7 +109,6 @@ void Operator::Move(wxKeyEvent& event)
     auto evt = KeyEvents.find((wxKeyCode)key);
     if (evt != KeyEvents.end())
         evt->second(event);
-
 
     switch (key)
     {

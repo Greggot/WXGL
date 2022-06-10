@@ -8,9 +8,9 @@ BEGIN_EVENT_TABLE(Viewer, wxGLCanvas)
 EVT_PAINT(Viewer::Render)
 
 EVT_MOUSEWHEEL(Operator::Zoom)
-EVT_LEFT_DOWN(Operator::StartRotateX)
-EVT_RIGHT_DOWN(Operator::StartRotateY)
+EVT_LEFT_DOWN(Operator::StartRotateXY)
 EVT_MIDDLE_DOWN(Operator::StartRotateZ)
+EVT_RIGHT_DOWN(Operator::RightClickOnModel)
 EVT_MOUSE_EVENTS(Operator::Rotate)
 
 EVT_KEY_DOWN(Operator::Move)
@@ -32,7 +32,6 @@ void Viewer::Render(wxPaintEvent& event)
 {
     wxPaintDC(this);
     SetCurrent(*m_context);
-    static float activeangle = 0;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);

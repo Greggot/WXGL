@@ -5,7 +5,8 @@
 enum LoaderItem
 {
 	Open = 3,
-	Close,
+	OpenAssembly,
+	SaveAssembly,
 };
 
 namespace Assembly
@@ -16,10 +17,22 @@ namespace Assembly
 	private:
 		wxFrame* Host;
 		Viewer& viewer;
+		uint32_t modelNumber;
+
+		std::vector<wxString> Paths;
+		std::vector<OBJ::Model*> Assembly;
 
 		inline void AppendMenuItem(int ID, wxString Name, wxString Description);
+		
 		void Open(wxCommandEvent& event);
+		void SaveAssembly(wxCommandEvent& event);
+		void LoadAssembly(wxCommandEvent& event);
+
+		void Load(wxString Path);
 	public:
 		Loader(wxFrame* Host, Viewer& viewer);
+
+		void Unload(size_t index);
+		~Loader();
 	};
 }

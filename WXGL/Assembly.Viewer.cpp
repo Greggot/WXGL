@@ -1,4 +1,4 @@
-﻿#include "Assembly.Viewer.hpp"
+#include "Assembly.Viewer.hpp"
 #include "Assembly.Operator.hpp"
 #include "OBJ.hpp"
 
@@ -46,26 +46,24 @@ void Viewer::Render(wxPaintEvent& event)
     SwapBuffers();
 }
 
-void Viewer::Append(OBJ::Model model)
+void Viewer::Append(OBJ::Model* model)
 {
-    OBJ::Model* allocmodel = new OBJ::Model(model);
     if(ModelAmount)
-        allocmodel->LinkTo(Assembly[ModelAmount - 1]);
-    Assembly.push_back(allocmodel);
+        model->LinkTo(Assembly[ModelAmount - 1]);
+    Assembly.push_back(model);
     
     ActiveIndex = ModelAmount++;
-    Operator::Init(allocmodel);
+    Operator::SetTarget(model);
 }
 
 void Viewer::SwitchActive()
 {
     if (++ActiveIndex >= ModelAmount)
         ActiveIndex = 0;
-    Operator::Init(Assembly[ActiveIndex]);
+    Operator::SetTarget(Assembly[ActiveIndex]);
 }
 
 Viewer::~Viewer()
 {
-    for (auto model : Assembly)
-        delete model;
+    Assembly.clear();
 }

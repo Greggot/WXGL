@@ -1,6 +1,10 @@
 #pragma once
-#include "Assembly.Viewer.hpp"
+#include "OBJ.hpp"
+#include "Assembly.Loader.hpp"
 #include <map>
+
+#define angleStep 2
+#define rotateAmplitude 5
 
 enum Buttons : uint8_t
 {
@@ -9,6 +13,7 @@ enum Buttons : uint8_t
 
     Amount,
 };
+#define OrtAmount 3
 enum Ort : uint8_t
 {
     X,
@@ -24,12 +29,16 @@ enum Sign
 namespace Assembly
 {
 
-    class Operator : public Viewer
+    class Operator : public wxGLCanvas
     {
-        static int cameraangle[3];
-        static OBJ::Model* Model;
-        static void Init(OBJ::Model* Model);
+    private:
+        static int cameraangle[OrtAmount];
 
+        inline void RotateCamera(Sign sign, Ort ort);
+        inline void ApplyMovementTo(const int end, const int start, const Ort ort);
+    public:
+        static void SetTarget(OBJ::Model* Model);
+        
         void Zoom(wxMouseEvent& event);
         void StartRotateXY(wxMouseEvent& event);
         void StartRotateZ(wxMouseEvent& event);
@@ -39,10 +48,6 @@ namespace Assembly
         static void AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call);
         
         void RightClickOnModel(wxMouseEvent& event);
-        inline void RotateCamera(Sign sign, Ort ort);
-        inline void ApplyMovementTo(const int end, const int start, const Ort ort);
-
-        friend class Viewer;
     };
 
 }

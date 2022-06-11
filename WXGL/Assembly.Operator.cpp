@@ -4,20 +4,22 @@ using namespace Assembly;
 
 Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
+int Operator::cameraangle[OrtAmount] = {0,0,0};
 
 int Operator::cameraangle[3] = {0,0,0};
 
 OBJ::Model* Operator::Model;
+bool* lastactive;
 vertex* Rotation;
 vertex* Transform;
 
-void Operator::Init(OBJ::Model* Model)
+void Operator::SetTarget(OBJ::Model* Model)
 {
-    if (Operator::Model)
-        Operator::Model->Active = false;
+    if (lastactive)
+        *lastactive = false;
     Model->Active = true;
     
-    Operator::Model = Model;
+    lastactive = &Model->Active;
     Rotation = Model->getRotationVector();
     Transform = Model->getTransformVector();
 }
@@ -52,7 +54,6 @@ void Operator::RightClickOnModel(wxMouseEvent& event)
 }
 
 #define PI 3.14159265
-#define angleStep 2
 static inline void ModifyRotationOrts(int angleZ, int complimentaryAngle, rotateVector& Ort)
 {
     float angle = complimentaryAngle % 360;
@@ -83,10 +84,9 @@ inline void Operator::RotateCamera(Sign sign, Ort ort)
 
 inline void Operator::ApplyMovementTo(const int end, const int start, const Ort ort)
 {
-    static const uint8_t amplitude = 5;
-    if (end - start > amplitude)
+    if (end - start > rotateAmplitude)
         RotateCamera(positive, ort);
-    else if (end - start < -amplitude)
+    else if (end - start < -rotateAmplitude)
         RotateCamera(negative, ort);
 }
 

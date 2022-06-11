@@ -49,7 +49,9 @@ namespace Assembly
     public:
         Viewer(wxFrame* parent);
 
-        void Append(OBJ::Model model);
+        void Append(OBJ::Model* model);
+        void Remove(size_t index);
+
         ~Viewer();
     protected:
         void SwitchActive();

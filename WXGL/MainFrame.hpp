@@ -7,6 +7,7 @@
 #endif
 
 #include "Assembly.Loader.hpp"
+#include "Assembly.Operator.hpp"
 
 class MainFrame : public wxFrame
 {

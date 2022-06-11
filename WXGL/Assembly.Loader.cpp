@@ -106,6 +106,30 @@ void Loader::Unload(size_t index)
     Assembly.erase(Assembly.begin() + index);
 }
 
+template<class type>
+static inline int FindIndexOfElement(std::vector<type> vector, type element)
+{
+    int size = vector.size();
+    for (int i = 0; i < size; ++i)
+    {
+        if (vector[i] == element)
+            return i;
+    }
+    return -1;
+}
+
+void Loader::Unload(OBJ::Model* Model)
+{
+    int index = FindIndexOfElement(Assembly, Model);
+    if (index < 0)
+        return;
+
+    viewer.Remove(index);
+    Assembly.erase(Assembly.begin() + index);
+    delete Model;
+
+}
+
 Loader::~Loader()
 {
     for (auto model : Assembly)

@@ -33,6 +33,7 @@ namespace Assembly
 		Loader(wxFrame* Host, Viewer& viewer);
 
 		void Unload(size_t index);
+		void Unload(OBJ::Model* Model);
 		~Loader();
 	};
 }

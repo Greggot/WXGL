@@ -32,11 +32,14 @@ namespace Assembly
     class Operator : public wxGLCanvas
     {
     private:
+        static Loader* loader;
+        static OBJ::Model* Model;
         static int cameraangle[OrtAmount];
 
         inline void RotateCamera(Sign sign, Ort ort);
         inline void ApplyMovementTo(const int end, const int start, const Ort ort);
     public:
+        static void Init(Loader* loader);
         static void SetTarget(OBJ::Model* Model);
         
         void Zoom(wxMouseEvent& event);

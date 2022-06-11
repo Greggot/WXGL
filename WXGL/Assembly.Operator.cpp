@@ -6,20 +6,23 @@ Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
 int Operator::cameraangle[OrtAmount] = {0,0,0};
 
-int Operator::cameraangle[3] = {0,0,0};
-
 OBJ::Model* Operator::Model;
-bool* lastactive;
 vertex* Rotation;
 vertex* Transform;
 
+Loader* Operator::loader;
+void Operator::Init(Loader* loader)
+{
+    Operator::loader = loader;
+}
+
 void Operator::SetTarget(OBJ::Model* Model)
 {
-    if (lastactive)
-        *lastactive = false;
+    if (Operator::Model)
+        Operator::Model->Active = false;
     Model->Active = true;
-    
-    lastactive = &Model->Active;
+    Operator::Model = Model;
+
     Rotation = Model->getRotationVector();
     Transform = Model->getTransformVector();
 }
@@ -49,7 +52,7 @@ void Operator::StartRotateZ(wxMouseEvent& event)
 
 void Operator::RightClickOnModel(wxMouseEvent& event)
 {
-    Configurator* config = new Configurator("Name.obj");
+    Configurator* config = new Configurator("");
     PopupMenu(config, event.GetPosition());
 }
 
@@ -153,6 +156,9 @@ void Operator::Move(wxKeyEvent& event)
         break;
     case WXK_NUMPAD6:
         --Rotation->y;
+        break;
+    case WXK_DELETE:
+        loader->Unload(Operator::Model);
         break;
     }
 }

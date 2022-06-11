@@ -56,6 +56,20 @@ void Viewer::Append(OBJ::Model* model)
     Operator::SetTarget(model);
 }
 
+void Viewer::Remove(size_t index)
+{
+    OBJ::Model* Model = Assembly[index];
+    OBJ::Model* Host = Model->getHost();
+    OBJ::Model* Leaf = Model->getLeaf();
+    if(Leaf)
+        Leaf->LinkTo(Host);
+    Assembly.erase(Assembly.begin() + index);
+    --ModelAmount;
+
+    if (ActiveIndex == index)
+        SwitchActive();
+}
+
 void Viewer::SwitchActive()
 {
     if (++ActiveIndex >= ModelAmount)

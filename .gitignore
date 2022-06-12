@@ -365,3 +365,6 @@ FodyWeavers.xsd
 # Test models
 *.obj
 *.mtl
+
+#Concept files
+*.sai2

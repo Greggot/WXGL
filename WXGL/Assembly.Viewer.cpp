@@ -79,6 +79,8 @@ void Viewer::Remove(size_t index)
 
 void Viewer::SwitchActive()
 {
+    if (ModelAmount == 0)
+        return;
     if (++ActiveIndex >= ModelAmount)
         ActiveIndex = 0;
     Operator::SetTarget(Assembly[ActiveIndex]);

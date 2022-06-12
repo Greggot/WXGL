@@ -99,6 +99,7 @@ public:
 
     void LinkTo(Model* Host) { this->Host = Host; Host->setLeaf(this); }
     void setLeaf(Model* Leaf) { this->Leaf = Leaf; }
+    void setHost(Model* Host) { this->Host = Host; }
     Model* getHost() const { return Host; }
     Model* getLeaf() const { return Leaf; }
 };

@@ -130,13 +130,9 @@ static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
 	glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
 }
 
-static inline void ApplyTransfrom(vertex Transform)
+static inline void ApplyMovement(vertex Transform, vertex Rotation)
 {
 	glTranslatef(Transform.x, Transform.y, Transform.z);
-}
-
-static inline void ApplyRotation(vertex Rotation)
-{
 	glRotatef(Rotation.x, 1.0, 0.0, 0.0);
 	glRotatef(Rotation.y, 0.0, 1.0, 0.0);
 	glRotatef(Rotation.z, 0.0, 0.0, 1.0);
@@ -154,14 +150,11 @@ void Model::Draw() const
 		Model* Leaf = host;
 		do
 		{
-			ApplyTransfrom(*Leaf->getTransformVector());
-			ApplyRotation(*Leaf->getRotationVector());
+			ApplyMovement(*Leaf->getTransformVector(), *Leaf->getRotationVector());
 			Leaf = Leaf->getLeaf();
 		} while (Leaf != this);
 	}
-	
-	ApplyTransfrom(Translation);
-	ApplyRotation(Rotation);
+	ApplyMovement(Translation, Rotation);
 
 	for (auto part : Parts)
 	{

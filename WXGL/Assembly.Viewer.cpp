@@ -86,6 +86,13 @@ void Viewer::SwitchActive()
     Operator::SetTarget(Assembly[ActiveIndex]);
 }
 
+void Viewer::RemoveAll()
+{
+    ModelAmount = 0;
+    ActiveIndex = 0;
+    Assembly.clear();
+}
+
 Viewer::~Viewer()
 {
     Assembly.clear();

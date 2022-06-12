@@ -52,6 +52,7 @@ namespace Assembly
 
         void Append(OBJ::Model* model);
         void Remove(size_t index);
+        void RemoveAll();
 
         ~Viewer();
     protected:

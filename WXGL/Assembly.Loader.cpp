@@ -10,13 +10,15 @@ Loader::Loader(wxFrame* Host, Viewer& viewer)
 	: wxMenu(), Host(Host), viewer(viewer)
 {
 	AppendMenuItem(LoaderItem::Open, "Open...", "Load OBJ model");
-    AppendMenuItem(LoaderItem::OpenAssembly, "Open assembly...", "Close model");
-    AppendMenuItem(LoaderItem::SaveAssembly, "Save assembly...", "Close model");
+    AppendMenuItem(LoaderItem::OpenAssembly, "Open assembly...", "");
+    AppendMenuItem(LoaderItem::SaveAssembly, "Save assembly...", "");
+    AppendMenuItem(LoaderItem::Close, "Close ", "");
     
     modelNumber = 0;
     Bind(wxEVT_MENU, &Loader::Open, this, LoaderItem::Open);
     Bind(wxEVT_MENU, &Loader::SaveAssembly, this, LoaderItem::SaveAssembly);
     Bind(wxEVT_MENU, &Loader::LoadAssembly, this, LoaderItem::OpenAssembly);
+    Bind(wxEVT_MENU, &Loader::UnloadAll, this, LoaderItem::Close);
 }
 
 static inline wxString getFileNameFrom(wxString FullPath)
@@ -130,10 +132,17 @@ void Loader::Unload(OBJ::Model* Model)
 
 }
 
-Loader::~Loader()
+void Loader::UnloadAll(wxCommandEvent& event)
 {
+    viewer.RemoveAll();
     for (auto model : Assembly)
         delete model;
     Assembly.clear();
     Paths.clear();
+}
+
+Loader::~Loader()
+{
+    wxCommandEvent empty;
+    UnloadAll(empty);
 }

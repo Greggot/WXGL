@@ -7,6 +7,7 @@ enum LoaderItem
 	Open = 3,
 	OpenAssembly,
 	SaveAssembly,
+	Close,
 };
 
 namespace Assembly
@@ -27,6 +28,7 @@ namespace Assembly
 		void Open(wxCommandEvent& event);
 		void SaveAssembly(wxCommandEvent& event);
 		void LoadAssembly(wxCommandEvent& event);
+		void UnloadAll(wxCommandEvent& event);
 
 		void Load(wxString Path);
 	public:

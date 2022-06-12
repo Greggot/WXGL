@@ -56,13 +56,20 @@ void Viewer::Append(OBJ::Model* model)
     Operator::SetTarget(model);
 }
 
-void Viewer::Remove(size_t index)
+void Viewer::RemoveLink(size_t index)
 {
     OBJ::Model* Model = Assembly[index];
     OBJ::Model* Host = Model->getHost();
     OBJ::Model* Leaf = Model->getLeaf();
-    if(Leaf)
-        Leaf->LinkTo(Host);
+    if (Host)
+        Host->setLeaf(Leaf);
+    if (Leaf)
+        Leaf->setHost(Host);
+}
+
+void Viewer::Remove(size_t index)
+{
+    RemoveLink(index);
     Assembly.erase(Assembly.begin() + index);
     --ModelAmount;
 

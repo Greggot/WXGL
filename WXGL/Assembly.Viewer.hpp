@@ -46,6 +46,7 @@ namespace Assembly
         int ActiveIndex;
 
         void Render(wxPaintEvent& event);
+        void RightClickOnModel(wxMouseEvent& event);
         void RemoveLink(size_t index);
     public:
         Viewer(wxFrame* parent);

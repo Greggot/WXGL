@@ -173,13 +173,16 @@ void Model::Draw() const
 		glBegin(GL_TRIANGLES);
 		for (auto triangle : part.Polygons)
 		{
-			glColor3f(Color.r, Color.g, Color.b);
-			Color += Gradient;
+			if (!Select)
+			{
+				glColor3f(Color.r, Color.g, Color.b);
+				Color += Gradient;
+			}
 			DrawPoly(Points, triangle);
 		}
 		glEnd();
 	}
-	if (Active)
+	if (Active && !Select)
 	{
 		for (auto polies : Parts)
 		{

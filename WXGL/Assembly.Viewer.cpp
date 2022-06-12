@@ -10,7 +10,7 @@ EVT_PAINT(Viewer::Render)
 EVT_MOUSEWHEEL(Operator::Zoom)
 EVT_LEFT_DOWN(Operator::StartRotateXY)
 EVT_MIDDLE_DOWN(Operator::StartRotateZ)
-EVT_RIGHT_DOWN(Operator::RightClickOnModel)
+EVT_RIGHT_DOWN(Viewer::RightClickOnModel)
 EVT_MOUSE_EVENTS(Operator::Rotate)
 
 EVT_KEY_DOWN(Operator::Move)
@@ -54,6 +54,55 @@ void Viewer::Append(OBJ::Model* model)
     
     ActiveIndex = ModelAmount++;
     Operator::SetTarget(model);
+}
+
+static inline void setColorFromID(uint32_t ID)
+{
+    static GLuint Color[3] = {0};
+    Color[2] = ID & 0xFF;
+    ID >>= 8;
+    Color[1] = ID & 0xFF;
+    ID >>= 8;
+    Color[0] = ID & 0xFF;
+    glColor3ub(Color[0], Color[1], Color[2]);
+}
+
+static inline uint32_t getIDfromPosition(wxPoint p)
+{
+    GLubyte Color[4] = { 0 };
+    GLint viewport[4] = { 0 };
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    glReadPixels(p.x, viewport[3] - p.y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, Color);
+    
+    return (Color[0] << 16) | (Color[1] << 8) | Color[2];
+}
+
+
+void Viewer::RightClickOnModel(wxMouseEvent& event)
+{
+    wxClientDC(this);
+    SetCurrent(*m_context);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_MODELVIEW);
+
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+
+    uint32_t ID = 0;
+    for (auto Model : Assembly)
+    {
+        Model->Select = true;
+        setColorFromID(ID++);
+        Model->Draw();
+        Model->Select = false;
+    }
+    ID = getIDfromPosition(event.GetPosition());
+
+    if (ID > ModelAmount)
+        return; // Add here scene general settings later maybe
+    Configurator config(wxString::Format("%08X", ID));
+    PopupMenu(&config, event.GetPosition());
 }
 
 void Viewer::RemoveLink(size_t index)

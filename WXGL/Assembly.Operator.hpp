@@ -49,8 +49,6 @@ namespace Assembly
 
         void Move(wxKeyEvent& event);
         static void AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call);
-        
-        void RightClickOnModel(wxMouseEvent& event);
     };
 
 }

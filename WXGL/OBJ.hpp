@@ -89,6 +89,7 @@ class Model
     Model* Leaf = nullptr;
 public:
     bool Active = false;
+    bool Select = false;
 
     Model() { }
     Model(const char* FilePath);

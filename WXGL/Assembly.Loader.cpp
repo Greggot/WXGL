@@ -106,6 +106,7 @@ void Loader::Unload(size_t index)
     OBJ::Model* Model = Assembly[index];
     delete Model;
     Assembly.erase(Assembly.begin() + index);
+    Paths.erase(Paths.begin() + index);
 }
 
 template<class type>
@@ -125,11 +126,7 @@ void Loader::Unload(OBJ::Model* Model)
     int index = FindIndexOfElement(Assembly, Model);
     if (index < 0)
         return;
-
-    viewer.Remove(index);
-    Assembly.erase(Assembly.begin() + index);
-    delete Model;
-
+    Unload(index);
 }
 
 void Loader::UnloadAll(wxCommandEvent& event)

@@ -41,17 +41,26 @@ namespace Assembly
     private:
         wxGLContext* m_context;
 
-        std::vector<OBJ::Model*> Assembly;
+        std::vector<BaseModel*> Assembly;
         size_t ModelAmount;
         int ActiveIndex;
 
+        inline void GLSceneInit();
         void Render(wxPaintEvent& event);
+        inline void GLSceneRender();
+        void DrawAxis();
+
         void RightClickOnModel(wxMouseEvent& event);
-        void RemoveLink(size_t index);
+        
+        void KeyBindingsInit();
+        
+        vertex* activeRotation;
+        vertex* activeTransform;
+        void SetActive(BaseModel* Target);
     public:
         Viewer(wxFrame* parent);
 
-        void Append(OBJ::Model* model);
+        void Append(BaseModel* Model);
         void Remove(size_t index);
         void RemoveAll();
 

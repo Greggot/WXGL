@@ -55,8 +55,8 @@ void Loader::SaveAssembly(wxCommandEvent& event)
     fprintf(out, "b\n");
     for (auto model : Assembly)
     {
-        fwrite(model->getTransformVector(), sizeof(vertex), 1, out);
-        fwrite(model->getRotationVector(),  sizeof(vertex), 1, out);
+        fwrite(&model->Translation, sizeof(vertex), 1, out);
+        fwrite(&model->Rotation,    sizeof(vertex), 1, out);
     }
     fclose(out);
     // Struct:  1. Models: File Path, Translate, Rotate
@@ -90,8 +90,8 @@ void Loader::LoadAssembly(wxCommandEvent& event)
     }
     for (auto model : Assembly)
     {
-        fread(model->getTransformVector(), sizeof(vertex), 1, in);
-        fread(model->getRotationVector(),  sizeof(vertex), 1, in);
+        fread(&model->Translation, sizeof(vertex), 1, in);
+        fread(&model->Rotation,    sizeof(vertex), 1, in);
     }
     fclose(in);
 }

@@ -68,6 +68,38 @@ struct color
     }
 };
 
+class BaseModel
+{
+protected:
+    std::string Path;
+public:
+    std::string Name;
+
+    vertex Translation;
+    vertex Rotation;
+
+    BaseModel* Leaf = nullptr;
+    BaseModel* Host = nullptr;
+    virtual void LinkTo(BaseModel* Host) final { this->Host = Host; Host->Leaf = this; }
+
+    bool Active = false;
+
+    BaseModel() {}
+    virtual void Draw() const {};
+    virtual void ColorSelectDraw(uint32_t ID) const {};
+    
+    static uint32_t GetColorSelection(uint32_t x, uint32_t y)
+    {
+        GLint viewport[4] = { 0 };
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
+        GLubyte Color[4] = { 0 };
+        glReadPixels(x, viewport[3] - y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, Color);
+
+        return (Color[0] << 16) | (Color[1] << 8) | Color[2];
+    }
+};
+
 namespace OBJ
 {
 
@@ -77,32 +109,20 @@ struct Part
     color Color;
 };
 
-class Model
+class Model : public BaseModel
 {
+    std::string Path;
+
     std::vector<vertex> Points;
     std::list<Part> Parts;
 
-    vertex Translation;
-    vertex Rotation;
-    
-    Model* Host = nullptr;
-    Model* Leaf = nullptr;
+    inline void ApplyMovementFromBottomToTop() const;
 public:
-    bool Active = false;
-    bool Select = false;
-
     Model() { }
     Model(const char* FilePath);
 
-    void Draw() const;
-    vertex* getTransformVector() { return &Translation; }
-    vertex* getRotationVector() { return &Rotation; }
-
-    void LinkTo(Model* Host) { this->Host = Host; Host->setLeaf(this); }
-    void setLeaf(Model* Leaf) { this->Leaf = Leaf; }
-    void setHost(Model* Host) { this->Host = Host; }
-    Model* getHost() const { return Host; }
-    Model* getLeaf() const { return Leaf; }
+    void Draw() const override;
+    void ColorSelectDraw(uint32_t ID) const override;
 };
 
 }

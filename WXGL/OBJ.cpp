@@ -64,6 +64,9 @@ color GetColorFromMTLfile(const char* path, const char* base)
 **/
 Model::Model(const char* path)
 {
+	Path = std::string(path);
+	Name = Path.substr(Path.find_last_of("\\") + 1);
+
 	FILE* in = fopen(path, "r");
 	
 	char buffer[0xFF];
@@ -74,7 +77,6 @@ Model::Model(const char* path)
 	Part part = { {}, standardColor };
 	
 	std::string mtlibFile = path;
-	std::string::size_type pos{};
 	mtlibFile.erase(mtlibFile.find_last_of("\\"), 0xFF);
 
 	while (fgets(buffer, sizeof(buffer), in))
@@ -138,22 +140,27 @@ static inline void ApplyMovement(vertex Transform, vertex Rotation)
 	glRotatef(Rotation.z, 0.0, 0.0, 1.0);
 }
 
+inline void Model::ApplyMovementFromBottomToTop() const
+{
+	BaseModel* root = Host;
+	if (root)
+	{
+		while (root->Host)
+			root = root->Host;
+		BaseModel* head = root;
+		do
+		{
+			ApplyMovement(head->Translation, head->Rotation);
+			head = head->Leaf;
+		} while (head != this);
+	}
+}
+
 void Model::Draw() const
 {
 	glPushMatrix();
 
-	Model* host = Host;
-	if (host)
-	{
-		while (host->getHost())
-			host = host->getHost();
-		Model* Leaf = host;
-		do
-		{
-			ApplyMovement(*Leaf->getTransformVector(), *Leaf->getRotationVector());
-			Leaf = Leaf->getLeaf();
-		} while (Leaf != this);
-	}
+	ApplyMovementFromBottomToTop();
 	ApplyMovement(Translation, Rotation);
 
 	for (auto part : Parts)
@@ -173,26 +180,58 @@ void Model::Draw() const
 		glBegin(GL_TRIANGLES);
 		for (auto triangle : part.Polygons)
 		{
-			if (!Select)
-			{
-				glColor3f(Color.r, Color.g, Color.b);
-				Color += Gradient;
-			}
+			glColor3f(Color.r, Color.g, Color.b);
+			Color += Gradient;
 			DrawPoly(Points, triangle);
 		}
 		glEnd();
 	}
-	if (Active && !Select)
+	if (Active)
 	{
+		glLineWidth(1);
 		for (auto polies : Parts)
 		{
 			glBegin(GL_LINES);
-			glLineWidth(1);
 			glColor3f(0, 0, 0);
 			for (auto triangle : polies.Polygons)
 				DrawPolyOutline(Points, triangle);
 			glEnd();
 		}
+	}
+	glPopMatrix();
+}
+
+static inline void setColorFrom(uint32_t ID)
+{
+	static GLuint Color[3] = { 0 };
+	Color[2] = ID & 0xFF;
+	ID >>= 8;
+	Color[1] = ID & 0xFF;
+	ID >>= 8;
+	Color[0] = ID & 0xFF;
+	glColor3ub(Color[0], Color[1], Color[2]);
+}
+
+/*
+* @brief Draw each of model's polygons the same color
+*	so it could differ from others
+* @param ID will be converted to color
+**/
+void Model::ColorSelectDraw(uint32_t ID) const
+{
+	glPushMatrix();
+
+	ApplyMovementFromBottomToTop();
+	ApplyMovement(Translation, Rotation);
+
+	setColorFrom(ID);
+
+	for (auto part : Parts)
+	{
+		glBegin(GL_TRIANGLES);
+		for (auto triangle : part.Polygons)
+			DrawPoly(Points, triangle);
+		glEnd();
 	}
 	glPopMatrix();
 }

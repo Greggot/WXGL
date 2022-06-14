@@ -47,97 +47,112 @@ Viewer::Viewer(wxFrame* parent)
 
     KeyBindingsInit();
 }
-void Viewer::Render(wxPaintEvent& event)
-{
-    wxPaintDC(this);
-    SetCurrent(*m_context);
 
+inline void Viewer::GLSceneInit()
+{
+    SetCurrent(*m_context);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
-
-    for (auto Model : Assembly)
-        Model->Draw();
-
+}
+inline void Viewer::GLSceneRender()
+{
     glFlush();
     SwapBuffers();
 }
 
-void Viewer::Append(OBJ::Model* model)
+void Viewer::DrawAxis()
+{
+    static const vertex ZERO = { 0, 0, 0 };
+    static vertex Axises[3] = {
+        { 1, 0, 0 },
+        { 0, 1, 0 },
+        { 0, 0, 1 }
+    };
+
+    float scale = Operator::getScale() * 4;
+
+    glLineWidth(3);
+    glBegin(GL_LINES);
+    for (auto axis : Axises)
+    {
+        glColor3f(axis.x, axis.y, axis.z);
+        glVertex3f(ZERO.x, ZERO.y, ZERO.z);
+        glVertex3f(axis.x / scale, axis.y / scale, axis.z / scale);
+    }
+    glEnd();
+
+}
+
+static inline void IsometricCameraRotation()
+{
+    Operator::RotateCamera(-135, Y);
+    Operator::RotateCamera(45, Z);
+}
+
+void Viewer::Render(wxPaintEvent& event)
+{
+    wxPaintDC(this);
+    GLSceneInit();
+    static bool init = true;
+    if (init)
+    {
+        IsometricCameraRotation();
+        init = false;
+    }
+
+    for (auto Model : Assembly)
+        Model->Draw();
+
+    glDisable(GL_DEPTH_TEST);
+    DrawAxis();
+
+    GLSceneRender();
+}
+
+void Viewer::Append(BaseModel* Model)
 {
     if(ModelAmount)
-        model->LinkTo(Assembly[ModelAmount - 1]);
-    Assembly.push_back(model);
+        Model->LinkTo(Assembly[ModelAmount - 1]);
+    Assembly.push_back(Model);
     
     ActiveIndex = ModelAmount++;
-    Operator::SetTarget(model);
+    SetActive(Model);
 }
-
-static inline void setColorFromID(uint32_t ID)
-{
-    static GLuint Color[3] = {0};
-    Color[2] = ID & 0xFF;
-    ID >>= 8;
-    Color[1] = ID & 0xFF;
-    ID >>= 8;
-    Color[0] = ID & 0xFF;
-    glColor3ub(Color[0], Color[1], Color[2]);
-}
-
-static inline uint32_t getIDfromPosition(wxPoint p)
-{
-    GLubyte Color[4] = { 0 };
-    GLint viewport[4] = { 0 };
-    glGetIntegerv(GL_VIEWPORT, viewport);
-    glReadPixels(p.x, viewport[3] - p.y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, Color);
-    
-    return (Color[0] << 16) | (Color[1] << 8) | Color[2];
-}
-
 
 void Viewer::RightClickOnModel(wxMouseEvent& event)
 {
     wxClientDC(this);
-    SetCurrent(*m_context);
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glMatrixMode(GL_MODELVIEW);
-
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    GLSceneInit();
 
     uint32_t ID = 0;
     for (auto Model : Assembly)
-    {
-        Model->Select = true;
-        setColorFromID(ID++);
-        Model->Draw();
-        Model->Select = false;
-    }
-    ID = getIDfromPosition(event.GetPosition());
-
+        Model->ColorSelectDraw(ID++);
+    
+    wxPoint pixel = event.GetPosition();
+    ID = BaseModel::GetColorSelection(pixel.x, pixel.y);
     if (ID > ModelAmount)
         return; // Add here scene general settings later maybe
-    Configurator config(wxString::Format("%08X", ID));
+
+    Configurator config(wxString(Assembly[ID]->Name));
     PopupMenu(&config, event.GetPosition());
 }
 
-void Viewer::RemoveLink(size_t index)
+static inline void RemoveLink(BaseModel* Model)
 {
-    OBJ::Model* Model = Assembly[index];
-    OBJ::Model* Host = Model->getHost();
-    OBJ::Model* Leaf = Model->getLeaf();
+    BaseModel* Host = Model->Host;
+    BaseModel* Leaf = Model->Leaf;
     if (Host)
-        Host->setLeaf(Leaf);
+        Host->Leaf = Leaf;
     if (Leaf)
-        Leaf->setHost(Host);
+        Leaf->Host = Host;
 }
 
 void Viewer::Remove(size_t index)
 {
-    RemoveLink(index);
+    RemoveLink(Assembly[index]);
     Assembly.erase(Assembly.begin() + index);
     --ModelAmount;
 
@@ -145,13 +160,27 @@ void Viewer::Remove(size_t index)
         SwitchActive();
 }
 
+void Viewer::SetActive(BaseModel* Target)
+{
+    static BaseModel* ActiveOne = nullptr;
+    if (ActiveOne)
+        ActiveOne->Active = false;
+    ActiveOne = Target;
+    ActiveOne->Active = true;
+
+    activeRotation = &ActiveOne->Rotation;
+    activeTransform = &ActiveOne->Translation;
+}
+
 void Viewer::SwitchActive()
 {
     if (ModelAmount == 0)
         return;
+    
     if (++ActiveIndex >= ModelAmount)
         ActiveIndex = 0;
-    Operator::SetTarget(Assembly[ActiveIndex]);
+  
+    SetActive(Assembly[ActiveIndex]);
 }
 
 void Viewer::RemoveAll()

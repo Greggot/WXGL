@@ -5,38 +5,22 @@ using namespace Assembly;
 Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];
 int Operator::cameraangle[OrtAmount] = {0,0,0};
-
-OBJ::Model* Operator::Model;
-vertex* Rotation;
-vertex* Transform;
-
-Loader* Operator::loader;
-void Operator::Init(Loader* loader)
-{
-    Operator::loader = loader;
-}
-
-void Operator::SetTarget(OBJ::Model* Model)
-{
-    if (Operator::Model)
-        Operator::Model->Active = false;
-    Model->Active = true;
-    Operator::Model = Model;
-
-    Rotation = Model->getRotationVector();
-    Transform = Model->getTransformVector();
-}
+float Operator::scale = 1;
 
 void Operator::Zoom(wxMouseEvent& event)
 {
     static const GLfloat downscale = 0.9;
     static const GLfloat upscale = 1.1;
-    int rotation = event.GetWheelRotation();
+    float overallscale = 0;
 
-    if (rotation < 0)
-        glScalef(downscale, downscale, downscale);
+    if (event.GetWheelRotation() < 0)
+        overallscale = downscale;
     else
-        glScalef(upscale, upscale, upscale);
+        overallscale = upscale;
+    
+    scale *= overallscale;
+    glScalef(overallscale, overallscale, overallscale);
+
 }
 
 void Operator::StartRotateXY(wxMouseEvent& event)
@@ -64,27 +48,41 @@ static inline void ModifyRotationOrts(int angleZ, int complimentaryAngle, rotate
     Ort.z = 0;
 }
 
-inline void Operator::RotateCamera(Sign sign, Ort ort)
+inline rotateVector Operator::GetModifiedRotationVector(Ort ort)
 {
     static rotateVector RotationMatrices[] = { {-angleStep, 1,0,0},
                                                {-angleStep, 0,1,0},
                                                {-angleStep, 0,0,1} };
     ModifyRotationOrts(cameraangle[Z], cameraangle[Y], RotationMatrices[X]);
     ModifyRotationOrts(cameraangle[Z] + 90, cameraangle[X], RotationMatrices[Y]);
+    
+    return RotationMatrices[ort];
+}
 
-    rotateVector vector = RotationMatrices[ort];
+void Operator::RotateCamera(int value, Ort ort)
+{   
+    rotateVector vector = GetModifiedRotationVector(ort);
+    cameraangle[ort] = value;
+
+    glRotatef(value, vector.x, vector.y, vector.z);
+}
+
+inline void Operator::RotateCameraQuant(Sign sign, Ort ort)
+{
+    rotateVector vector = GetModifiedRotationVector(ort);
+    cameraangle[ort] += vector.angle;
+
     if (sign)
         vector.angle = -vector.angle;
     glRotatef(vector.angle, vector.x, vector.y, vector.z);
-    cameraangle[ort] += vector.angle;
 }
 
 inline void Operator::ApplyMovementTo(const int end, const int start, const Ort ort)
 {
     if (end - start > rotateAmplitude)
-        RotateCamera(positive, ort);
+        RotateCameraQuant(positive, ort);
     else if (end - start < -rotateAmplitude)
-        RotateCamera(negative, ort);
+        RotateCameraQuant(negative, ort);
 }
 
 void Operator::Rotate(wxMouseEvent& event)
@@ -108,53 +106,9 @@ void Operator::Rotate(wxMouseEvent& event)
 std::map < wxKeyCode, std::function<void(wxKeyEvent&)>> KeyEvents;
 void Operator::Move(wxKeyEvent& event)
 {
-    int key = event.GetKeyCode();
-    auto evt = KeyEvents.find((wxKeyCode)key);
+    auto evt = KeyEvents.find((wxKeyCode)event.GetKeyCode());
     if (evt != KeyEvents.end())
         evt->second(event);
-
-    switch (key)
-    {
-    case WXK_LEFT:
-        --Transform->x;
-        break;
-    case WXK_RIGHT:
-        ++Transform->x;
-        break;
-    case WXK_UP:
-        ++Transform->y;
-        break;
-    case WXK_DOWN:
-        --Transform->y;
-        break;
-    case WXK_SPACE:
-        ++Transform->z;
-        break;
-    case WXK_CONTROL:
-        --Transform->z;
-        break;
-    case WXK_HOME:
-        ++Rotation->z;
-        break;
-    case WXK_END:
-        --Rotation->z;
-        break;
-    case WXK_PAGEUP:
-        ++Rotation->x;
-        break;
-    case WXK_PAGEDOWN:
-        --Rotation->x;
-        break;
-    case WXK_NUMPAD4:
-        ++Rotation->y;
-        break;
-    case WXK_NUMPAD6:
-        --Rotation->y;
-        break;
-    case WXK_DELETE:
-        loader->Unload(Operator::Model);
-        break;
-    }
 }
 
 void Operator::AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call)

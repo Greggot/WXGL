@@ -17,6 +17,27 @@ EVT_KEY_DOWN(Operator::Move)
 
 END_EVENT_TABLE()
 
+#define KeyBind(key, bind)  \
+    Operator::AppendKeyEvent(key, [this](wxKeyEvent& event) { bind; })
+
+void Viewer::KeyBindingsInit()
+{
+    KeyBind(WXK_RETURN,     SwitchActive());
+    KeyBind(WXK_LEFT,       --activeTransform->x);
+    KeyBind(WXK_RIGHT,      ++activeTransform->x);
+    KeyBind(WXK_UP,         --activeTransform->y);
+    KeyBind(WXK_DOWN,       ++activeTransform->y);
+    KeyBind(WXK_CONTROL,    --activeTransform->z);
+    KeyBind(WXK_SPACE,      ++activeTransform->z);
+
+    KeyBind(WXK_HOME,       --activeRotation->x);
+    KeyBind(WXK_END,        ++activeRotation->x);
+    KeyBind(WXK_PAGEUP,     --activeRotation->y);
+    KeyBind(WXK_PAGEDOWN,   ++activeRotation->y);
+    KeyBind(WXK_NUMPAD4,    --activeRotation->z);
+    KeyBind(WXK_NUMPAD6,    ++activeRotation->z);
+}
+
 Viewer::Viewer(wxFrame* parent)
     :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas"))
 {
@@ -24,9 +45,7 @@ Viewer::Viewer(wxFrame* parent)
     ModelAmount = 0;
     ActiveIndex = 0;
 
-    Operator::AppendKeyEvent(WXK_RETURN, [this](wxKeyEvent& event) {
-        SwitchActive();
-    });
+    KeyBindingsInit();
 }
 void Viewer::Render(wxPaintEvent& event)
 {

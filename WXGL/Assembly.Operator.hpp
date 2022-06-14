@@ -1,8 +1,6 @@
 #pragma once
-#include "OBJ.hpp"
-#include "Assembly.Loader.hpp"
+#include "Assembly.Viewer.hpp"
 #include <map>
-
 #define angleStep 2
 #define rotateAmplitude 5
 
@@ -32,16 +30,16 @@ namespace Assembly
     class Operator : public wxGLCanvas
     {
     private:
-        static Loader* loader;
-        static OBJ::Model* Model;
         static int cameraangle[OrtAmount];
+        static float scale;
 
-        inline void RotateCamera(Sign sign, Ort ort);
         inline void ApplyMovementTo(const int end, const int start, const Ort ort);
+        static inline void RotateCameraQuant(Sign sign, Ort ort);
+        static inline rotateVector GetModifiedRotationVector(Ort ort);
     public:
-        static void Init(Loader* loader);
-        static void SetTarget(OBJ::Model* Model);
-        
+        static void RotateCamera(int value, Ort ort);
+        static float getScale() { return scale; };
+
         void Zoom(wxMouseEvent& event);
         void StartRotateXY(wxMouseEvent& event);
         void StartRotateZ(wxMouseEvent& event);

@@ -31,7 +31,6 @@ static inline wxString getFileNameFrom(wxString FullPath)
 
 void Loader::Load(wxString Path)
 {
-    Paths.push_back(Path);
     OBJ::Model* Model = new OBJ::Model(Path.mb_str().data());
     Assembly.push_back(Model);
     viewer.Append(Model);
@@ -53,8 +52,6 @@ void Loader::SaveAssembly(wxCommandEvent& event)
     wxString assemblyPath = save.GetPath();
 
     FILE* out = fopen(assemblyPath.mb_str().data(), "wb");
-    for (auto path : Paths)
-        fprintf(out, "%s\n", path.mb_str().data());
     fprintf(out, "b\n");
     for (auto model : Assembly)
     {
@@ -105,8 +102,8 @@ void Loader::Unload(size_t index)
 
     OBJ::Model* Model = Assembly[index];
     delete Model;
+
     Assembly.erase(Assembly.begin() + index);
-    Paths.erase(Paths.begin() + index);
 }
 
 template<class type>
@@ -135,7 +132,6 @@ void Loader::UnloadAll(wxCommandEvent& event)
     for (auto model : Assembly)
         delete model;
     Assembly.clear();
-    Paths.clear();
 }
 
 Loader::~Loader()

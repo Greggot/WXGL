@@ -20,7 +20,6 @@ namespace Assembly
 		Viewer& viewer;
 		uint32_t modelNumber;
 
-		std::vector<wxString> Paths;
 		std::vector<OBJ::Model*> Assembly;
 
 		inline void AppendMenuItem(int ID, wxString Name, wxString Description);

@@ -1,7 +1,6 @@
 #pragma once
 #pragma warning(disable : 4996)
 
-#include "resource.h"
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>

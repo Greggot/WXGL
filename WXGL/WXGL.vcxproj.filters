@@ -13,66 +13,61 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\Assembly">
+      <UniqueIdentifier>{5ef78746-dd33-4e7f-920e-281707472aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Assembly">
+      <UniqueIdentifier>{a5e3a637-a2a8-43f8-8e6c-482e04164a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Light">
+      <UniqueIdentifier>{0a6ab147-0a74-4047-9de0-601ef489d202}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Viewer.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Operator.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="OBJ.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Loader.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="MainFrame.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Assembly.Operator.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="Assembly.Loader.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
     <ClInclude Include="Assemly.Configurator.hpp">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="Assembly.Viewer.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
     <ClInclude Include="Lamp.hpp">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assembly.Viewer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Assembly.Operator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="OBJ.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Assembly.Loader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="MainFrame.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Assembly.Configurator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Lamp.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="WXGL.rc">
-      <Filter>Файлы ресурсов</Filter>
-    </ResourceCompile>
+    <ClCompile Include="Assembly.Loader.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="Assembly.Configurator.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="Assembly.Operator.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="Assembly.Viewer.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

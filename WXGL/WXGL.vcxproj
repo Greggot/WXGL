@@ -143,14 +143,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Assemly.Configurator.hpp" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="Lamp.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="Assembly.Loader.hpp" />
     <ClInclude Include="Assembly.Operator.hpp" />
     <ClInclude Include="OBJ.hpp" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="Assembly.Viewer.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +158,6 @@
     <ClCompile Include="Assembly.Operator.cpp" />
     <ClCompile Include="OBJ.cpp" />
     <ClCompile Include="Assembly.Viewer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="WXGL.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

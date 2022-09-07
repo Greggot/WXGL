@@ -1,118 +1,90 @@
 #include "OBJ.hpp"
 using namespace OBJ;
 
-static inline std::vector<std::string> GetStringTokens(const char* buffer)
-{
-	uint8_t index = 0;
-	std::vector<std::string> Tokens;
-	std::string temp;
+static inline std::vector<std::string> GetStringTokens(const char* buffer);
+static inline poly stringContainerToPoly(const std::vector<std::string>&);
+static inline vertex stringContainerToVertex(const std::vector<std::string>&);
 
-	while (buffer[index] != '\n')
-	{
-		if (buffer[index] == ' ')
-		{
-			Tokens.push_back(temp);
-			temp = "";
-		}
-		else
-			temp += buffer[index];
-		++index;
-	}
-	Tokens.push_back(temp);
-	return Tokens;
-}
-
-color GetColorFromMTLfile(const char* path, const char* base)
-{
-	color texture(0,0,1);
-	FILE* mtl = fopen(path, "r");
-
-	std::vector<std::string> mtldata;
-	
-	char buffer[0xFF];
-	bool findcolor = true;
-	bool findmaterial = true;
-
-	while (findcolor && fgets(buffer, sizeof(buffer), mtl))
-	{
-		uint8_t index = 0;
-		uint8_t stringindex = 0;
-		mtldata = GetStringTokens(buffer);
-
-		switch (mtldata[0][0])
-		{
-		case 'n':
-			if (mtldata[1] == base)
-				findmaterial = true;
-			break;
-		case 'K':
-			if (!findmaterial)
-				break;
-
-			texture.x = atof(mtldata[1].c_str());
-			texture.y = atof(mtldata[2].c_str());
-			texture.z = atof(mtldata[3].c_str());
-
-			fclose(mtl);
-			return texture;
-		}
-	}
-	return texture;
-}
+static inline std::string getMTLpathFrom(std::string modelpath, const std::string& filename);
+static color GetColorFromMTLfile(const char* path, const char* base);
 /*
 * @brief Open .obj file and get vertexes/indexes from it
 **/
 Model::Model(const char* path)
+	: BaseModel(path)
 {
-	Path = std::string(path);
-	Name = Path.substr(Path.find_last_of("\\") + 1);
-
 	FILE* in = fopen(path, "r");
+	if (in == nullptr)
+		throw std::runtime_error("Cannot open model file\n");
 	
-	char buffer[0xFF];
-	std::vector<std::string> data;
+	Part part;
 	
-	static const color standardColor(0.5, 0, 1);
-	vertex p;
-	Part part = { {}, standardColor };
-	
-	std::string mtlibFile = path;
-	mtlibFile.erase(mtlibFile.find_last_of("\\"), 0xFF);
+	std::string mtlibFile = "";
+	std::string base = "";
 
+	char buffer[0xFF]{ 0 };
 	while (fgets(buffer, sizeof(buffer), in))
 	{
-		data = GetStringTokens(buffer);
-
-		switch (data[0][0])
+		auto data = GetStringTokens(buffer);
+		switch ((symbol)data[0][0])
 		{
-		case 'v':
-			p = {	(float)atof(data[1].c_str()), 
-					(float)atof(data[2].c_str()), 
-					(float)atof(data[3].c_str()) };
-			Points.push_back(p);
+		case symbol::vertex:
+			Points.push_back(stringContainerToVertex(data));
 			break;
-		case 'f':
-			part.Polygons.push_back({ atoi(data[1].c_str()) - 1,
-									  atoi(data[2].c_str()) - 1,
-									  atoi(data[3].c_str()) - 1});
+		case symbol::polygon:
+			part.Polygons.push_back(stringContainerToPoly(data));
 			break;
-		case 'u':
+		case symbol::part:
+			// Part identificator lies before part itself
+			// AddPart here saves read data to process a new one
+			base = data[1];
 			if (part.Polygons.size())
-			{
-				part.Color = GetColorFromMTLfile(mtlibFile.c_str(), data[1].c_str());
-				Parts.push_back(part);
-				part.Polygons.clear();
-			}
+				AddPart(part, mtlibFile.c_str(), base.c_str());
 			break;
-		case 'm':
-			mtlibFile += '\\';
-			mtlibFile += data[1].c_str();
+		case symbol::material:
+			mtlibFile = getMTLpathFrom(Path, data[1]);
 			break;
 		}
 	}
-	part.Color = GetColorFromMTLfile(mtlibFile.c_str(), data[1].c_str());
-	Parts.push_back(part);
+	// Adds last part of file
+	AddPart(part, mtlibFile.c_str(), base.c_str());
 	fclose(in);
+}
+
+
+void Model::Draw() const
+{
+	glPushMatrix();
+
+	ApplyMovementFromBottomToTop();
+	ApplyMovement(Translation, Rotation);
+
+	for (auto part : Parts)
+	{
+		color Color = part.Color;
+
+		float maxcolor = Color.x;
+		if (Color.y > maxcolor)
+			maxcolor = Color.y;
+		if (Color.z > maxcolor)
+			maxcolor = Color.z;
+		maxcolor = 1 - maxcolor;
+
+		int gradientscale = part.Polygons.size();
+		color Gradient(maxcolor / gradientscale);
+
+		glBegin(GL_TRIANGLES);
+		for (auto triangle : part.Polygons)
+		{
+			glColor3f(Color.x, Color.y, Color.z);
+			Color += Gradient;
+			DrawPoly(triangle);
+		}
+		glEnd();
+	}
+	if (Active)
+		DrawModelOutline();
+	glPopMatrix();
 }
 
 inline void Model::DrawPoly(const poly& p) const
@@ -137,7 +109,8 @@ inline void Model::DrawPoint(const vertex& v) const
 	glVertex3f(v.x, v.y, v.z);
 }
 
-static inline void ApplyMovement(vertex Transform, vertex Rotation)
+// TODO: Replace Euler angles with quaternions
+inline void Model::ApplyMovement(vertex Transform, vertex Rotation)
 {
 	glTranslatef(Transform.x, Transform.y, Transform.z);
 	glRotatef(Rotation.x, 1.0, 0.0, 0.0);
@@ -159,41 +132,6 @@ inline void Model::ApplyMovementFromBottomToTop() const
 			head = head->Leaf;
 		} while (head != this);
 	}
-}
-
-void Model::Draw() const
-{
-	glPushMatrix();
-
-	ApplyMovementFromBottomToTop();
-	ApplyMovement(Translation, Rotation);
-
-	for (auto part : Parts)
-	{
-		color Color = part.Color;
-		
-		float maxcolor = Color.x;
-		if (Color.y > maxcolor)
-			maxcolor = Color.y;
-		if (Color.z > maxcolor)
-			maxcolor = Color.z;
-		maxcolor = 1 - maxcolor;
-		
-		int gradientscale = part.Polygons.size();
-		color Gradient(maxcolor / gradientscale);
-
-		glBegin(GL_TRIANGLES);
-		for (auto triangle : part.Polygons)
-		{
-			glColor3f(Color.x, Color.y, Color.z);
-			Color += Gradient;
-			DrawPoly(triangle);
-		}
-		glEnd();
-	}
-	if (Active)
-		DrawModelOutline();
-	glPopMatrix();
 }
 
 inline void Model::DrawModelOutline() const
@@ -242,4 +180,83 @@ void Model::ColorSelectDraw(uint32_t ID) const
 		glEnd();
 	}
 	glPopMatrix();
+}
+
+// Replace *.obj with *mtl in full path 
+static inline std::string getMTLpathFrom(std::string modelpath, const std::string& filename)
+{
+	modelpath.erase(modelpath.find_last_of("\\"), 0xFF);
+	modelpath += '\\';
+	modelpath += filename;
+	return modelpath;
+}
+
+static color GetColorFromMTLfile(const char* path, const char* base)
+{
+	FILE* mtl = fopen(path, "r");
+	if (mtl == nullptr)
+		return standardColor;
+
+	bool findmaterial = false;
+	char buffer[0xFF]{ 0 };
+	while (fgets(buffer, sizeof(buffer), mtl))
+	{
+		auto mtldata = GetStringTokens(buffer);
+		switch ((symbol)mtldata[0][0])
+		{
+		case symbol::nameOfMaterial:
+			findmaterial = mtldata[1] == base;
+			break;
+		case symbol::color:
+			if (!findmaterial)
+				break;
+
+			fclose(mtl);
+			return stringContainerToVertex(mtldata);
+		}
+	}
+	fclose(mtl);
+	return standardColor;
+}
+
+static inline std::vector<std::string> GetStringTokens(const char* buffer)
+{
+	uint8_t index = 0;
+	std::vector<std::string> Tokens;
+	std::string temp;
+
+	while (buffer[index] != '\n')
+	{
+		if (buffer[index] == ' ')
+		{
+			Tokens.push_back(temp);
+			temp = "";
+		}
+		else
+			temp += buffer[index];
+		++index;
+	}
+	Tokens.push_back(temp);
+	return Tokens;
+}
+
+void Model::AddPart(Part& part, const char mtlpath[], const char basename[])
+{
+	part.Color = GetColorFromMTLfile(mtlpath, basename);
+	Parts.push_back(part);
+	part.Polygons.clear();
+}
+
+static inline poly stringContainerToPoly(const std::vector<std::string>& strings)
+{
+	return { atoi(strings[1].c_str()) - 1,
+			 atoi(strings[2].c_str()) - 1,
+			 atoi(strings[3].c_str()) - 1 };
+}
+
+static inline vertex stringContainerToVertex(const std::vector<std::string>& strings)
+{
+	return { strtof(strings[1].c_str(), nullptr),
+			 strtof(strings[2].c_str(), nullptr),
+			 strtof(strings[3].c_str(), nullptr) };
 }

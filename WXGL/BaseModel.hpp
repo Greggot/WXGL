@@ -30,10 +30,14 @@ struct vertex
 class BaseModel
 {
 protected:
-    std::string Path;
+    const std::string Path;
 public:
+    const std::string Name;
+    
     BaseModel() {}
-    std::string Name;
+    BaseModel(const char path[])
+        : Path(std::string(path)), Name(Path.substr(Path.find_last_of("\\") + 1))
+    {}
 
     vertex Translation;
     vertex Rotation;

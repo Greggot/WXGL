@@ -12,6 +12,7 @@
 #include <gl/GL.h>
 
 #include "BaseModel.hpp"
+#include <stdexcept>
 
 struct poly
 {
@@ -22,29 +23,44 @@ struct poly
 
 typedef vertex color;
 
+enum class symbol : char
+{
+    vertex = 'v',
+    polygon = 'f',
+    part = 'u',
+    material = 'm',
+
+    nameOfMaterial = 'n',
+    color = 'K',
+};
+
 namespace OBJ
 {
 
+    static const color standardColor = { 0.5, 0, 1 };
     struct Part
     {
         std::list<poly> Polygons;
         color Color;
+
+        Part() : Polygons{}, Color(standardColor) {}
     };
 
     class Model : public BaseModel
     {
     private:
-        std::string Path;
-
         std::vector<vertex> Points;
         std::list<Part> Parts;
 
         inline void ApplyMovementFromBottomToTop() const;
-        inline void DrawModelOutline() const;
+        static void ApplyMovement(vertex Translation, vertex Rotation);
 
+        inline void DrawModelOutline() const;
         inline void DrawPoly(const poly&) const;
         inline void DrawPolyOutline(const poly&) const;
         inline void DrawPoint(const vertex&) const;
+
+        void AddPart(Part&, const char[], const char[]);
     public:
         Model() { }
         Model(const char* FilePath);

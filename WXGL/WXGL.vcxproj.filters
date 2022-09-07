@@ -22,6 +22,9 @@
     <Filter Include="Файлы заголовков\Light">
       <UniqueIdentifier>{0a6ab147-0a74-4047-9de0-601ef489d202}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Light">
+      <UniqueIdentifier>{c8a419f2-baf0-4769-8e79-cda8179097ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OBJ.hpp">
@@ -45,15 +48,15 @@
     <ClInclude Include="Lamp.hpp">
       <Filter>Файлы заголовков\Light</Filter>
     </ClInclude>
+    <ClInclude Include="BaseModel.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OBJ.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="MainFrame.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Lamp.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Assembly.Loader.cpp">
@@ -67,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="Assembly.Viewer.cpp">
       <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="Lamp.cpp">
+      <Filter>Исходные файлы\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

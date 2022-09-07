@@ -49,9 +49,9 @@ color GetColorFromMTLfile(const char* path, const char* base)
 			if (!findmaterial)
 				break;
 
-			texture.r = atof(mtldata[1].c_str());
-			texture.g = atof(mtldata[2].c_str());
-			texture.b = atof(mtldata[3].c_str());
+			texture.x = atof(mtldata[1].c_str());
+			texture.y = atof(mtldata[2].c_str());
+			texture.z = atof(mtldata[3].c_str());
 
 			fclose(mtl);
 			return texture;
@@ -167,11 +167,11 @@ void Model::Draw() const
 	{
 		color Color = part.Color;
 		
-		float maxcolor = Color.r;
-		if (Color.g > maxcolor)
-			maxcolor = Color.g;
-		if (Color.b > maxcolor)
-			maxcolor = Color.b;
+		float maxcolor = Color.x;
+		if (Color.y > maxcolor)
+			maxcolor = Color.y;
+		if (Color.z > maxcolor)
+			maxcolor = Color.z;
 		maxcolor = 1 - maxcolor;
 		
 		int gradientscale = part.Polygons.size();
@@ -180,7 +180,7 @@ void Model::Draw() const
 		glBegin(GL_TRIANGLES);
 		for (auto triangle : part.Polygons)
 		{
-			glColor3f(Color.r, Color.g, Color.b);
+			glColor3f(Color.x, Color.y, Color.z);
 			Color += Gradient;
 			DrawPoly(Points, triangle);
 		}

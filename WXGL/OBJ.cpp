@@ -92,9 +92,9 @@ Model::Model(const char* path)
 			Points.push_back(p);
 			break;
 		case 'f':
-			part.Polygons.push_back({ atoi(data[1].c_str()),
-									  atoi(data[2].c_str()),
-									  atoi(data[3].c_str())});
+			part.Polygons.push_back({ atoi(data[1].c_str()) - 1,
+									  atoi(data[2].c_str()) - 1,
+									  atoi(data[3].c_str()) - 1});
 			break;
 		case 'u':
 			if (part.Polygons.size())
@@ -115,21 +115,26 @@ Model::Model(const char* path)
 	fclose(in);
 }
 
-static inline void DrawPoly(std::vector<vertex> V, poly p)
+inline void Model::DrawPoly(const poly& p) const
 {
-	glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
-	glVertex3f(V[p.mid - 1].x, V[p.mid - 1].y, V[p.mid - 1].z);
-	glVertex3f(V[p.end - 1].x, V[p.end - 1].y, V[p.end - 1].z);
+	DrawPoint(Points[p.begin]);
+	DrawPoint(Points[p.mid]);
+	DrawPoint(Points[p.end]);
 }
 
-static inline void DrawPolyOutline(std::vector<vertex>V, poly p)
+inline void Model::DrawPolyOutline(const poly& p) const
 {
-	glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
-	glVertex3f(V[p.mid - 1].x, V[p.mid - 1].y, V[p.mid - 1].z);
-	glVertex3f(V[p.mid - 1].x, V[p.mid - 1].y, V[p.mid - 1].z);
-	glVertex3f(V[p.end - 1].x, V[p.end - 1].y, V[p.end - 1].z);
-	glVertex3f(V[p.end - 1].x, V[p.end - 1].y, V[p.end - 1].z);
-	glVertex3f(V[p.begin - 1].x, V[p.begin - 1].y, V[p.begin - 1].z);
+	DrawPoint(Points[p.begin]);
+	DrawPoint(Points[p.mid]);
+	DrawPoint(Points[p.mid]);
+	DrawPoint(Points[p.end]);
+	DrawPoint(Points[p.end]);
+	DrawPoint(Points[p.begin]);
+}
+
+inline void Model::DrawPoint(const vertex& v) const
+{
+	glVertex3f(v.x, v.y, v.z);
 }
 
 static inline void ApplyMovement(vertex Transform, vertex Rotation)
@@ -182,23 +187,26 @@ void Model::Draw() const
 		{
 			glColor3f(Color.x, Color.y, Color.z);
 			Color += Gradient;
-			DrawPoly(Points, triangle);
+			DrawPoly(triangle);
 		}
 		glEnd();
 	}
 	if (Active)
-	{
-		glLineWidth(1);
-		for (auto polies : Parts)
-		{
-			glBegin(GL_LINES);
-			glColor3f(0, 0, 0);
-			for (auto triangle : polies.Polygons)
-				DrawPolyOutline(Points, triangle);
-			glEnd();
-		}
-	}
+		DrawModelOutline();
 	glPopMatrix();
+}
+
+inline void Model::DrawModelOutline() const
+{
+	glLineWidth(1);
+	for (auto polies : Parts)
+	{
+		glBegin(GL_LINES);
+		glColor3f(0, 0, 0);
+		for (auto triangle : polies.Polygons)
+			DrawPolyOutline(triangle);
+		glEnd();
+	}
 }
 
 static inline void setColorFrom(uint32_t ID)
@@ -230,7 +238,7 @@ void Model::ColorSelectDraw(uint32_t ID) const
 	{
 		glBegin(GL_TRIANGLES);
 		for (auto triangle : part.Polygons)
-			DrawPoly(Points, triangle);
+			DrawPoly(triangle);
 		glEnd();
 	}
 	glPopMatrix();

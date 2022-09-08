@@ -2,7 +2,9 @@
 #include "OBJ.hpp"
 #include "Assembly.Viewer.hpp"
 
-enum LoaderItem
+#include "Assembly.Core.hpp"
+
+enum LoaderID
 {
 	Open = 3,
 	OpenAssembly,
@@ -12,17 +14,17 @@ enum LoaderItem
 
 namespace Assembly
 {
-
+	/*
+	* @brief Menu which will load/save/unload models
+	**/
 	class Loader : public wxMenu
 	{
 	private:
 		wxFrame* Host;
-		Viewer& viewer;
-		uint32_t modelNumber;
+		Core& core;
 
-		std::vector<OBJ::Model*> Assembly;
-
-		inline void AppendMenuItem(int ID, wxString Name, wxString Description);
+		inline void AppendMenuItem(int ID, wxString Name, wxString Description,
+			void(Assembly::Loader::* Method)(wxCommandEvent&));
 		
 		void Open(wxCommandEvent& event);
 		void SaveAssembly(wxCommandEvent& event);
@@ -31,10 +33,9 @@ namespace Assembly
 
 		void Load(wxString Path);
 	public:
-		Loader(wxFrame* Host, Viewer& viewer);
+		Loader(wxFrame* Host, Core& core);
 
 		void Unload(size_t index);
-		void Unload(OBJ::Model* Model);
 		~Loader();
 	};
 }

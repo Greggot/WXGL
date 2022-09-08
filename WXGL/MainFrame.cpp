@@ -28,8 +28,8 @@ MainFrame::MainFrame()
     });
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
 
-    Viewer = new Assembly::Viewer(this);
-    Loader = new Assembly::Loader(this, *Viewer);
+    Viewer = new Assembly::Viewer(this, core);
+    Loader = new Assembly::Loader(this, core);
 
     wxMenuBar* MenuBar = new wxMenuBar();
     MenuBar->Append(Loader, wxString("File"));

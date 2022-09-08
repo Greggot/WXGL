@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assembly.Core.hpp" />
     <ClInclude Include="Assemly.Configurator.hpp" />
     <ClInclude Include="BaseModel.hpp" />
     <ClInclude Include="Lamp.hpp" />

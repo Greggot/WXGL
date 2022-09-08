@@ -13,6 +13,7 @@
 #include <thread>
 #include "OBJ.hpp"
 #include "Assemly.Configurator.hpp"
+#include "Assembly.Core.hpp"
 
 #ifndef WIN32
 #include <unistd.h> // FIXME: This work/necessary in Windows?
@@ -39,33 +40,21 @@ namespace Assembly
     {
     private:
         wxGLContext* m_context;
-
-        std::vector<BaseModel*> Assembly;
-        size_t ModelAmount;
-        int ActiveIndex;
+        Core& core;
 
         inline void GLSceneInit();
         void Render(wxPaintEvent& event);
         inline void GLSceneRender();
+        
         void DrawAxis();
-
+        
         void RightClickOnModel(wxMouseEvent& event);
-        
         void KeyBindingsInit();
-        
-        vertex* activeRotation;
-        vertex* activeTransform;
-        void SetActive(BaseModel* Target);
     public:
-        Viewer(wxFrame* parent);
-
-        void Append(BaseModel* Model);
-        void Remove(size_t index);
-        void RemoveAll();
+        Viewer(wxFrame* parent, Core& core);
 
         ~Viewer();
     protected:
-        void SwitchActive();
         DECLARE_EVENT_TABLE()
     };
 }

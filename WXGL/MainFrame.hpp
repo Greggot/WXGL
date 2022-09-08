@@ -7,12 +7,14 @@
 
 #include "Assembly.Loader.hpp"
 #include "Assembly.Operator.hpp"
+#include "Assembly.Core.hpp"
 
 class MainFrame : public wxFrame
 {
 public:
     MainFrame();
 private:
+    Assembly::Core core;
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;
     

@@ -1,39 +1,26 @@
 #include "Assembly.Loader.hpp"
 using namespace Assembly;
 
-inline void Loader::AppendMenuItem(int ID, wxString Name, wxString Description)
+Loader::Loader(wxFrame* Host, Core& core)
+	: wxMenu(), Host(Host), core(core)
 {
-	Append(new wxMenuItem(NULL, ID, Name, Description, wxITEM_NORMAL, NULL));
+	AppendMenuItem(LoaderID::Open, "Open...", "Load OBJ model", &Loader::Open);
+    AppendMenuItem(LoaderID::OpenAssembly, "Open assembly...", "", &Loader::LoadAssembly);
+    AppendMenuItem(LoaderID::SaveAssembly, "Save assembly...", "", &Loader::SaveAssembly);
+    AppendMenuItem(LoaderID::Close, "Close ", "", &Loader::UnloadAll);
 }
 
-Loader::Loader(wxFrame* Host, Viewer& viewer)
-	: wxMenu(), Host(Host), viewer(viewer)
+inline void Loader::AppendMenuItem(int ID, wxString Name, wxString Description,
+    void(Assembly::Loader::* Method)(wxCommandEvent&))
 {
-	AppendMenuItem(LoaderItem::Open, "Open...", "Load OBJ model");
-    AppendMenuItem(LoaderItem::OpenAssembly, "Open assembly...", "");
-    AppendMenuItem(LoaderItem::SaveAssembly, "Save assembly...", "");
-    AppendMenuItem(LoaderItem::Close, "Close ", "");
-    
-    modelNumber = 0;
-    Bind(wxEVT_MENU, &Loader::Open, this, LoaderItem::Open);
-    Bind(wxEVT_MENU, &Loader::SaveAssembly, this, LoaderItem::SaveAssembly);
-    Bind(wxEVT_MENU, &Loader::LoadAssembly, this, LoaderItem::OpenAssembly);
-    Bind(wxEVT_MENU, &Loader::UnloadAll, this, LoaderItem::Close);
-}
-
-static inline wxString getFileNameFrom(wxString FullPath)
-{
-    size_t pos = FullPath.size() - 1;
-    while (FullPath[pos] != '\\' && FullPath[pos] != '/' && --pos)
-    {}
-    return FullPath.Mid(++pos);
+    Append(new wxMenuItem(NULL, ID, Name, Description, wxITEM_NORMAL, NULL));
+    Bind(wxEVT_MENU, Method, this, ID);
 }
 
 void Loader::Load(wxString Path)
 {
     OBJ::Model* Model = new OBJ::Model(Path.mb_str().data());
-    Assembly.push_back(Model);
-    viewer.Append(Model);
+    core.append(Model);
 }
 
 void Loader::Open(wxCommandEvent& event)
@@ -53,7 +40,8 @@ void Loader::SaveAssembly(wxCommandEvent& event)
 
     FILE* out = fopen(assemblyPath.mb_str().data(), "wb");
     fprintf(out, "b\n");
-    for (auto model : Assembly)
+
+    for (auto model : core)
     {
         fwrite(&model->Translation, sizeof(vertex), 1, out);
         fwrite(&model->Rotation,    sizeof(vertex), 1, out);
@@ -65,7 +53,7 @@ void Loader::SaveAssembly(wxCommandEvent& event)
 
 void Loader::LoadAssembly(wxCommandEvent& event)
 {
-    wxFileDialog open(Host, wxString("Save assembly"), wxEmptyString, wxEmptyString, "ASMBL assembly files(*.asmbl)|*.asmbl", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    wxFileDialog open(Host, wxString("Load assembly"), wxEmptyString, wxEmptyString, "ASMBL assembly files(*.asmbl)|*.asmbl", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (open.ShowModal() == wxID_CANCEL)
         return;
     wxString assemblyPath = open.GetPath();
@@ -88,7 +76,7 @@ void Loader::LoadAssembly(wxCommandEvent& event)
             Load(Buffer);
         }
     }
-    for (auto model : Assembly)
+    for (auto model : core)
     {
         fread(&model->Translation, sizeof(vertex), 1, in);
         fread(&model->Rotation,    sizeof(vertex), 1, in);
@@ -98,40 +86,12 @@ void Loader::LoadAssembly(wxCommandEvent& event)
 
 void Loader::Unload(size_t index)
 {
-    viewer.Remove(index);
-
-    OBJ::Model* Model = Assembly[index];
-    delete Model;
-
-    Assembly.erase(Assembly.begin() + index);
-}
-
-template<class type>
-static inline int FindIndexOfElement(std::vector<type> vector, type element)
-{
-    int size = vector.size();
-    for (int i = 0; i < size; ++i)
-    {
-        if (vector[i] == element)
-            return i;
-    }
-    return -1;
-}
-
-void Loader::Unload(OBJ::Model* Model)
-{
-    int index = FindIndexOfElement(Assembly, Model);
-    if (index < 0)
-        return;
-    Unload(index);
+    core.remove(index);
 }
 
 void Loader::UnloadAll(wxCommandEvent& event)
 {
-    viewer.RemoveAll();
-    for (auto model : Assembly)
-        delete model;
-    Assembly.clear();
+    core.clear();
 }
 
 Loader::~Loader()

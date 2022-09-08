@@ -22,29 +22,23 @@ END_EVENT_TABLE()
 
 void Viewer::KeyBindingsInit()
 {
-    KeyBind(WXK_RETURN,     SwitchActive());
-    KeyBind(WXK_LEFT,       --activeTransform->x);
-    KeyBind(WXK_RIGHT,      ++activeTransform->x);
-    KeyBind(WXK_UP,         --activeTransform->y);
-    KeyBind(WXK_DOWN,       ++activeTransform->y);
-    KeyBind(WXK_CONTROL,    --activeTransform->z);
-    KeyBind(WXK_SPACE,      ++activeTransform->z);
+    Operator::AppendKeyEvent(WXK_RETURN, [this](wxKeyEvent&) {
+        size_t size = core.size();
+        if (size == 0)
+            return;
 
-    KeyBind(WXK_HOME,       --activeRotation->x);
-    KeyBind(WXK_END,        ++activeRotation->x);
-    KeyBind(WXK_PAGEUP,     --activeRotation->y);
-    KeyBind(WXK_PAGEDOWN,   ++activeRotation->y);
-    KeyBind(WXK_NUMPAD4,    --activeRotation->z);
-    KeyBind(WXK_NUMPAD6,    ++activeRotation->z);
+        size_t index = core.activeindex();
+        if (index++ >= size)
+            index = 0;
+        core.setActive(index);
+    });
 }
 
-Viewer::Viewer(wxFrame* parent)
-    :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas"))
+Viewer::Viewer(wxFrame* parent, Core& core)
+    :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas")),
+    core(core)
 {
     m_context = new wxGLContext(this);
-    ModelAmount = 0;
-    ActiveIndex = 0;
-
     KeyBindingsInit();
 }
 
@@ -103,23 +97,13 @@ void Viewer::Render(wxPaintEvent& event)
         init = false;
     }
 
-    for (auto Model : Assembly)
-        Model->Draw();
+    for (auto model : core)
+        model->Draw();
 
     glDisable(GL_DEPTH_TEST);
     DrawAxis();
 
     GLSceneRender();
-}
-
-void Viewer::Append(BaseModel* Model)
-{
-    if(ModelAmount)
-        Model->LinkTo(Assembly[ModelAmount - 1]);
-    Assembly.push_back(Model);
-    
-    ActiveIndex = ModelAmount++;
-    SetActive(Model);
 }
 
 void Viewer::RightClickOnModel(wxMouseEvent& event)
@@ -128,15 +112,15 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     GLSceneInit();
 
     uint32_t ID = 0;
-    for (auto Model : Assembly)
-        Model->ColorSelectDraw(ID++);
+    for (auto model : core)
+        model->ColorSelectDraw(ID++);
     
     wxPoint pixel = event.GetPosition();
     ID = BaseModel::GetColorSelection(pixel.x, pixel.y);
-    if (ID > ModelAmount)
+    if (ID > core.size())
         return; // Add here scene general settings later maybe
 
-    Configurator config(wxString(Assembly[ID]->Name));
+    Configurator config(wxString(core[ID].Name));
     PopupMenu(&config, event.GetPosition());
 }
 
@@ -150,47 +134,7 @@ static inline void RemoveLink(BaseModel* Model)
         Leaf->Host = Host;
 }
 
-void Viewer::Remove(size_t index)
-{
-    RemoveLink(Assembly[index]);
-    Assembly.erase(Assembly.begin() + index);
-    --ModelAmount;
-
-    if (ActiveIndex == index)
-        SwitchActive();
-}
-
-void Viewer::SetActive(BaseModel* Target)
-{
-    static BaseModel* ActiveOne = nullptr;
-    if (ActiveOne)
-        ActiveOne->Active = false;
-    ActiveOne = Target;
-    ActiveOne->Active = true;
-
-    activeRotation = &ActiveOne->Rotation;
-    activeTransform = &ActiveOne->Translation;
-}
-
-void Viewer::SwitchActive()
-{
-    if (ModelAmount == 0)
-        return;
-    
-    if (++ActiveIndex >= ModelAmount)
-        ActiveIndex = 0;
-  
-    SetActive(Assembly[ActiveIndex]);
-}
-
-void Viewer::RemoveAll()
-{
-    ModelAmount = 0;
-    ActiveIndex = 0;
-    Assembly.clear();
-}
-
 Viewer::~Viewer()
 {
-    Assembly.clear();
+    core.clear();
 }

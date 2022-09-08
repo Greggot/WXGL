@@ -51,6 +51,9 @@
     <ClInclude Include="BaseModel.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Assembly.Core.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OBJ.cpp">

@@ -19,13 +19,21 @@ inline void Loader::AppendMenuItem(int ID, wxString Name, wxString Description,
 
 void Loader::Load(wxString Path)
 {
-    OBJ::Model* Model = new OBJ::Model(Path.mb_str().data());
+    wxString extention = Path.Mid(Path.Index('.') + 1);
+    BaseModel* Model = nullptr;
+    
+    if (extention == "obj")
+        Model = new OBJ::Model(Path.mb_str().data());
+    else if (extention == "stl")
+        Model = new STL::Model(Path.mb_str().data());
+    else
+        return;
     core.append(Model);
 }
 
 void Loader::Open(wxCommandEvent& event)
 {
-    wxFileDialog open(Host, wxString("Open Model"), wxEmptyString, wxEmptyString, "OBJ files(*.obj)|*.obj", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    wxFileDialog open(Host, wxString("Open Model"), "", "", "OBJ files(*.obj)|*.obj|OBJ files(*.stl)|*.stl", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (open.ShowModal() == wxID_CANCEL)
         return;
     Load(open.GetPath());
@@ -33,7 +41,7 @@ void Loader::Open(wxCommandEvent& event)
 
 void Loader::SaveAssembly(wxCommandEvent& event)
 {
-    wxFileDialog save(Host, wxString("Save assembly"), wxEmptyString, wxEmptyString, "ASMBL assembly files(*.asmbl)|*.asmbl", wxFD_SAVE);
+    wxFileDialog save(Host, wxString("Save assembly"), "", "", "ASMBL assembly files(*.asmbl)|*.asmbl", wxFD_SAVE);
     if (save.ShowModal() == wxID_CANCEL)
         return;
     wxString assemblyPath = save.GetPath();

@@ -151,6 +151,7 @@
     <ClInclude Include="Assembly.Operator.hpp" />
     <ClInclude Include="OBJ.hpp" />
     <ClInclude Include="Assembly.Viewer.hpp" />
+    <ClInclude Include="STL.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assembly.Configurator.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Assembly.Operator.cpp" />
     <ClCompile Include="OBJ.cpp" />
     <ClCompile Include="Assembly.Viewer.cpp" />
+    <ClCompile Include="STL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

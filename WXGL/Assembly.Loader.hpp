@@ -1,6 +1,10 @@
 #pragma once
 #include "OBJ.hpp"
-#include "Assembly.Viewer.hpp"
+#include "STL.hpp"
+
+#include <wx/menu.h>
+#include <wx/filedlg.h>
+#include <wx/frame.h>
 
 #include "Assembly.Core.hpp"
 

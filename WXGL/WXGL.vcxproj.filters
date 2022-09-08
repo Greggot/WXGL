@@ -54,6 +54,9 @@
     <ClInclude Include="Assembly.Core.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
+    <ClInclude Include="STL.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OBJ.cpp">
@@ -76,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Lamp.cpp">
       <Filter>Исходные файлы\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="STL.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

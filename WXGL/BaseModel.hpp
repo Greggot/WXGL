@@ -61,4 +61,6 @@ public:
 
         return (Color[0] << 16) | (Color[1] << 8) | Color[2];
     }
+
+    virtual ~BaseModel() {};
 };

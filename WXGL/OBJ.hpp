@@ -2,6 +2,7 @@
 #pragma warning(disable : 4996)
 
 #include <list>
+#include <stdexcept>
 
 #include <cstdio>
 #include <string>
@@ -12,7 +13,6 @@
 #include <gl/GL.h>
 
 #include "BaseModel.hpp"
-#include <stdexcept>
 
 struct poly
 {
@@ -67,5 +67,7 @@ namespace OBJ
 
         void Draw() const override;
         void ColorSelectDraw(uint32_t ID) const override;
+
+        ~Model() { };
     };
 }

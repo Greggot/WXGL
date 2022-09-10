@@ -3,7 +3,7 @@ using namespace OBJ;
 
 static inline std::vector<std::string> GetStringTokens(const char* buffer);
 static inline poly stringContainerToPoly(const std::vector<std::string>&);
-static inline vertex stringContainerToVertex(const std::vector<std::string>&);
+// static inline vertex stringContainerToVertex(const std::vector<std::string>&);
 
 static inline std::string getMTLpathFrom(std::string modelpath, const std::string& filename);
 static color GetColorFromMTLfile(const char* path, const char* base);
@@ -49,12 +49,17 @@ Model::Model(const char* path)
 	// Adds last part of file
 	AddPart(part, mtlibFile.c_str(), base.c_str());
 	fclose(in);
+
+	// Make model fit into the screen
+	Scale = 1 / normilizeK;
 }
 
 
 void Model::Draw() const
 {
 	glPushMatrix();
+
+	glScalef(Scale, Scale, Scale);
 
 	ApplyMovementFromBottomToTop();
 	ApplyMovement(Translation, Rotation);
@@ -191,7 +196,7 @@ static inline std::string getMTLpathFrom(std::string modelpath, const std::strin
 	return modelpath;
 }
 
-static color GetColorFromMTLfile(const char* path, const char* base)
+color Model::GetColorFromMTLfile(const char* path, const char* base)
 {
 	FILE* mtl = fopen(path, "r");
 	if (mtl == nullptr)
@@ -254,9 +259,11 @@ static inline poly stringContainerToPoly(const std::vector<std::string>& strings
 			 atoi(strings[3].c_str()) - 1 };
 }
 
-static inline vertex stringContainerToVertex(const std::vector<std::string>& strings)
+inline vertex Model::stringContainerToVertex(const std::vector<std::string>& strings)
 {
-	return { strtof(strings[1].c_str(), nullptr),
+	vertex v ={ strtof(strings[1].c_str(), nullptr),
 			 strtof(strings[2].c_str(), nullptr),
 			 strtof(strings[3].c_str(), nullptr) };
+	normilizeK = std::max({ v.x, v.y, v.z, normilizeK });
+	return v;
 }

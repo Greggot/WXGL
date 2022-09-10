@@ -41,6 +41,7 @@ public:
 
     vertex Translation;
     vertex Rotation;
+    float Scale = 1;
 
     BaseModel* Leaf = nullptr;
     BaseModel* Host = nullptr;

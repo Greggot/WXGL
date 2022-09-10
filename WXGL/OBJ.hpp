@@ -49,17 +49,20 @@ namespace OBJ
     class Model : public BaseModel
     {
     private:
+        float normilizeK = 1;
         std::vector<vertex> Points;
         std::list<Part> Parts;
 
         inline void ApplyMovementFromBottomToTop() const;
         static void ApplyMovement(vertex Translation, vertex Rotation);
+        inline vertex stringContainerToVertex(const std::vector<std::string>& strings);
 
         inline void DrawModelOutline() const;
         inline void DrawPoly(const poly&) const;
         inline void DrawPolyOutline(const poly&) const;
         inline void DrawPoint(const vertex&) const;
 
+        color GetColorFromMTLfile(const char* path, const char* base);
         void AddPart(Part&, const char[], const char[]);
     public:
         Model() { }

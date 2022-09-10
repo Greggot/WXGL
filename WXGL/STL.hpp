@@ -37,18 +37,12 @@ namespace STL
         std::vector<token> Tokens;
 
         inline void ApplyMovementFromBottomToTop() const {};
-        static void ApplyMovement(vertex Translation, vertex Rotation) {};
-
-        //inline void DrawModelOutline() const {};
-        //inline void DrawPoly(const poly&) const {};
-        //inline void DrawPolyOutline(const poly&) const {};
-        //inline void DrawPoint(const vertex&) const {};
     public:
         Model() { }
         Model(const char* FilePath);
 
         void Draw() const override;
-        void ColorSelectDraw(uint32_t ID) const override {};
+        void ColorSelectDraw(uint32_t ID) const override;
         void ActiveOutlineDraw() const override;
 
         ~Model() { };

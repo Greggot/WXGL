@@ -44,6 +44,23 @@ protected:
     }
 
     virtual void ActiveOutlineDraw() const {};
+    static inline void setColorFrom(uint32_t ID) {
+        static GLuint Color[3] = { 0 };
+        Color[2] = ID & 0xFF;
+        ID >>= 8;
+        Color[1] = ID & 0xFF;
+        ID >>= 8;
+        Color[0] = ID & 0xFF;
+        glColor3ub(Color[0], Color[1], Color[2]);
+    }
+
+    // TODO: Replace Euler angles with quaternions
+    static void ApplyMovement(vertex Transform, vertex Rotation) {
+        glTranslatef(Transform.x, Transform.y, Transform.z);
+        glRotatef(Rotation.x, 1.0, 0.0, 0.0);
+        glRotatef(Rotation.y, 0.0, 1.0, 0.0);
+        glRotatef(Rotation.z, 0.0, 0.0, 1.0);
+    }
 public:
     const std::string Name;
     
@@ -56,6 +73,10 @@ public:
     vertex Rotation;
     float Scale = 1;
     bool Active = false;
+
+    void ApplyMovement() const {
+        ApplyMovement(Translation, Rotation);
+    }
 
     BaseModel* Leaf = nullptr;
     BaseModel* Host = nullptr;

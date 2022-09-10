@@ -49,7 +49,6 @@ namespace OBJ
         std::list<Part> Parts;
 
         inline void ApplyMovementFromBottomToTop() const;
-        static void ApplyMovement(vertex Translation, vertex Rotation);
         inline vertex stringContainerToVertex(const std::vector<std::string>& strings);
 
         inline void DrawPoly(const poly&) const;

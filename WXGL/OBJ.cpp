@@ -62,7 +62,7 @@ void Model::Draw() const
 	 glScalef(Scale, Scale, Scale);
 
 	ApplyMovementFromBottomToTop();
-	ApplyMovement(Translation, Rotation);
+	ApplyMovement();
 
 	for (auto part : Parts)
 	{
@@ -100,15 +100,6 @@ inline void Model::DrawPolyOutline(const poly& p) const
 	Points[p.begin].draw();
 }
 
-// TODO: Replace Euler angles with quaternions
-inline void Model::ApplyMovement(vertex Transform, vertex Rotation)
-{
-	glTranslatef(Transform.x, Transform.y, Transform.z);
-	glRotatef(Rotation.x, 1.0, 0.0, 0.0);
-	glRotatef(Rotation.y, 0.0, 1.0, 0.0);
-	glRotatef(Rotation.z, 0.0, 0.0, 1.0);
-}
-
 inline void Model::ApplyMovementFromBottomToTop() const
 {
 	BaseModel* root = Host;
@@ -136,17 +127,6 @@ inline void Model::ActiveOutlineDraw() const
 			DrawPolyOutline(triangle);
 		glEnd();
 	}
-}
-
-static inline void setColorFrom(uint32_t ID)
-{
-	static GLuint Color[3] = { 0 };
-	Color[2] = ID & 0xFF;
-	ID >>= 8;
-	Color[1] = ID & 0xFF;
-	ID >>= 8;
-	Color[0] = ID & 0xFF;
-	glColor3ub(Color[0], Color[1], Color[2]);
 }
 
 /*
@@ -250,6 +230,6 @@ inline vertex Model::stringContainerToVertex(const std::vector<std::string>& str
 	vertex v(strtof(strings[1].c_str(), nullptr),
 				strtof(strings[2].c_str(), nullptr),
 				strtof(strings[3].c_str(), nullptr));
-	Scale = std::max( v.max(), Scale );
+	// Scale = std::max( v.max(), Scale );
 	return v;
 }

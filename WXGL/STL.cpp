@@ -18,6 +18,9 @@ Model::Model(const char* path)
 
 void Model::Draw() const
 {
+	glPushMatrix();
+	ApplyMovement();
+
 	color Color(standardColor);
 	color Gradient = GradientStep(Color, Tokens.size());
 
@@ -33,6 +36,8 @@ void Model::Draw() const
 
 	if (Active)
 		ActiveOutlineDraw();
+	
+	glPopMatrix();
 }
 
 inline void Model::ActiveOutlineDraw() const
@@ -52,4 +57,17 @@ inline void Model::ActiveOutlineDraw() const
 		T.verticies[0].draw();
 	}
 	glEnd();
+}
+
+void Model::ColorSelectDraw(uint32_t ID) const
+{
+	glPushMatrix();
+	ApplyMovement();
+
+	setColorFrom(ID);
+	for (auto T : Tokens)
+		for (auto v : T.verticies)
+			v.draw();
+
+	glPopMatrix();
 }

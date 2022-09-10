@@ -50,6 +50,7 @@ namespace Assembly
         
         void RightClickOnModel(wxMouseEvent& event);
         void KeyBindingsInit();
+        std::function<void(wxKeyEvent&)> ModelChange(std::function<void(BaseModel*)>);
     public:
         Viewer(wxFrame* parent, Core& core);
 

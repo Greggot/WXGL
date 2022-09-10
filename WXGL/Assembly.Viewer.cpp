@@ -17,8 +17,15 @@ EVT_KEY_DOWN(Operator::Move)
 
 END_EVENT_TABLE()
 
-#define KeyBind(key, bind)  \
-    Operator::AppendKeyEvent(key, [this](wxKeyEvent& event) { bind; })
+std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(BaseModel*)> call)
+{
+    return [this, call](wxKeyEvent&) {
+        auto model = core.active();
+        if (model == nullptr)
+            return;
+        call(model);
+    };
+}
 
 void Viewer::KeyBindingsInit()
 {
@@ -28,10 +35,23 @@ void Viewer::KeyBindingsInit()
             return;
 
         size_t index = core.activeindex();
-        if (index++ >= size)
+        if (++index >= size)
             index = 0;
         core.setActive(index);
     });
+    Operator::AppendKeyEvent(WXK_END, ModelChange([](BaseModel* model) { ++model->Rotation.z; }));
+    Operator::AppendKeyEvent(WXK_HOME, ModelChange([](BaseModel* model) { --model->Rotation.z; }));
+    Operator::AppendKeyEvent(WXK_PAGEUP, ModelChange([](BaseModel* model) { ++model->Rotation.y; }));
+    Operator::AppendKeyEvent(WXK_PAGEDOWN, ModelChange([](BaseModel* model) { --model->Rotation.y; }));
+    Operator::AppendKeyEvent(WXK_NUMPAD4, ModelChange([](BaseModel* model) { ++model->Rotation.x; }));
+    Operator::AppendKeyEvent(WXK_NUMPAD6, ModelChange([](BaseModel* model) { --model->Rotation.x; }));
+
+    Operator::AppendKeyEvent(WXK_SPACE, ModelChange([](BaseModel* model) { ++model->Translation.z; }));
+    Operator::AppendKeyEvent(WXK_ALT, ModelChange([](BaseModel* model) { --model->Translation.z; }));
+    Operator::AppendKeyEvent((wxKeyCode)'W', ModelChange([](BaseModel* model) { ++model->Translation.x; }));
+    Operator::AppendKeyEvent((wxKeyCode)'A', ModelChange([](BaseModel* model) { ++model->Translation.y; }));
+    Operator::AppendKeyEvent((wxKeyCode)'S', ModelChange([](BaseModel* model) { --model->Translation.x; }));
+    Operator::AppendKeyEvent((wxKeyCode)'D', ModelChange([](BaseModel* model) { --model->Translation.y; }));
 }
 
 Viewer::Viewer(wxFrame* parent, Core& core)

@@ -5,6 +5,7 @@
 #include <wx/wx.h>
 #endif
 
+#include "BaseModel.hpp"
 
 namespace Assembly
 {
@@ -12,7 +13,8 @@ namespace Assembly
 	{
 	private:
 		inline void AppendItem(wxString Name);
+		BaseModel& model;
 	public:
-		Configurator(wxString ModelName);
+		Configurator(BaseModel& model);
 	};
 }

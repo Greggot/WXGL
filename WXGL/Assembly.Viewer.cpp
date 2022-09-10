@@ -140,7 +140,7 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     if (ID > core.size())
         return; // Add here scene general settings later maybe
 
-    Configurator config(wxString(core[ID].Name));
+    Configurator config(core[ID]);
     PopupMenu(&config, event.GetPosition());
 }
 

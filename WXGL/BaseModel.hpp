@@ -8,6 +8,10 @@ struct vertex
     float y;
     float z;
 
+    vertex() : x(0), y(0), z(0) {}
+    vertex(float single) : x(single), y(single), z(single) {}
+    vertex(float x, float y, float z) : x(x), y(y), z(z) {}
+
     vertex& operator+=(const vertex& rhs)
     {
         x += rhs.x;
@@ -22,15 +26,24 @@ struct vertex
         z -= rhs.z;
         return *this;
     }
-    vertex() : x(0), y(0), z(0) {}
-    vertex(float single) : x(single), y(single), z(single) {}
-    vertex(float x, float y, float z) : x(x), y(y), z(z) {}
+
+    inline void draw() const { glVertex3f(x, y, z); }
+    inline float max() const { return std::max({ x, y, z }); }
 };
+
+typedef vertex color;
+static const color standardColor(0.5);
 
 class BaseModel
 {
 protected:
     const std::string Path;
+
+    static inline color GradientStep(color original, size_t steps) {
+        return color(original.max() / steps);
+    }
+
+    virtual void ActiveOutlineDraw() const {};
 public:
     const std::string Name;
     
@@ -42,12 +55,11 @@ public:
     vertex Translation;
     vertex Rotation;
     float Scale = 1;
+    bool Active = false;
 
     BaseModel* Leaf = nullptr;
     BaseModel* Host = nullptr;
     virtual void LinkTo(BaseModel* Host) final { this->Host = Host; Host->Leaf = this; }
-
-    bool Active = false;
 
     virtual void Draw() const = 0;
     virtual void ColorSelectDraw(uint32_t ID) const {};

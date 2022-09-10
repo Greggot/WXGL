@@ -14,13 +14,6 @@
 #include <gl/GL.h>
 
 #include "BaseModel.hpp"
-//
-//struct poly
-//{
-//    int begin;
-//    int mid;
-//    int end;
-//};
 
 #pragma pack(push, 2)
 namespace STL
@@ -56,6 +49,7 @@ namespace STL
 
         void Draw() const override;
         void ColorSelectDraw(uint32_t ID) const override {};
+        void ActiveOutlineDraw() const override;
 
         ~Model() { };
     };

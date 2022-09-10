@@ -16,30 +16,40 @@ Model::Model(const char* path)
 	}
 }
 
-inline void DrawPoint(const vertex& v)
-{
-	glVertex3f(v.x, v.y, v.z);
-}
-
 void Model::Draw() const
 {
-	
-	vertex Color{0.4, 0.4, 0.4};
-	float maxcolor = 0.4;
+	color Color(standardColor);
+	color Gradient = GradientStep(Color, Tokens.size());
 
-	int gradientscale = Tokens.size();
-	vertex Gradient(maxcolor / gradientscale);
-
-	glPointSize(5);
 	glBegin(GL_TRIANGLES);
 	for (auto T : Tokens)
 	{
 		glColor3f(Color.x, Color.y, Color.z);
 		Color += Gradient;
+		for (auto v : T.verticies)
+			v.draw();
+	}
+	glEnd();
 
-		DrawPoint(T.verticies[0]);
-		DrawPoint(T.verticies[1]);
-		DrawPoint(T.verticies[2]);
+	if (Active)
+		ActiveOutlineDraw();
+}
+
+inline void Model::ActiveOutlineDraw() const
+{
+	glLineWidth(1);
+	glBegin(GL_LINES);
+	glColor3f(0, 0, 0);
+	for (auto T : Tokens)
+	{
+		T.verticies[0].draw();
+		T.verticies[1].draw();
+
+		T.verticies[1].draw();
+		T.verticies[2].draw();
+
+		T.verticies[2].draw();
+		T.verticies[0].draw();
 	}
 	glEnd();
 }

@@ -51,7 +51,7 @@ Model::Model(const char* path)
 	fclose(in);
 
 	// Make model fit into the screen
-	Scale = 1 / normilizeK;
+	Scale = 1 / Scale;
 }
 
 
@@ -59,7 +59,7 @@ void Model::Draw() const
 {
 	glPushMatrix();
 
-	glScalef(Scale, Scale, Scale);
+	 glScalef(Scale, Scale, Scale);
 
 	ApplyMovementFromBottomToTop();
 	ApplyMovement(Translation, Rotation);
@@ -67,16 +67,7 @@ void Model::Draw() const
 	for (auto part : Parts)
 	{
 		color Color = part.Color;
-
-		float maxcolor = Color.x;
-		if (Color.y > maxcolor)
-			maxcolor = Color.y;
-		if (Color.z > maxcolor)
-			maxcolor = Color.z;
-		maxcolor = 1 - maxcolor;
-
-		int gradientscale = part.Polygons.size();
-		color Gradient(maxcolor / gradientscale);
+		color Gradient = GradientStep(Color, part.Polygons.size());
 
 		glBegin(GL_TRIANGLES);
 		for (auto triangle : part.Polygons)
@@ -88,30 +79,25 @@ void Model::Draw() const
 		glEnd();
 	}
 	if (Active)
-		DrawModelOutline();
+		ActiveOutlineDraw();
 	glPopMatrix();
 }
 
 inline void Model::DrawPoly(const poly& p) const
 {
-	DrawPoint(Points[p.begin]);
-	DrawPoint(Points[p.mid]);
-	DrawPoint(Points[p.end]);
+	Points[p.begin].draw();
+	Points[p.mid].draw();
+	Points[p.end].draw();
 }
 
 inline void Model::DrawPolyOutline(const poly& p) const
 {
-	DrawPoint(Points[p.begin]);
-	DrawPoint(Points[p.mid]);
-	DrawPoint(Points[p.mid]);
-	DrawPoint(Points[p.end]);
-	DrawPoint(Points[p.end]);
-	DrawPoint(Points[p.begin]);
-}
-
-inline void Model::DrawPoint(const vertex& v) const
-{
-	glVertex3f(v.x, v.y, v.z);
+	Points[p.begin].draw();
+	Points[p.mid].draw();
+	Points[p.mid].draw();
+	Points[p.end].draw();
+	Points[p.end].draw();
+	Points[p.begin].draw();
 }
 
 // TODO: Replace Euler angles with quaternions
@@ -139,7 +125,7 @@ inline void Model::ApplyMovementFromBottomToTop() const
 	}
 }
 
-inline void Model::DrawModelOutline() const
+inline void Model::ActiveOutlineDraw() const
 {
 	glLineWidth(1);
 	for (auto polies : Parts)
@@ -261,9 +247,9 @@ static inline poly stringContainerToPoly(const std::vector<std::string>& strings
 
 inline vertex Model::stringContainerToVertex(const std::vector<std::string>& strings)
 {
-	vertex v ={ strtof(strings[1].c_str(), nullptr),
-			 strtof(strings[2].c_str(), nullptr),
-			 strtof(strings[3].c_str(), nullptr) };
-	normilizeK = std::max({ v.x, v.y, v.z, normilizeK });
+	vertex v(strtof(strings[1].c_str(), nullptr),
+				strtof(strings[2].c_str(), nullptr),
+				strtof(strings[3].c_str(), nullptr));
+	Scale = std::max( v.max(), Scale );
 	return v;
 }

@@ -21,8 +21,6 @@ struct poly
     int end;
 };
 
-typedef vertex color;
-
 enum class symbol : char
 {
     vertex = 'v',
@@ -36,8 +34,6 @@ enum class symbol : char
 
 namespace OBJ
 {
-
-    static const color standardColor = { 0.5, 0, 1 };
     struct Part
     {
         std::list<poly> Polygons;
@@ -49,7 +45,6 @@ namespace OBJ
     class Model : public BaseModel
     {
     private:
-        float normilizeK = 1;
         std::vector<vertex> Points;
         std::list<Part> Parts;
 
@@ -57,10 +52,8 @@ namespace OBJ
         static void ApplyMovement(vertex Translation, vertex Rotation);
         inline vertex stringContainerToVertex(const std::vector<std::string>& strings);
 
-        inline void DrawModelOutline() const;
         inline void DrawPoly(const poly&) const;
         inline void DrawPolyOutline(const poly&) const;
-        inline void DrawPoint(const vertex&) const;
 
         color GetColorFromMTLfile(const char* path, const char* base);
         void AddPart(Part&, const char[], const char[]);
@@ -70,6 +63,7 @@ namespace OBJ
 
         void Draw() const override;
         void ColorSelectDraw(uint32_t ID) const override;
+        void ActiveOutlineDraw() const override;
 
         ~Model() { };
     };

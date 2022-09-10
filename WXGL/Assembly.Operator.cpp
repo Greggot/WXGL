@@ -9,8 +9,8 @@ float Operator::scale = 1;
 
 void Operator::Zoom(wxMouseEvent& event)
 {
-    static const GLfloat downscale = 0.9;
-    static const GLfloat upscale = 1.1;
+    static const GLfloat downscale = 0.9f;
+    static const GLfloat upscale = 1.1f;
     float overallscale = 0;
 
     if (event.GetWheelRotation() < 0)
@@ -20,7 +20,6 @@ void Operator::Zoom(wxMouseEvent& event)
     
     scale *= overallscale;
     glScalef(overallscale, overallscale, overallscale);
-
 }
 
 void Operator::StartRotateXY(wxMouseEvent& event)

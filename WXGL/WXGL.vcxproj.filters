@@ -25,14 +25,14 @@
     <Filter Include="Исходные файлы\Light">
       <UniqueIdentifier>{c8a419f2-baf0-4769-8e79-cda8179097ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Model">
+      <UniqueIdentifier>{efa1029a-29a8-4a92-9306-199799acd719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Model">
+      <UniqueIdentifier>{4cb53a09-3fa1-4baa-9a6e-149857e43917}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OBJ.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrame.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Assembly.Operator.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
@@ -48,20 +48,23 @@
     <ClInclude Include="Lamp.hpp">
       <Filter>Файлы заголовков\Light</Filter>
     </ClInclude>
-    <ClInclude Include="BaseModel.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Assembly.Core.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
+    <ClInclude Include="OBJ.hpp">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
     <ClInclude Include="STL.hpp">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrame.hpp">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseModel.hpp">
+      <Filter>Файлы заголовков\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OBJ.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="MainFrame.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -80,8 +83,11 @@
     <ClCompile Include="Lamp.cpp">
       <Filter>Исходные файлы\Light</Filter>
     </ClCompile>
+    <ClCompile Include="OBJ.cpp">
+      <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
     <ClCompile Include="STL.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

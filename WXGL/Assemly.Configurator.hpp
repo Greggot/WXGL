@@ -5,7 +5,12 @@
 #include <wx/wx.h>
 #endif
 
-#include "BaseModel.hpp"
+#include "Assembly.Core.hpp"
+
+enum ConfiguratorID
+{
+	Delete = 7,
+};
 
 namespace Assembly
 {
@@ -13,8 +18,14 @@ namespace Assembly
 	{
 	private:
 		inline void AppendItem(wxString Name);
-		BaseModel& model;
+		uint16_t index;
+		Core& core;
+
+		inline wxMenuItem* AppendMenuItem(int ID, wxString Name, wxString Description,
+			void(Assembly::Configurator::* Method)(wxCommandEvent&));
+
+		void Delete(wxCommandEvent& event);
 	public:
-		Configurator(BaseModel& model);
+		Configurator(uint16_t index, Core& core);
 	};
 }

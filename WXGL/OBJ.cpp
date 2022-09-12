@@ -59,9 +59,8 @@ void Model::Draw() const
 {
 	glPushMatrix();
 
-	 glScalef(Scale, Scale, Scale);
+	glScalef(Scale, Scale, Scale);
 
-	ApplyMovementFromBottomToTop();
 	ApplyMovement();
 
 	for (auto part : Parts)
@@ -100,22 +99,6 @@ inline void Model::DrawPolyOutline(const poly& p) const
 	Points[p.begin].draw();
 }
 
-inline void Model::ApplyMovementFromBottomToTop() const
-{
-	BaseModel* root = Host;
-	if (root)
-	{
-		while (root->Host)
-			root = root->Host;
-		BaseModel* head = root;
-		do
-		{
-			ApplyMovement(head->Translation, head->Rotation);
-			head = head->Leaf;
-		} while (head != this);
-	}
-}
-
 inline void Model::ActiveOutlineDraw() const
 {
 	glLineWidth(1);
@@ -138,7 +121,6 @@ void Model::ColorSelectDraw(uint32_t ID) const
 {
 	glPushMatrix();
 
-	ApplyMovementFromBottomToTop();
 	ApplyMovement(Translation, Rotation);
 
 	setColorFrom(ID);

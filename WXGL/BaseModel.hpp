@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <list>
 #include <gl/GL.h>
 
 struct vertex
@@ -34,6 +35,11 @@ struct vertex
 typedef vertex color;
 static const color standardColor(0.5);
 
+struct move {
+    vertex T;
+    vertex R;
+};
+
 class BaseModel
 {
 protected:
@@ -54,12 +60,36 @@ protected:
         glColor3ub(Color[0], Color[1], Color[2]);
     }
 
+    BaseModel* parent = nullptr;
+    std::list<BaseModel*> children;
+
+    inline void ApplyMovementFromBottomToTop() const {
+	    BaseModel* head = parent;
+        std::list<move> Moves;
+	    if (parent)
+	    {
+            do
+            {
+                Moves.push_front({ head->Translation, head->Rotation });
+                head = head->parent;
+            }
+            while (head);
+
+            for (auto move : Moves)
+                ApplyMovement(move.T, move.R);
+	    }
+    }
     // TODO: Replace Euler angles with quaternions
-    static void ApplyMovement(vertex Transform, vertex Rotation) {
-        glTranslatef(Transform.x, Transform.y, Transform.z);
-        glRotatef(Rotation.x, 1.0, 0.0, 0.0);
-        glRotatef(Rotation.y, 0.0, 1.0, 0.0);
-        glRotatef(Rotation.z, 0.0, 0.0, 1.0);
+    void ApplyMovement(const vertex& T, const vertex& R) const {
+        glTranslatef(T.x, T.y, T.z);
+        glRotatef(R.x, 1.0, 0.0, 0.0);
+        glRotatef(R.y, 0.0, 1.0, 0.0);
+        glRotatef(R.z, 0.0, 0.0, 1.0);
+    }
+    void ApplyMovement() const
+    {
+        ApplyMovementFromBottomToTop();
+        ApplyMovement(Translation, Rotation);
     }
 public:
     const std::string Name;
@@ -74,17 +104,23 @@ public:
     float Scale = 1;
     bool Active = false;
 
-    void ApplyMovement() const {
-        ApplyMovement(Translation, Rotation);
+    void LinkTo(BaseModel* Parent) { 
+        if (parent)
+            RemoveFromTree();
+        parent = Parent; 
+        parent->children.push_back(this);
     }
+    void RemoveFromTree() {
+        if (parent == nullptr)
+            return;
 
-    BaseModel* Leaf = nullptr;
-    BaseModel* Host = nullptr;
-    virtual void LinkTo(BaseModel* Host) final { this->Host = Host; Host->Leaf = this; }
+        parent->children.remove(this);
+        for (auto child : children)
+            child->LinkTo(parent);
+    }
 
     virtual void Draw() const = 0;
     virtual void ColorSelectDraw(uint32_t ID) const {};
-
     static uint32_t GetColorSelection(uint32_t x, uint32_t y)
     {
         GLint viewport[4] = { 0 };

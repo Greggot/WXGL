@@ -144,16 +144,6 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     PopupMenu(&config, event.GetPosition());
 }
 
-static inline void RemoveLink(BaseModel* Model)
-{
-    BaseModel* Host = Model->Host;
-    BaseModel* Leaf = Model->Leaf;
-    if (Host)
-        Host->Leaf = Leaf;
-    if (Leaf)
-        Leaf->Host = Host;
-}
-
 Viewer::~Viewer()
 {
     core.clear();

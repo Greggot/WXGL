@@ -22,10 +22,18 @@ namespace Assembly
 
 		void append(BaseModel* model) { 
 			Models.push_back(model); 
-			 setActive(size() - 1);
+			setActive(size() - 1);
+			if(size() > 1)
+				model->LinkTo(Models[size() - 2]);
 		}
-		void remove(uint16_t index) { delete Models[index]; }
-		void clear() { for (auto model : Models) delete model; }
+		void remove(uint16_t index) { 
+			delete Models[index];
+			Models.erase(Models.begin() + index);
+		}
+		void clear() { 
+			for (auto model : Models) 
+				delete model; 
+		}
 
 		BaseModel* active() const { return Active; }
 		size_t activeindex() const { return Index; }

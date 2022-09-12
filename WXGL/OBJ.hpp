@@ -48,7 +48,6 @@ namespace OBJ
         std::vector<vertex> Points;
         std::list<Part> Parts;
 
-        inline void ApplyMovementFromBottomToTop() const;
         inline vertex stringContainerToVertex(const std::vector<std::string>& strings);
 
         inline void DrawPoly(const poly&) const;
@@ -64,6 +63,6 @@ namespace OBJ
         void ColorSelectDraw(uint32_t ID) const override;
         void ActiveOutlineDraw() const override;
 
-        ~Model() { };
+        ~Model() { }
     };
 }

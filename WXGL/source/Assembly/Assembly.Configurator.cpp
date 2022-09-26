@@ -1,4 +1,4 @@
-#include "Assemly.Configurator.hpp"
+#include "Assembly.Configurator.hpp"
 using namespace Assembly;
 
 

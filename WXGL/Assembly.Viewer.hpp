@@ -5,20 +5,14 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include <wx/glcanvas.h>
 
+#include <wx/glcanvas.h>
 #include <gl/GLU.h>
 #include <gl/GL.h>
 
 #include <thread>
-#include "OBJ.hpp"
-#include "Assemly.Configurator.hpp"
 #include "Assembly.Core.hpp"
-
-#ifndef WIN32
-#include <unistd.h> // FIXME: This work/necessary in Windows?
-//Not necessary, but if it was, it needs to be replaced by process.h AND io.h
-#endif
+#include "Assemly.Configurator.hpp"
 
 struct MouseMovement
 {

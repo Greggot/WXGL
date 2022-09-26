@@ -63,6 +63,9 @@
     <ClInclude Include="BaseModel.hpp">
       <Filter>Файлы заголовков\Model</Filter>
     </ClInclude>
+    <ClInclude Include="vertex.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrame.cpp">
@@ -88,6 +91,12 @@
     </ClCompile>
     <ClCompile Include="STL.cpp">
       <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseModel.cpp">
+      <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Assembly.Core.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

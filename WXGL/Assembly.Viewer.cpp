@@ -133,7 +133,7 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
 
     uint32_t ID = 0;
     for (auto model : core)
-        model->ColorSelectDraw(ID++);
+        model->DrawSelectionMode(ID++);
     
     wxPoint pixel = event.GetPosition();
     ID = BaseModel::GetColorSelection(pixel.x, pixel.y);

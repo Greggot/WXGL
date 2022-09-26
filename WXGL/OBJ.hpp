@@ -60,7 +60,7 @@ namespace OBJ
         Model(const char* FilePath);
 
         void Draw() const override;
-        void ColorSelectDraw(uint32_t ID) const override;
+        void DrawSelectionMode(uint32_t ID) const override;
         void ActiveOutlineDraw() const override;
 
         ~Model() { }

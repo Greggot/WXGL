@@ -152,9 +152,12 @@
     <ClInclude Include="OBJ.hpp" />
     <ClInclude Include="Assembly.Viewer.hpp" />
     <ClInclude Include="STL.hpp" />
+    <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assembly.Configurator.cpp" />
+    <ClCompile Include="Assembly.Core.cpp" />
+    <ClCompile Include="BaseModel.cpp" />
     <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="Assembly.Loader.cpp" />

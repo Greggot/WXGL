@@ -117,7 +117,7 @@ inline void Model::ActiveOutlineDraw() const
 *	so it could differ from others
 * @param ID will be converted to color
 **/
-void Model::ColorSelectDraw(uint32_t ID) const
+void Model::DrawSelectionMode(uint32_t ID) const
 {
 	glPushMatrix();
 

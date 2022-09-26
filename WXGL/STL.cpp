@@ -59,7 +59,7 @@ inline void Model::ActiveOutlineDraw() const
 	glEnd();
 }
 
-void Model::ColorSelectDraw(uint32_t ID) const
+void Model::DrawSelectionMode(uint32_t ID) const
 {
 	glPushMatrix();
 	ApplyMovement();

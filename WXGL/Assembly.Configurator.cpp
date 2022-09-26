@@ -1,14 +1,6 @@
 #include "Assemly.Configurator.hpp"
 using namespace Assembly;
 
-inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString Name, wxString Description,
-	void(Assembly::Configurator::* Method)(wxCommandEvent&), wxMenu* menu)
-{
-	wxMenuItem* item = new wxMenuItem(NULL, ID, Name, Description, wxITEM_NORMAL, NULL);
-	menu->Append(item);
-	Bind(wxEVT_MENU, Method, this, ID);
-	return item;
-}
 
 Configurator::Configurator(uint16_t index, Core& core)
 	: index(index), core(core), wxMenu(core[index].Name)

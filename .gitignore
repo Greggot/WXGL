@@ -368,3 +368,6 @@ FodyWeavers.xsd
 
 #Concept files
 *.sai2
+
+#Documentation files
+Doxyfile

@@ -5,9 +5,9 @@
 #include <wx/wx.h>
 #endif
 
+#include "Assembly.Core.hpp"
 #include "Assembly.Loader.hpp"
 #include "Assembly.Operator.hpp"
-#include "Assembly.Core.hpp"
 
 class MainFrame : public wxFrame
 {

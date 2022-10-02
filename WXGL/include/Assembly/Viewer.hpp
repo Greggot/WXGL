@@ -13,19 +13,7 @@
 #include <thread>
 #include "Core.hpp"
 #include "Configurator.hpp"
-
-struct MouseMovement
-{
-    wxPoint before;
-    wxPoint after;
-};
-struct rotateVector
-{
-    GLfloat angle;
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
-};
+#include <UserInput/Operator.hpp>
 
 namespace Assembly
 {

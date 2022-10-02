@@ -1,6 +1,5 @@
-#include <Assembly/Operator.hpp>
-#include <cmath>
-using namespace Assembly;
+#include <UserInput/Operator.hpp>
+using namespace UserInput;
 
 Buttons ActiveOne;
 MouseMovement ButtonMovements[Buttons::Amount];

@@ -145,26 +145,26 @@
     <ClInclude Include="include\Assembly\Configurator.hpp" />
     <ClInclude Include="include\Assembly\Core.hpp" />
     <ClInclude Include="include\Assembly\Loader.hpp" />
-    <ClInclude Include="include\Assembly\Operator.hpp" />
     <ClInclude Include="include\Assembly\Viewer.hpp" />
     <ClInclude Include="include\Lamp.hpp" />
     <ClInclude Include="include\MainFrame.hpp" />
     <ClInclude Include="include\Model\BaseModel.hpp" />
     <ClInclude Include="include\Model\OBJ.hpp" />
     <ClInclude Include="include\Model\STL.hpp" />
+    <ClInclude Include="include\UserInput\Operator.hpp" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Assembly\Configurator.cpp" />
     <ClCompile Include="source\Assembly\Core.cpp" />
     <ClCompile Include="source\Assembly\Loader.cpp" />
-    <ClCompile Include="source\Assembly\Operator.cpp" />
     <ClCompile Include="source\Assembly\Viewer.cpp" />
     <ClCompile Include="source\Lamp.cpp" />
     <ClCompile Include="source\MainFrame.cpp" />
     <ClCompile Include="source\Model\BaseModel.cpp" />
     <ClCompile Include="source\Model\OBJ.cpp" />
     <ClCompile Include="source\Model\STL.cpp" />
+    <ClCompile Include="source\UserInput\Operator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

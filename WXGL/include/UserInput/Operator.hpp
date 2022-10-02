@@ -1,32 +1,49 @@
 #pragma once
-#include "Viewer.hpp"
+#include <wx/glcanvas.h>
+#include <gl/GLU.h>
+#include <gl/GL.h>
 
+#include <cmath>
 #include <map>
 #define angleStep 2
 #define rotateAmplitude 5
 
-enum Buttons : uint8_t
+namespace UserInput
 {
-    Left,
-    Middle,
 
-    Amount,
-};
+    struct MouseMovement
+    {
+        wxPoint before;
+        wxPoint after;
+    };
+    struct rotateVector
+    {
+        GLfloat angle;
+        GLfloat x;
+        GLfloat y;
+        GLfloat z;
+    };
+
+    enum Buttons : uint8_t
+    {
+        Left,
+        Middle,
+
+        Amount,
+    };
 #define OrtAmount 3
-enum Ort : uint8_t
-{
-    X,
-    Y,
-    Z,
-};
-enum Sign
-{
-    positive,
-    negative,
-};
+    enum Ort : uint8_t
+    {
+        X,
+        Y,
+        Z,
+    };
+    enum Sign
+    {
+        positive,
+        negative,
+    };
 
-namespace Assembly
-{
 
     class Operator : public wxGLCanvas
     {

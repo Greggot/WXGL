@@ -1,6 +1,6 @@
 #include <Assembly/Viewer.hpp>
-#include <Assembly/Operator.hpp>
 using namespace Assembly;
+using UserInput::Operator;
 
 BEGIN_EVENT_TABLE(Viewer, wxGLCanvas)
 EVT_PAINT(Viewer::Render)
@@ -99,8 +99,8 @@ void Viewer::DrawAxis()
 
 static inline void IsometricCameraRotation()
 {
-    Operator::RotateCamera(-135, Y);
-    Operator::RotateCamera(45, Z);
+    Operator::RotateCamera(-135, UserInput::Y);
+    Operator::RotateCamera(45, UserInput::Z);
 }
 
 void Viewer::Render(wxPaintEvent& event)

@@ -1,6 +1,5 @@
-#include "Assembly.Configurator.hpp"
+#include <Assembly/Assembly.Configurator.hpp>
 using namespace Assembly;
-
 
 Configurator::Configurator(uint16_t index, Core& core)
 	: index(index), core(core), wxMenu(core[index].Name)

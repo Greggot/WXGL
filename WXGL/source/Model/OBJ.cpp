@@ -1,4 +1,4 @@
-#include "OBJ.hpp"
+#include <Model/OBJ.hpp>
 using namespace OBJ;
 
 static inline std::vector<std::string> GetStringTokens(const char* buffer);

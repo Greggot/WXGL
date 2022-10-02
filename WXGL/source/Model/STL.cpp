@@ -1,4 +1,4 @@
-#include "STL.hpp"
+#include <Model/STL.hpp>
 using namespace STL;
 
 Model::Model(const char* path)

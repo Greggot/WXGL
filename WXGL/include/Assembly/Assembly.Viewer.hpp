@@ -12,7 +12,7 @@
 
 #include <thread>
 #include "Assembly.Core.hpp"
-#include "Assemly.Configurator.hpp"
+#include "Assembly.Configurator.hpp"
 
 struct MouseMovement
 {

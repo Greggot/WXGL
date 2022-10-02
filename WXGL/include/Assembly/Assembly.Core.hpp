@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "BaseModel.hpp"
+#include <Model/BaseModel.hpp>
 
 namespace Assembly
 {

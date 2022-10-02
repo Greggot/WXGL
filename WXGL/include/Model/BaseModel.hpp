@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <gl/GL.h>
 
-#include "vertex.h"
+#include <vertex.h>
 
 typedef vertex color;
 static const color standardColor{ 0.5 };

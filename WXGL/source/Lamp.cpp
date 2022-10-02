@@ -1,4 +1,4 @@
-#include "Lamp.hpp"
+#include <Lamp.hpp>
 
 Light::Light()
 {

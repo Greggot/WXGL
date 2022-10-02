@@ -116,12 +116,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WXUSINGDLL;wxMSVC_VERSION_AUTO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(wxwid)\include\msvc;$(wxwid)\include;$(glfwpath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(wxDebug)\include\msvc;$(wxDebug)\include;$(glfwDebug)\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(wxwid)\lib\vc142_x64_dll;$(glfwpath)\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(wxDebug)\lib\vc143_x64_dll;$(glfwDebug)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -142,29 +142,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assembly.Core.hpp" />
-    <ClInclude Include="Assemly.Configurator.hpp" />
-    <ClInclude Include="BaseModel.hpp" />
-    <ClInclude Include="Lamp.hpp" />
-    <ClInclude Include="MainFrame.hpp" />
-    <ClInclude Include="Assembly.Loader.hpp" />
-    <ClInclude Include="Assembly.Operator.hpp" />
-    <ClInclude Include="OBJ.hpp" />
-    <ClInclude Include="Assembly.Viewer.hpp" />
-    <ClInclude Include="STL.hpp" />
+    <ClInclude Include="include\Assembly\Assembly.Configurator.hpp" />
+    <ClInclude Include="include\Assembly\Assembly.Core.hpp" />
+    <ClInclude Include="include\Assembly\Assembly.Loader.hpp" />
+    <ClInclude Include="include\Assembly\Assembly.Operator.hpp" />
+    <ClInclude Include="include\Assembly\Assembly.Viewer.hpp" />
+    <ClInclude Include="include\Lamp.hpp" />
+    <ClInclude Include="include\MainFrame.hpp" />
+    <ClInclude Include="include\Model\BaseModel.hpp" />
+    <ClInclude Include="include\Model\OBJ.hpp" />
+    <ClInclude Include="include\Model\STL.hpp" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assembly.Configurator.cpp" />
-    <ClCompile Include="Assembly.Core.cpp" />
-    <ClCompile Include="BaseModel.cpp" />
-    <ClCompile Include="Lamp.cpp" />
-    <ClCompile Include="MainFrame.cpp" />
-    <ClCompile Include="Assembly.Loader.cpp" />
-    <ClCompile Include="Assembly.Operator.cpp" />
-    <ClCompile Include="OBJ.cpp" />
-    <ClCompile Include="Assembly.Viewer.cpp" />
-    <ClCompile Include="STL.cpp" />
+    <ClCompile Include="source\Assembly\Assembly.Configurator.cpp" />
+    <ClCompile Include="source\Assembly\Assembly.Core.cpp" />
+    <ClCompile Include="source\Assembly\Assembly.Loader.cpp" />
+    <ClCompile Include="source\Assembly\Assembly.Operator.cpp" />
+    <ClCompile Include="source\Assembly\Assembly.Viewer.cpp" />
+    <ClCompile Include="source\Lamp.cpp" />
+    <ClCompile Include="source\MainFrame.cpp" />
+    <ClCompile Include="source\Model\BaseModel.cpp" />
+    <ClCompile Include="source\Model\OBJ.cpp" />
+    <ClCompile Include="source\Model\STL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

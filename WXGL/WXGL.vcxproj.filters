@@ -33,70 +33,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assembly.Operator.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Loader.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
-    <ClInclude Include="Assemly.Configurator.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Viewer.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
-    <ClInclude Include="Lamp.hpp">
-      <Filter>Файлы заголовков\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Assembly.Core.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
-    <ClInclude Include="OBJ.hpp">
-      <Filter>Файлы заголовков\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="STL.hpp">
-      <Filter>Файлы заголовков\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrame.hpp">
+    <ClInclude Include="vertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="BaseModel.hpp">
+    <ClInclude Include="include\Assembly\Assembly.Configurator.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Assembly\Assembly.Core.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Assembly\Assembly.Loader.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Assembly\Assembly.Operator.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Assembly\Assembly.Viewer.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lamp.hpp">
+      <Filter>Файлы заголовков\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\BaseModel.hpp">
       <Filter>Файлы заголовков\Model</Filter>
     </ClInclude>
-    <ClInclude Include="vertex.h">
+    <ClInclude Include="include\Model\OBJ.hpp">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model\STL.hpp">
+      <Filter>Файлы заголовков\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MainFrame.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainFrame.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="source\Model\BaseModel.cpp">
+      <Filter>Исходные файлы\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Assembly.Loader.cpp">
-      <Filter>Исходные файлы\Assembly</Filter>
+    <ClCompile Include="source\Model\OBJ.cpp">
+      <Filter>Исходные файлы\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Assembly.Configurator.cpp">
-      <Filter>Исходные файлы\Assembly</Filter>
+    <ClCompile Include="source\Model\STL.cpp">
+      <Filter>Исходные файлы\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Assembly.Operator.cpp">
-      <Filter>Исходные файлы\Assembly</Filter>
-    </ClCompile>
-    <ClCompile Include="Assembly.Viewer.cpp">
-      <Filter>Исходные файлы\Assembly</Filter>
-    </ClCompile>
-    <ClCompile Include="Lamp.cpp">
+    <ClCompile Include="source\Lamp.cpp">
       <Filter>Исходные файлы\Light</Filter>
     </ClCompile>
-    <ClCompile Include="OBJ.cpp">
-      <Filter>Исходные файлы\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="STL.cpp">
-      <Filter>Исходные файлы\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseModel.cpp">
-      <Filter>Исходные файлы\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Assembly.Core.cpp">
+    <ClCompile Include="source\Assembly\Assembly.Configurator.cpp">
       <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Assembly\Assembly.Core.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Assembly\Assembly.Loader.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Assembly\Assembly.Operator.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Assembly\Assembly.Viewer.cpp">
+      <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MainFrame.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

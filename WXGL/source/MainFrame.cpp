@@ -1,4 +1,4 @@
-#include "MainFrame.hpp"
+#include <MainFrame.hpp>
 
 class MyApp : public wxApp
 {

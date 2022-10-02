@@ -1,7 +1,5 @@
-#include "Assembly.Viewer.hpp"
-#include "Assembly.Operator.hpp"
-#include "OBJ.hpp"
-
+#include <Assembly/Assembly.Viewer.hpp>
+#include <Assembly/Assembly.Operator.hpp>
 using namespace Assembly;
 
 BEGIN_EVENT_TABLE(Viewer, wxGLCanvas)

@@ -1,13 +1,14 @@
 #pragma once
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "Assembly.Core.hpp"
-#include "Assembly.Loader.hpp"
-#include "Assembly.Operator.hpp"
+#include <Assembly/Assembly.Core.hpp>
+#include <Assembly/Assembly.Loader.hpp>
+#include <Assembly/Assembly.Viewer.hpp>
+
+#include <thread>
 
 class MainFrame : public wxFrame
 {

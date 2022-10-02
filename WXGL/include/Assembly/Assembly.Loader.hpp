@@ -1,6 +1,6 @@
 #pragma once
-#include "OBJ.hpp"
-#include "STL.hpp"
+#include <Model/OBJ.hpp>
+#include <Model/STL.hpp>
 
 #include <wx/menu.h>
 #include <wx/filedlg.h>

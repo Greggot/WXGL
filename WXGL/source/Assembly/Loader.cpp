@@ -1,4 +1,4 @@
-#include <Assembly/Assembly.Loader.hpp> 
+#include <Assembly/Loader.hpp> 
 using namespace Assembly;
 
 Loader::Loader(wxFrame* Host, Core& core)
@@ -90,11 +90,6 @@ void Loader::LoadAssembly(wxCommandEvent& event)
         fread(&model->Rotation,    sizeof(vertex), 1, in);
     }
     fclose(in);
-}
-
-void Loader::Unload(size_t index)
-{
-    core.remove(index);
 }
 
 void Loader::UnloadAll(wxCommandEvent& event)

@@ -11,8 +11,8 @@
 #include <gl/GL.h>
 
 #include <thread>
-#include "Assembly.Core.hpp"
-#include "Assembly.Configurator.hpp"
+#include "Core.hpp"
+#include "Configurator.hpp"
 
 struct MouseMovement
 {

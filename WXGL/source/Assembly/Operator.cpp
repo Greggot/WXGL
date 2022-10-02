@@ -1,4 +1,4 @@
-#include <Assembly/Assembly.Operator.hpp>
+#include <Assembly/Operator.hpp>
 #include <cmath>
 using namespace Assembly;
 

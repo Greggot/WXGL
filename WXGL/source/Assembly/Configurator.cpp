@@ -1,4 +1,4 @@
-#include <Assembly/Assembly.Configurator.hpp>
+#include <Assembly/Configurator.hpp>
 using namespace Assembly;
 
 Configurator::Configurator(uint16_t index, Core& core)

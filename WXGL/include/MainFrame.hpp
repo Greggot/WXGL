@@ -4,9 +4,9 @@
 #include <wx/wx.h>
 #endif
 
-#include <Assembly/Assembly.Core.hpp>
-#include <Assembly/Assembly.Loader.hpp>
-#include <Assembly/Assembly.Viewer.hpp>
+#include <Assembly/Core.hpp>
+#include <Assembly/Loader.hpp>
+#include <Assembly/Viewer.hpp>
 
 #include <thread>
 

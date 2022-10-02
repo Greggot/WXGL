@@ -1,5 +1,6 @@
 #pragma once
-#include "Assembly.Viewer.hpp"
+#include "Viewer.hpp"
+
 #include <map>
 #define angleStep 2
 #define rotateAmplitude 5

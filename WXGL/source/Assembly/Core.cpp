@@ -1,4 +1,4 @@
-#include <Assembly/Assembly.Core.hpp>
+#include <Assembly/Core.hpp>
 using namespace Assembly;
 
 void Core::append(BaseModel* model) 

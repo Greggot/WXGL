@@ -5,7 +5,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "Assembly.Core.hpp"
+#include "Core.hpp"
 
 enum ConfiguratorID
 {

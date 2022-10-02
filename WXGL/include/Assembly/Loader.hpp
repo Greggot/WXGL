@@ -6,7 +6,7 @@
 #include <wx/filedlg.h>
 #include <wx/frame.h>
 
-#include "Assembly.Core.hpp"
+#include "Core.hpp"
 
 enum LoaderID
 {
@@ -39,7 +39,6 @@ namespace Assembly
 	public:
 		Loader(wxFrame* Host, Core& core);
 
-		void Unload(size_t index);
 		~Loader();
 	};
 }

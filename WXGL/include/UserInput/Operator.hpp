@@ -5,12 +5,12 @@
 
 #include <cmath>
 #include <map>
-#define angleStep 2
-#define rotateAmplitude 5
+#include <stdexcept>
+
+#include <vertex.h>
 
 namespace UserInput
 {
-
     struct MouseMovement
     {
         wxPoint before;
@@ -19,52 +19,53 @@ namespace UserInput
     struct rotateVector
     {
         GLfloat angle;
-        GLfloat x;
-        GLfloat y;
-        GLfloat z;
+        vertex direction;
     };
 
-    enum Buttons : uint8_t
+    enum class Buttons : uint8_t
     {
         Left,
         Middle,
 
         Amount,
     };
-#define OrtAmount 3
-    enum Ort : uint8_t
-    {
-        X,
-        Y,
-        Z,
-    };
-    enum Sign
+    enum Ort : uint8_t {X, Y, Z,  Amount};
+    enum class Sign
     {
         positive,
         negative,
     };
 
+    // TODO - Add to global settings 
+    static const int angleStep = 2;
+    static const int rotateAmplitude = 5;
 
-    class Operator : public wxGLCanvas
+    class Operator 
     {
     private:
-        static int cameraangle[OrtAmount];
-        static float scale;
+        Buttons ActiveOne;
+        int angle[Ort::Amount] {0, 0, 0};
+        MouseMovement ButtonMovements[static_cast<int>(Buttons::Amount)];
 
-        inline void ApplyMovementTo(const int end, const int start, const Ort ort);
-        static inline void RotateCameraQuant(Sign sign, Ort ort);
-        static inline rotateVector GetModifiedRotationVector(Ort ort);
+        // TODO - Add to global settings 
+        const GLfloat downscale = 0.9f;
+        const GLfloat upscale = 1.1f;
+        float scale = 1;
+
+        // TODO - add camrea movement along X,Y,Z
+
+        inline void ApplyMovementTo(const int end, const int start, const Ort&&);
+        inline void RotateCameraQuant(Sign sign, Ort ort);
+        inline rotateVector GetModifiedRotationVector(Ort ort);
+
+        void ApplyZoom(wxGLCanvas*);
+        void ApplyStartRotate(wxGLCanvas*);
+        void ApplyFinishRotate(wxGLCanvas*);
     public:
-        static void RotateCamera(int value, Ort ort);
-        static float getScale() { return scale; };
+        Operator(wxGLCanvas* canvas);
 
-        void Zoom(wxMouseEvent& event);
-        void StartRotateXY(wxMouseEvent& event);
-        void StartRotateZ(wxMouseEvent& event);
-        void Rotate(wxMouseEvent& event);
-
-        void Move(wxKeyEvent& event);
-        static void AppendKeyEvent(wxKeyCode key, std::function<void(wxKeyEvent&)> call);
+        void RotateCamera(const Ort&&, int value);
+        float getScale() { return scale; };
     };
 
 }

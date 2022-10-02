@@ -27,3 +27,7 @@ struct vertex
     void draw() const;
     float maxvalue() const;
 };
+
+static const vertex eX{ 1, 0, 0 };
+static const vertex eY{ 0, 1, 0 };
+static const vertex eZ{ 0, 0, 1 };

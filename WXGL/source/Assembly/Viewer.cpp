@@ -5,13 +5,7 @@ using UserInput::Operator;
 BEGIN_EVENT_TABLE(Viewer, wxGLCanvas)
 EVT_PAINT(Viewer::Render)
 
-EVT_MOUSEWHEEL(Operator::Zoom)
-EVT_LEFT_DOWN(Operator::StartRotateXY)
-EVT_MIDDLE_DOWN(Operator::StartRotateZ)
 EVT_RIGHT_DOWN(Viewer::RightClickOnModel)
-EVT_MOUSE_EVENTS(Operator::Rotate)
-
-EVT_KEY_DOWN(Operator::Move)
 
 END_EVENT_TABLE()
 
@@ -27,7 +21,7 @@ std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(BaseMode
 
 void Viewer::KeyBindingsInit()
 {
-    Operator::AppendKeyEvent(WXK_RETURN, [this](wxKeyEvent&) {
+    keybinds.append(WXK_RETURN, { [this](wxKeyEvent&) {
         size_t size = core.size();
         if (size == 0)
             return;
@@ -36,25 +30,25 @@ void Viewer::KeyBindingsInit()
         if (++index >= size)
             index = 0;
         core.setActive(index);
-    });
-    Operator::AppendKeyEvent(WXK_END, ModelChange([](BaseModel* model) { ++model->Rotation.z; }));
-    Operator::AppendKeyEvent(WXK_HOME, ModelChange([](BaseModel* model) { --model->Rotation.z; }));
-    Operator::AppendKeyEvent(WXK_PAGEUP, ModelChange([](BaseModel* model) { ++model->Rotation.y; }));
-    Operator::AppendKeyEvent(WXK_PAGEDOWN, ModelChange([](BaseModel* model) { --model->Rotation.y; }));
-    Operator::AppendKeyEvent(WXK_NUMPAD4, ModelChange([](BaseModel* model) { ++model->Rotation.x; }));
-    Operator::AppendKeyEvent(WXK_NUMPAD6, ModelChange([](BaseModel* model) { --model->Rotation.x; }));
+    } });
+    keybinds.append(WXK_END, ModelChange([](BaseModel* model) { ++model->Rotation.z; }));
+    keybinds.append(WXK_HOME, ModelChange([](BaseModel* model) { --model->Rotation.z; }));
+    keybinds.append(WXK_PAGEUP, ModelChange([](BaseModel* model) { ++model->Rotation.y; }));
+    keybinds.append(WXK_PAGEDOWN, ModelChange([](BaseModel* model) { --model->Rotation.y; }));
+    keybinds.append(WXK_NUMPAD4, ModelChange([](BaseModel* model) { ++model->Rotation.x; }));
+    keybinds.append(WXK_NUMPAD6, ModelChange([](BaseModel* model) { --model->Rotation.x; }));
 
-    Operator::AppendKeyEvent(WXK_SPACE, ModelChange([](BaseModel* model) { ++model->Translation.z; }));
-    Operator::AppendKeyEvent(WXK_ALT, ModelChange([](BaseModel* model) { --model->Translation.z; }));
-    Operator::AppendKeyEvent((wxKeyCode)'W', ModelChange([](BaseModel* model) { ++model->Translation.x; }));
-    Operator::AppendKeyEvent((wxKeyCode)'A', ModelChange([](BaseModel* model) { ++model->Translation.y; }));
-    Operator::AppendKeyEvent((wxKeyCode)'S', ModelChange([](BaseModel* model) { --model->Translation.x; }));
-    Operator::AppendKeyEvent((wxKeyCode)'D', ModelChange([](BaseModel* model) { --model->Translation.y; }));
+    keybinds.append(WXK_SPACE, ModelChange([](BaseModel* model) { ++model->Translation.z; }));
+    keybinds.append(WXK_CONTROL, ModelChange([](BaseModel* model) { --model->Translation.z; }));
+    keybinds.append((wxKeyCode)'W', ModelChange([](BaseModel* model) { ++model->Translation.x; }));
+    keybinds.append((wxKeyCode)'A', ModelChange([](BaseModel* model) { ++model->Translation.y; }));
+    keybinds.append((wxKeyCode)'S', ModelChange([](BaseModel* model) { --model->Translation.x; }));
+    keybinds.append((wxKeyCode)'D', ModelChange([](BaseModel* model) { --model->Translation.y; }));
 }
 
 Viewer::Viewer(wxFrame* parent, Core& core)
     :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas")),
-    core(core), context(new wxGLContext(this))
+    core(core), context(new wxGLContext(this)), camera(this), keybinds(this)
 {
     KeyBindingsInit();
 }
@@ -83,7 +77,7 @@ void Viewer::DrawAxis()
         { 0, 0, 1 }
     };
 
-    float scale = Operator::getScale() * 4;
+    float scale = camera.getScale() * 4;
 
     glLineWidth(3);
     glBegin(GL_LINES);
@@ -97,10 +91,11 @@ void Viewer::DrawAxis()
 
 }
 
-static inline void IsometricCameraRotation()
+void Viewer::IsometricCameraRotation()
 {
-    Operator::RotateCamera(-135, UserInput::Y);
-    Operator::RotateCamera(45, UserInput::Z);
+    using UserInput::Ort;
+    camera.RotateCamera(Ort::Y, -135);
+    camera.RotateCamera(Ort::Z, 45);
 }
 
 void Viewer::Render(wxPaintEvent& event)

@@ -13,7 +13,9 @@
 #include <thread>
 #include "Core.hpp"
 #include "Configurator.hpp"
+
 #include <UserInput/Operator.hpp>
+#include <UserInput/KeyBindController.hpp>
 
 namespace Assembly
 {
@@ -22,6 +24,8 @@ namespace Assembly
     {
     private:
         std::unique_ptr<wxGLContext> context;
+        UserInput::Operator camera;
+        UserInput::KeyBindController keybinds;
         Core& core;
 
         inline void GLSceneInit();
@@ -30,6 +34,7 @@ namespace Assembly
         
         void DrawAxis();
         
+        inline void IsometricCameraRotation();
         void RightClickOnModel(wxMouseEvent& event);
         void KeyBindingsInit();
         std::function<void(wxKeyEvent&)> ModelChange(std::function<void(BaseModel*)>);

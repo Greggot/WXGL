@@ -39,9 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vertex.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="include\Assembly\Configurator.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
@@ -70,6 +67,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\UserInput\Operator.hpp">
+      <Filter>Файлы заголовков\UserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vertex.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UserInput\KeyBindController.hpp">
       <Filter>Файлы заголовков\UserInput</Filter>
     </ClInclude>
   </ItemGroup>
@@ -102,6 +105,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="source\UserInput\Operator.cpp">
+      <Filter>Исходные файлы\UserInput</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UserInput\KeyBindController.cpp">
       <Filter>Исходные файлы\UserInput</Filter>
     </ClCompile>
   </ItemGroup>

@@ -54,15 +54,14 @@ void Viewer::KeyBindingsInit()
 
 Viewer::Viewer(wxFrame* parent, Core& core)
     :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas")),
-    core(core)
+    core(core), context(new wxGLContext(this))
 {
-    m_context = new wxGLContext(this);
     KeyBindingsInit();
 }
 
 inline void Viewer::GLSceneInit()
 {
-    SetCurrent(*m_context);
+    SetCurrent(*context.get());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);

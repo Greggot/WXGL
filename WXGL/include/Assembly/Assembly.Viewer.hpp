@@ -33,7 +33,7 @@ namespace Assembly
     class Viewer : public wxGLCanvas
     {
     private:
-        wxGLContext* m_context;
+        std::unique_ptr<wxGLContext> context;
         Core& core;
 
         inline void GLSceneInit();

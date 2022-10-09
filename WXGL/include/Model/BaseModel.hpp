@@ -50,6 +50,7 @@ public:
     float Scale = 1;
     bool Active = false;
 
+    void Orphan();
     void LinkTo(BaseModel* Parent);
     void RemoveFromTree();
 

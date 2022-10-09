@@ -56,15 +56,26 @@ uint32_t BaseModel::GetColorSelection(uint32_t x, uint32_t y)
 
 void BaseModel::LinkTo(BaseModel* Parent) 
 {
-    if (parent)
-        RemoveFromTree();
     parent = Parent;
+    if (parent == nullptr)
+        return;
+    
+    RemoveFromTree();
     parent->children.push_back(this);
 }
+
+void BaseModel::Orphan() {
+    parent = nullptr;
+}
+
 void BaseModel::RemoveFromTree() 
 {
     if (parent == nullptr)
+    {
+        for (auto child : children)
+            child->Orphan();
         return;
+    }
 
     parent->children.remove(this);
     for (auto child : children)

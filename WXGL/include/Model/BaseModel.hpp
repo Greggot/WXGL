@@ -28,13 +28,15 @@ protected:
     static inline color GradientStep(color original, size_t steps) {
         return color(original.maxvalue() / steps);
     }
-    virtual void ActiveOutlineDraw() const = 0;
     static void setColorFrom(uint32_t ID);
 
     // TODO: Replace Euler angles with quaternions
     inline void ApplyMovementFromBottomToTop() const;
     void ApplyMovement(const vertex& T, const vertex& R) const;
     void ApplyMovement() const;
+
+    virtual void ActiveOutlineDraw() const = 0;
+    virtual void ConcreteDraw() const = 0;
 public:
     const std::string Name;
     
@@ -51,7 +53,18 @@ public:
     void LinkTo(BaseModel* Parent);
     void RemoveFromTree();
 
-    virtual void Draw() const = 0;
+    virtual void Draw() const {
+        glPushMatrix();
+        glScalef(Scale, Scale, Scale);
+        ApplyMovement();
+
+        ConcreteDraw();
+
+        if (Active)
+            ActiveOutlineDraw();
+        glPopMatrix();
+    };
+
     virtual void DrawSelectionMode(uint32_t ID) const {};
     static uint32_t GetColorSelection(uint32_t x, uint32_t y);
 

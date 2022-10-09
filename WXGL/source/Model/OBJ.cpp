@@ -55,14 +55,8 @@ Model::Model(const char* path)
 }
 
 
-void Model::Draw() const
+void Model::ConcreteDraw() const
 {
-	glPushMatrix();
-
-	glScalef(Scale, Scale, Scale);
-
-	ApplyMovement();
-
 	for (auto part : Parts)
 	{
 		color Color = part.Color;
@@ -77,9 +71,6 @@ void Model::Draw() const
 		}
 		glEnd();
 	}
-	if (Active)
-		ActiveOutlineDraw();
-	glPopMatrix();
 }
 
 inline void Model::DrawPoly(const poly& p) const

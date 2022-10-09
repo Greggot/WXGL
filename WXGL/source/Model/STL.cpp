@@ -16,11 +16,8 @@ Model::Model(const char* path)
 	}
 }
 
-void Model::Draw() const
+void Model::ConcreteDraw() const
 {
-	glPushMatrix();
-	ApplyMovement();
-
 	color Color(standardColor);
 	color Gradient = GradientStep(Color, Tokens.size());
 
@@ -33,11 +30,6 @@ void Model::Draw() const
 			v.draw();
 	}
 	glEnd();
-
-	if (Active)
-		ActiveOutlineDraw();
-	
-	glPopMatrix();
 }
 
 inline void Model::ActiveOutlineDraw() const

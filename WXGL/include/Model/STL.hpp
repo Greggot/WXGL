@@ -41,7 +41,7 @@ namespace STL
         Model() { }
         Model(const char* FilePath);
 
-        void Draw() const override;
+        void ConcreteDraw() const override;
         void DrawSelectionMode(uint32_t ID) const override;
         void ActiveOutlineDraw() const override;
 

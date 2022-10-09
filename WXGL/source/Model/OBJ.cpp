@@ -112,6 +112,7 @@ void Model::DrawSelectionMode(uint32_t ID) const
 {
 	glPushMatrix();
 
+	glScalef(Scale, Scale, Scale);
 	ApplyMovement(Translation, Rotation);
 
 	setColorFrom(ID);

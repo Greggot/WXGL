@@ -64,10 +64,12 @@ void Model::DrawSelectionMode(uint32_t ID) const
 	glPushMatrix();
 	ApplyMovement();
 
+	glBegin(GL_TRIANGLES);
 	setColorFrom(ID);
 	for (auto T : Tokens)
 		for (auto v : T.verticies)
 			v.draw();
+	glEnd();
 
 	glPopMatrix();
 }

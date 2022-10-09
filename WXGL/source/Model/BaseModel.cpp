@@ -26,8 +26,8 @@ inline void BaseModel::ApplyMovementFromBottomToTop() const
             head = head->parent;
         } while (head);
 
-        for (auto move : Moves)
-            ApplyMovement(move.T, move.R);
+        for (const move& m : Moves)
+            ApplyMovement(m.T, m.R);
     }
 }
 // TODO: Replace Euler angles with quaternions

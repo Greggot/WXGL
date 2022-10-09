@@ -37,7 +37,7 @@ inline void Model::ActiveOutlineDraw() const
 	glLineWidth(1);
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 0);
-	for (auto T : Tokens)
+	for (const token& T : Tokens)
 	{
 		T.verticies[0].draw();
 		T.verticies[1].draw();

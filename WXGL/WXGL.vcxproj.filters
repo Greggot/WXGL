@@ -37,6 +37,12 @@
     <Filter Include="Исходные файлы\UserInput">
       <UniqueIdentifier>{5aa0c48a-27f7-4f7f-82bc-975a9af55e36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Common">
+      <UniqueIdentifier>{5b1abcbf-8d3c-41a4-aa70-6ecd381a06a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Common">
+      <UniqueIdentifier>{30f562dd-a7c9-47a9-9a8a-dd61b66c4c18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Assembly\Configurator.hpp">
@@ -74,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="include\UserInput\KeyBindController.hpp">
       <Filter>Файлы заголовков\UserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\DialogValue.hpp">
+      <Filter>Исходные файлы\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

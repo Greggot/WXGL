@@ -12,6 +12,7 @@ Configurator::Configurator(uint16_t index, Core& core)
 	AppendMenuItem(ConfiguratorID::Angles, "Angles...", "", &Configurator::Rotation);
 	AppendMenuItem(ConfiguratorID::Scale, "Scale...", "", &Configurator::Scale);
 	AppendSeparator();
+	AppendMenuItem(ConfiguratorID::Test, "Camera View...", "", &Configurator::ShowCamera);
 	
 	AppendItem("Connect to...");	// Window for Desktop-Controller API
 }
@@ -30,6 +31,16 @@ inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString Name, wxString 
 	Append(item);
 	Bind(wxEVT_MENU, Method, this, ID);
 	return item;
+}
+
+void Configurator::ShowCamera(wxCommandEvent&)
+{
+	static TCP::client client;
+	client.Connect({ {192, 168, 1, 176}, 4444 });
+	static SkyBlue::TCPclientAPI api(client);
+
+	auto win = new PhysicalDevice::CameraWindow(nullptr, 320, 240, api);
+	win->Show();
 }
 
 void Configurator::Delete(wxCommandEvent&)

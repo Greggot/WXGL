@@ -43,6 +43,18 @@
     <Filter Include="Файлы заголовков\Common">
       <UniqueIdentifier>{30f562dd-a7c9-47a9-9a8a-dd61b66c4c18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\PhysicalDevice">
+      <UniqueIdentifier>{50df0f09-c27f-48b6-bf0b-483ef880893f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\PhysicalDevice">
+      <UniqueIdentifier>{f7786a3f-0ec5-4a47-b2cf-60b441ae8269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Network">
+      <UniqueIdentifier>{b236510a-7672-4a10-90c2-34bfca60cfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Network\SkyBlue">
+      <UniqueIdentifier>{83c24bcc-2cf4-4cc1-a9ec-405c5ef3a920}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Assembly\Configurator.hpp">
@@ -84,6 +96,15 @@
     <ClInclude Include="include\Common\DialogValue.hpp">
       <Filter>Исходные файлы\Common</Filter>
     </ClInclude>
+    <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp">
+      <Filter>Исходные файлы\PhysicalDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Network\SkyBlue\Client.API.hpp">
+      <Filter>Исходные файлы\Network\SkyBlue</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Network\SkyBlue\Types.hpp">
+      <Filter>Исходные файлы\Network\SkyBlue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">
@@ -118,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="source\UserInput\KeyBindController.cpp">
       <Filter>Исходные файлы\UserInput</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PhysicalDevice\CameraWindow.cpp">
+      <Filter>Файлы заголовков\PhysicalDevice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

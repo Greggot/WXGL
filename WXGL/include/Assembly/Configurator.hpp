@@ -5,6 +5,7 @@
 #include <wx/wx.h>
 #endif
 
+#include <PhysicalDevice/CameraWindow.hpp>
 #include <Common/DialogValue.hpp>
 #include "Core.hpp"
 
@@ -13,7 +14,8 @@ enum ConfiguratorID
 	Delete = 7,
 	Coordinates,
 	Angles,
-	Scale
+	Scale,
+	Test
 };
 
 namespace Assembly
@@ -32,6 +34,8 @@ namespace Assembly
 		void Translation(wxCommandEvent&);
 		void Rotation(wxCommandEvent&);
 		void Scale(wxCommandEvent&);
+		
+		void ShowCamera(wxCommandEvent&);
 	public:
 		Configurator(uint16_t index, Core& core);
 	};

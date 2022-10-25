@@ -156,6 +156,7 @@
     <ClInclude Include="include\Network\SkyBlue\Client.API.hpp" />
     <ClInclude Include="include\Network\SkyBlue\Types.hpp" />
     <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp" />
+    <ClInclude Include="include\PhysicalDevice\RGB565.hpp" />
     <ClInclude Include="include\UserInput\KeyBindController.hpp" />
     <ClInclude Include="include\UserInput\Operator.hpp" />
     <ClInclude Include="include\vertex.h" />

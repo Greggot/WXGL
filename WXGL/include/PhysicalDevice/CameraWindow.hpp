@@ -10,33 +10,19 @@
 
 #include <SkyBlue/Client.API.hpp>
 #include <UDP/server.hpp>
+#include <wx/mstream.h>
+
+#include "RGB565.hpp"
 
 namespace PhysicalDevice
 {
-	union RGBunit
-	{
-		uint16_t raw;
-		struct
-		{
-			uint16_t red : 5;
-			uint16_t green : 6;
-			uint16_t blue : 5;
-		};
-
-		RGBunit(uint16_t raw = 0) { this->raw = raw; }
-		RGBunit(uint8_t r, uint8_t g, uint8_t b) { red = r; green = g, blue = b; }
-
-		uint8_t red8() const { return (red * 527 + 23) >> 6; }
-		uint8_t green8() const { return (green * 259 + 33) >> 6; }
-		uint8_t blue8() const { return (blue * 527 + 23) >> 6; }
-	};
-
 	class CameraWindow : public wxFrame
 	{
 	private:
-		wxBitmap bm;
 		wxImage shot;
-		RGBunit* data;
+		RGB565* data;
+		uint8_t* buffer;
+
 
 		const int width;
 		const int height;
@@ -46,6 +32,7 @@ namespace PhysicalDevice
 
 		bool isRunning = true;
 		std::thread main;
+		std::thread udp;
 
 		void TakePicture();
 	public:

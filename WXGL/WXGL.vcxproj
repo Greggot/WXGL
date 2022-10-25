@@ -148,6 +148,7 @@
     <ClInclude Include="include\Assembly\Loader.hpp" />
     <ClInclude Include="include\Assembly\Viewer.hpp" />
     <ClInclude Include="include\Common\DialogValue.hpp" />
+    <ClInclude Include="include\Compression.hpp" />
     <ClInclude Include="include\Lamp.hpp" />
     <ClInclude Include="include\MainFrame.hpp" />
     <ClInclude Include="include\Model\BaseModel.hpp" />

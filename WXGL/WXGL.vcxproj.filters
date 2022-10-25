@@ -105,6 +105,9 @@
     <ClInclude Include="include\Network\SkyBlue\Types.hpp">
       <Filter>Исходные файлы\Network\SkyBlue</Filter>
     </ClInclude>
+    <ClInclude Include="include\Compression.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
     <ClInclude Include="include\PhysicalDevice\RGB565.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>

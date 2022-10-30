@@ -48,16 +48,14 @@ namespace SkyBlue
 		}
 
 		std::vector<ID> report() override {
-			tx.service = command::report;
-			tx.length = 0;
-			client.Send(&tx, BUFFER_HEADER_SiZE());
+			send(0, command::report);
 
 			int length = client.Receive(&rx, sizeof(rx));
-			ID* ids = (ID*)&rx;
+			ID* ids = (ID*)rx.data;
 			std::vector<ID> idvector;
 
-			length /= sizeof(ID);
-			while (length--)
+			rx.length /= sizeof(ID);
+			while (rx.length--)
 				idvector.push_back(*ids++);
 			return idvector;
 		}

@@ -37,6 +37,11 @@ MainFrame::MainFrame()
     SetMenuBar(MenuBar);
 
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
+   
+    connectbutton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+        Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", api);
+        apiconnect->Show();
+    });
 }
 
 void MainFrame::StartUpdateThread(const int fps)

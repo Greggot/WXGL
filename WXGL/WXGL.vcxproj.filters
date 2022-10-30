@@ -111,6 +111,9 @@
     <ClInclude Include="include\PhysicalDevice\RGB565.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>
+    <ClInclude Include="include\Common\Dialog.APIconnect.hpp">
+      <Filter>Исходные файлы\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">

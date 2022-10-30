@@ -8,6 +8,8 @@
 #include <Assembly/Loader.hpp>
 #include <Assembly/Viewer.hpp>
 
+#include <Common/Dialog.APIconnect.hpp>
+
 #include <thread>
 
 class MainFrame : public wxFrame
@@ -18,6 +20,8 @@ public:
     void StartUpdateThread(const int fps);
     void FinishUpdateThread();
 private:
+    SkyBlue::TCPclientAPI api;
+
     Assembly::Core core;
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;

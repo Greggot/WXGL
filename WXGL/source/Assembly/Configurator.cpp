@@ -36,8 +36,7 @@ inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString Name, wxString 
 void Configurator::ShowCamera(wxCommandEvent&)
 {
 	static TCP::client client;
-	client.Connect({ {192, 168, 1, 176}, 4444 });
-	static SkyBlue::TCPclientAPI api(client);
+	static SkyBlue::TCPclientAPI api;
 
 	auto win = new PhysicalDevice::CameraWindow(nullptr, 320, 240, api);
 	win->Show();

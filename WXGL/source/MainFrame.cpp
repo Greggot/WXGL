@@ -23,12 +23,15 @@ MainFrame::MainFrame()
     Viewer = new Assembly::Viewer(this, core);
     Loader = new Assembly::Loader(this, core);
     
+    apipanel = new SkyBlue::APIPanel(this);
     auto connectbutton = new wxButton(this, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     wxFlexGridSizer* sizer = new wxFlexGridSizer(2, 2, 10, 10);
     sizer->Add(connectbutton);
+    sizer->Add(apipanel);
+    sizer->AddSpacer(0);
     sizer->Add(Viewer, 1, wxEXPAND);
     // Make Viewer expand as window size grows
-    sizer->AddGrowableRow(0);
+    sizer->AddGrowableRow(1);
     sizer->AddGrowableCol(1);
     SetSizer(sizer);
 
@@ -38,8 +41,8 @@ MainFrame::MainFrame()
 
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
    
-    connectbutton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-        Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", api);
+    connectbutton->Bind(wxEVT_BUTTON, [this, sizer](wxCommandEvent&) {
+        Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", api, apipanel, sizer);
         apiconnect->Show();
     });
 }

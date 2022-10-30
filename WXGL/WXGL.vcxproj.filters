@@ -114,6 +114,9 @@
     <ClInclude Include="include\Common\Dialog.APIconnect.hpp">
       <Filter>Исходные файлы\Common</Filter>
     </ClInclude>
+    <ClInclude Include="include\Common\API.Server.Panel.hpp">
+      <Filter>Исходные файлы\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">

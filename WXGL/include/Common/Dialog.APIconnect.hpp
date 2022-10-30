@@ -1,9 +1,11 @@
+#pragma once
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
 #include <SkyBlue/Client.API.hpp>
+#include <Common/API.Server.Panel.hpp>
 
 namespace Dialog
 {
@@ -11,6 +13,7 @@ namespace Dialog
 	{
 	private:
 		SkyBlue::TCPclientAPI& api;
+		SkyBlue::APIPanel* panel;
 		wxTextCtrl* iptext;
 		wxTextCtrl* porttext;
 		wxButton* ok;
@@ -30,8 +33,9 @@ namespace Dialog
 			SetSizer(sizer);
 		}
 	public:
-		APIconnect(wxWindow* Host, wxString title, SkyBlue::TCPclientAPI& api) :
-			wxFrame(Host, wxID_ANY, title), api(api)
+		APIconnect(wxWindow* Host, wxString title, 
+			SkyBlue::TCPclientAPI& api, SkyBlue::APIPanel* panel, wxSizer* updszr) :
+				wxFrame(Host, wxID_ANY, title), api(api), panel(panel)
 		{
 			SetBackgroundColour({ 0xFF, 0xFF, 0xFF });
 
@@ -39,12 +43,15 @@ namespace Dialog
 			porttext = new wxTextCtrl(this, wxID_ANY, "");
 			ok = new wxButton(this, wxID_ANY, "OK", wxDefaultPosition, wxSize(75, 25));
 
-			ok->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+			ok->Bind(wxEVT_BUTTON, [this, updszr, Host](wxCommandEvent&) {
 				auto IP = iptext->GetValue();
 				auto Port = porttext->GetValue();
 				this->api.connect({ IP.mb_str().data(), Port.mb_str().data() });
 
 				auto result = this->api.report();
+				for (const SkyBlue::ID id : result)
+					this->panel->Apply(id);
+				updszr->Layout();
 				Close();
 			});
 

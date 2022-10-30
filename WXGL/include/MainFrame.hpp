@@ -21,6 +21,8 @@ public:
     void FinishUpdateThread();
 private:
     SkyBlue::TCPclientAPI api;
+    SkyBlue::APIPanel* apipanel;
+
 
     Assembly::Core core;
     Assembly::Viewer* Viewer;

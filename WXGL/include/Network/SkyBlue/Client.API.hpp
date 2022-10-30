@@ -24,7 +24,7 @@ namespace SkyBlue
 	{
 	private:
 		buffer rx, tx;
-		TCP::client& client;
+		TCP::client client;
 
 		void send(ID id, command com, const void* data = nullptr, size_t size = 0) {
 			tx.id = id;
@@ -39,10 +39,12 @@ namespace SkyBlue
 			client.Send(&tx, tx.length + BUFFER_HEADER_SiZE());
 		}
 	public:
-		TCPclientAPI(TCP::client& client) 
-			: client(client) 
+		TCPclientAPI() 
 		{
+		}
 
+		void connect(const TCP::Address& address) {
+			client.Connect(address);
 		}
 
 		std::vector<ID> report() override {

@@ -31,7 +31,8 @@ public:
 		for (auto cv : values)
 		{
 			new wxStaticText(this, wxID_ANY, cv.description, position, labelsize);
-			auto text = new wxTextCtrl(this, wxID_ANY, std::to_string(*cv.value), {position.x + labelsize.x + 20, position.y}, textsize);
+			auto text = new wxTextCtrl(this, wxID_ANY, std::to_string(*cv.value), {position.x + labelsize.x + 20, position.y}, textsize, 
+				wxTE_PROCESS_ENTER);
 			text->Bind(wxEVT_TEXT, [cv, text](wxCommandEvent&) {
 				try {
 					*cv.value = std::atof(text->GetValue().mb_str().data());
@@ -39,6 +40,11 @@ public:
 				catch(const std::exception&){}
 			});
 			position.y += pand;
+			text->Bind(wxEVT_TEXT_ENTER, [this](wxCommandEvent&) { Close(); });
 		}
+		Bind(wxEVT_KEY_DOWN, [this](wxKeyEvent& evt) {
+			if (evt.GetKeyCode() == WXK_RETURN)
+				Close();
+		});
 	}
 };

@@ -57,6 +57,9 @@ Viewer::Viewer(wxFrame* parent, Core& core)
         glViewport(0, 0, size.x * factor, size.y * factor);
     });
 
+    Bind(wxEVT_LEFT_DOWN, [this](wxMouseEvent&) {
+        SetFocus();
+    });
 }
 
 inline void Viewer::GLSceneInit()

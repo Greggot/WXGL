@@ -14,6 +14,9 @@ class MainFrame : public wxFrame
 {
 public:
     MainFrame();
+
+    void StartUpdateThread(const int fps);
+    void FinishUpdateThread();
 private:
     Assembly::Core core;
     Assembly::Viewer* Viewer;

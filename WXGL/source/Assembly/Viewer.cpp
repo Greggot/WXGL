@@ -51,6 +51,12 @@ Viewer::Viewer(wxFrame* parent, Core& core)
     core(core), context(new wxGLContext(this)), camera(this), keybinds(this)
 {
     KeyBindingsInit();
+    Bind(wxEVT_SIZE, [this](wxSizeEvent& evt) {
+        auto size = evt.GetSize();
+        auto factor = GetContentScaleFactor();
+        glViewport(0, 0, size.x * factor, size.y * factor);
+    });
+
 }
 
 inline void Viewer::GLSceneInit()

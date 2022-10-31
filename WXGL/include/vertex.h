@@ -24,6 +24,10 @@ struct vertex
         return *this;
     }
 
+    float& operator[] (const size_t index) {
+        return *((float*)this + index);
+    }
+
     void draw() const;
     float maxvalue() const;
 };

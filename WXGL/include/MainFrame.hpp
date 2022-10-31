@@ -19,14 +19,19 @@ public:
 
     void StartUpdateThread(const int fps);
     void FinishUpdateThread();
+
+    void SizerInit();
+    void MenuBarInit();
 private:
+    wxButton* connector;
     SkyBlue::TCPclientAPI api;
     SkyBlue::APIPanel* apipanel;
-
 
     Assembly::Core core;
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;
+
+    wxFlexGridSizer* sizer;
     
     std::thread Update;
     bool isUpdating;

@@ -1,10 +1,8 @@
 #include <MainFrame.hpp>
 
-class MyApp : public wxApp
-{
+class MyApp : public wxApp {
     virtual bool OnInit();
 };
-
 IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit()
@@ -21,30 +19,20 @@ MainFrame::MainFrame()
     StartUpdateThread(60);
     
     Viewer = new Assembly::Viewer(this, core);
-    Loader = new Assembly::Loader(this, core);
-    
     apipanel = new SkyBlue::APIPanel(this);
-    auto connectbutton = new wxButton(this, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
-    wxFlexGridSizer* sizer = new wxFlexGridSizer(2, 2, 10, 10);
-    sizer->Add(connectbutton);
-    sizer->Add(apipanel);
-    sizer->AddSpacer(0);
-    sizer->Add(Viewer, 1, wxEXPAND);
-    // Make Viewer expand as window size grows
-    sizer->AddGrowableRow(1);
-    sizer->AddGrowableCol(1);
-    SetSizer(sizer);
-
-    wxMenuBar* MenuBar = new wxMenuBar();
-    MenuBar->Append(Loader, wxString("File"));
-    SetMenuBar(MenuBar);
+    connectPanel = new wxPanel(this);
+    connector = new wxButton(connectPanel, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
+    
+    SizerInit();
+    MenuBarInit();
 
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
-   
-    connectbutton->Bind(wxEVT_BUTTON, [this, sizer](wxCommandEvent&) {
+    // TODO: Add several variants of connection
+    connector->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
         Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", api, apipanel, sizer);
         apiconnect->Show();
     });
+
 }
 
 void MainFrame::StartUpdateThread(const int fps)
@@ -64,6 +52,34 @@ void MainFrame::FinishUpdateThread()
 {
     isUpdating = false;
     Update.join();
+}
+
+void MainFrame::SizerInit()
+{
+    /* [Connect  button] [API panel with modules - EXPANDABLE]
+    *  [Dependency tree] [Model/Assembly Viewer  - EXPANDABLE]
+    *         |                                  |
+    *     EXPANDABLE                         EXPANDABLE
+    */    
+    sizer = new wxFlexGridSizer(2,2, 10,10);
+    sizer->Add(connectPanel);
+    sizer->Add(apipanel);
+    sizer->AddSpacer(0);
+    sizer->Add(Viewer, 1, wxEXPAND);
+    
+    sizer->AddGrowableRow(1);
+    sizer->AddGrowableCol(1);
+    
+    SetSizer(sizer);
+}
+
+void MainFrame::MenuBarInit()
+{
+    Loader = new Assembly::Loader(this, core);
+
+    wxMenuBar* MenuBar = new wxMenuBar();
+    MenuBar->Append(Loader, "File");
+    SetMenuBar(MenuBar);
 }
 
 void MainFrame::CloseEvent(wxCloseEvent& event)

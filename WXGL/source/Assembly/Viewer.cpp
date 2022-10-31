@@ -47,7 +47,7 @@ void Viewer::KeyBindingsInit()
 }
 
 Viewer::Viewer(wxFrame* parent, Core& core)
-    :wxGLCanvas(parent, wxID_ANY, 0, wxPoint(60, 10), wxSize(400, 300), 0, wxT("GLCanvas")),
+    :wxGLCanvas(parent),
     core(core), context(new wxGLContext(this)), camera(this), keybinds(this)
 {
     KeyBindingsInit();
@@ -60,9 +60,11 @@ Viewer::Viewer(wxFrame* parent, Core& core)
     Bind(wxEVT_LEFT_DOWN, [this](wxMouseEvent&) {
         SetFocus();
     });
+
+    Bind(wxEVT_PAINT, &Viewer::InitScene, this);
 }
 
-inline void Viewer::GLSceneInit()
+inline void Viewer::PrepareRender()
 {
     SetCurrent(*context.get());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,7 +73,7 @@ inline void Viewer::GLSceneInit()
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
-inline void Viewer::GLSceneRender()
+inline void Viewer::FinishRender()
 {
     glFlush();
     SwapBuffers();
@@ -97,7 +99,16 @@ void Viewer::DrawAxis()
         glVertex3f(axis.x / scale, axis.y / scale, axis.z / scale);
     }
     glEnd();
+}
 
+void Viewer::InitScene(wxPaintEvent&)
+{
+    wxPaintDC(this);
+    PrepareRender();
+    
+    IsometricCameraRotation();
+
+    Unbind(wxEVT_PAINT, &Viewer::InitScene, this);
 }
 
 void Viewer::IsometricCameraRotation()
@@ -110,13 +121,7 @@ void Viewer::IsometricCameraRotation()
 void Viewer::Render(wxPaintEvent& event)
 {
     wxPaintDC(this);
-    GLSceneInit();
-    static bool init = true;
-    if (init)
-    {
-        IsometricCameraRotation();
-        init = false;
-    }
+    PrepareRender();
 
     for (auto model : core)
         model->Draw();
@@ -124,13 +129,13 @@ void Viewer::Render(wxPaintEvent& event)
     glDisable(GL_DEPTH_TEST);
     DrawAxis();
 
-    GLSceneRender();
+    FinishRender();
 }
 
 void Viewer::RightClickOnModel(wxMouseEvent& event)
 {
     wxClientDC(this);
-    GLSceneInit();
+    PrepareRender();
 
     uint32_t ID = 0;
     for (auto model : core)
@@ -138,6 +143,7 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     
     wxPoint pixel = event.GetPosition();
     ID = BaseModel::GetColorSelection(pixel.x, pixel.y);
+    // TODO: change condition to 'be equeal to background color'
     if (ID > core.size())
         return; // Add here scene general settings later maybe
 
@@ -145,7 +151,6 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     PopupMenu(&config, event.GetPosition());
 }
 
-Viewer::~Viewer()
-{
+Viewer::~Viewer() {
     core.clear();
 }

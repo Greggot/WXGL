@@ -28,14 +28,16 @@ namespace Assembly
         UserInput::KeyBindController keybinds;
         Core& core;
 
-        inline void GLSceneInit();
-        void Render(wxPaintEvent& event);
-        inline void GLSceneRender();
+        inline void PrepareRender();
+        inline void FinishRender();
         
+        void IsometricCameraRotation();
         void DrawAxis();
         
-        inline void IsometricCameraRotation();
-        void RightClickOnModel(wxMouseEvent& event);
+        void InitScene(wxPaintEvent&);
+        void Render(wxPaintEvent&);
+        void RightClickOnModel(wxMouseEvent&);
+
         void KeyBindingsInit();
         std::function<void(wxKeyEvent&)> ModelChange(std::function<void(BaseModel*)>);
     public:

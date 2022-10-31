@@ -50,17 +50,50 @@ void Configurator::Delete(wxCommandEvent&)
 
 void Configurator::Translation(wxCommandEvent&)
 {
-	/*DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
-		{"X", &core[index].Translation.x}, {"Y", &core[index].Translation.y}, {"Z", &core[index].Translation.z} });
-	value->Show();*/
+	auto& model = core[index];
+	vertex t = model.GetTranslation();
+	auto degree = model.GetDegreeOfFreedom();
+
+	std::list<changeLambda<float>> changeLambdas;
+	if (degree.x)
+		changeLambdas.push_back({ "X", t.x, [&model](const float&& value) {
+				model.Set(axis_t::x, value);
+			} });
+	if (degree.y)
+		changeLambdas.push_back({ "Y", t.y, [&model](const float&& value) {
+				model.Set(axis_t::y, value);
+			} });
+	if (degree.z)
+		changeLambdas.push_back({ "Z", t.z, [&model](const float&& value) {
+				model.Set(axis_t::z, value);
+			} });
+	auto dialog = new DialogLambda<float>(nullptr, wxGetMousePosition(), changeLambdas);
+	dialog->Show();
 }
 
 void Configurator::Rotation(wxCommandEvent&)
 {
-	/*DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
-		{"angle X", &core[index].Rotation.x}, {"angle Y", &core[index].Rotation.y}, {"angle Z", &core[index].Rotation.z} });
-	value->Show();*/
+	auto& model = core[index];
+	vertex r = model.GetRotation();
+	auto degree = model.GetDegreeOfFreedom();
+
+	std::list<changeLambda<float>> changeLambdas;
+	if(degree.alpha)
+		changeLambdas.push_back({ "angle X", r.x, [&model](const float&& value) {
+				model.Set(angles_t::x, value);
+			} });
+	if (degree.beta)
+		changeLambdas.push_back({ "angle Y", r.y, [&model](const float&& value) {
+				model.Set(angles_t::y, value);
+			} });
+	if (degree.gamma)
+		changeLambdas.push_back({ "angle Z", r.z, [&model](const float&& value) {
+				model.Set(angles_t::z, value);
+			} });
+	auto dialog = new DialogLambda<float>(nullptr, wxGetMousePosition(), changeLambdas);
+	dialog->Show();
 }
+
 void Configurator::Scale(wxCommandEvent&)
 {
 	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {

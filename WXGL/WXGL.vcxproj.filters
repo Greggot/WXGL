@@ -117,6 +117,9 @@
     <ClInclude Include="include\Common\API.Server.Panel.hpp">
       <Filter>Исходные файлы\Common</Filter>
     </ClInclude>
+    <ClInclude Include="include\Assembly\DependencyTree.hpp">
+      <Filter>Файлы заголовков\Assembly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">

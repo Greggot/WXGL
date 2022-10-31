@@ -1,8 +1,8 @@
 #include <Assembly/Loader.hpp> 
 using namespace Assembly;
 
-Loader::Loader(wxFrame* Host, Core& core)
-	: wxMenu(), Host(Host), core(core)
+Loader::Loader(wxFrame* Host, Core& core, DependencyTree& Tree)
+	: wxMenu(), Host(Host), core(core), Tree(Tree)
 {
 	AppendMenuItem(LoaderID::Open, "Open...", "Load OBJ model", &Loader::Open);
     AppendMenuItem(LoaderID::OpenAssembly, "Open assembly...", "", &Loader::LoadAssembly);
@@ -37,6 +37,7 @@ void Loader::Open(wxCommandEvent& event)
     if (open.ShowModal() == wxID_CANCEL)
         return;
     Load(open.GetPath());
+    Tree.Update();
 }
 
 void Loader::SaveAssembly(wxCommandEvent& event)

@@ -16,15 +16,16 @@ MainFrame::MainFrame()
     : wxFrame(NULL, wxID_ANY, wxT("Model View"), wxPoint(50, 50), wxSize(800, 600))
 {
     SetBackgroundColour(wxColor(0xE5, 0xE5, 0xE5));
-    StartUpdateThread(60);
     
     Viewer = new Assembly::Viewer(this, core);
+    Tree = new Assembly::DependencyTree(this, core);
     apipanel = new SkyBlue::APIPanel(this);
     connectPanel = new wxPanel(this);
     connector = new wxButton(connectPanel, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     
     SizerInit();
     MenuBarInit();
+    StartUpdateThread(60);
 
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
     // TODO: Add several variants of connection
@@ -42,7 +43,7 @@ void MainFrame::StartUpdateThread(const int fps)
         int delayms = 1000 / fps;
         while (isUpdating)
         {
-            Refresh();
+            Viewer->Refresh();
             std::this_thread::sleep_for(std::chrono::milliseconds(delayms));
         }
     });
@@ -64,7 +65,7 @@ void MainFrame::SizerInit()
     sizer = new wxFlexGridSizer(2,2, 10,10);
     sizer->Add(connectPanel);
     sizer->Add(apipanel);
-    sizer->AddSpacer(0);
+    sizer->Add(Tree);
     sizer->Add(Viewer, 1, wxEXPAND);
     
     sizer->AddGrowableRow(1);
@@ -75,7 +76,7 @@ void MainFrame::SizerInit()
 
 void MainFrame::MenuBarInit()
 {
-    Loader = new Assembly::Loader(this, core);
+    Loader = new Assembly::Loader(this, core, *Tree);
 
     wxMenuBar* MenuBar = new wxMenuBar();
     MenuBar->Append(Loader, "File");

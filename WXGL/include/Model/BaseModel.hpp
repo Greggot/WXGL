@@ -131,6 +131,9 @@ protected:
         }
     }
 public:
+    const std::string Name;
+
+    DependencyNode(std::string Name) : Name(Name) {}
     void LinkTo(DependencyNode* node) {
         parent = node;
         if(parent)
@@ -150,6 +153,10 @@ public:
         for (auto child : children)
             child->LinkTo(parent);
     }
+
+    DependencyNode* getParent() const { return parent; }
+    const std::list<DependencyNode*>& getChildren() const { return children; }
+
 };
 
 typedef vertex color;
@@ -175,9 +182,8 @@ protected:
     }
     const std::string Path;
 public:
-    DrawableModel(std::string&& Path) : Path(Path), Name(Path.substr(Path.find_last_of("\\") + 1)) {}
+    DrawableModel(std::string&& Path) : DependencyNode(Path.substr(Path.find_last_of("\\") + 1)), Path(Path) {}
 
-    const std::string Name;
     float Scale = 1;
     bool Active = false;
 

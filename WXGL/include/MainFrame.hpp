@@ -7,6 +7,7 @@
 #include <Assembly/Core.hpp>
 #include <Assembly/Loader.hpp>
 #include <Assembly/Viewer.hpp>
+#include <Assembly/DependencyTree.hpp>
 
 #include <Common/Dialog.APIconnect.hpp>
 
@@ -23,13 +24,16 @@ public:
     void SizerInit();
     void MenuBarInit();
 private:
+    wxPanel* connectPanel;
     wxButton* connector;
+
     SkyBlue::TCPclientAPI api;
     SkyBlue::APIPanel* apipanel;
 
     Assembly::Core core;
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;
+    Assembly::DependencyTree* Tree;
 
     wxFlexGridSizer* sizer;
     

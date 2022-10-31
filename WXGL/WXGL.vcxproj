@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="include\Assembly\Configurator.hpp" />
     <ClInclude Include="include\Assembly\Core.hpp" />
+    <ClInclude Include="include\Assembly\DependencyTree.hpp" />
     <ClInclude Include="include\Assembly\Loader.hpp" />
     <ClInclude Include="include\Assembly\Viewer.hpp" />
     <ClInclude Include="include\Common\API.Server.Panel.hpp" />

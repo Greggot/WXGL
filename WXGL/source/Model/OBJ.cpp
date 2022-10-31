@@ -11,7 +11,7 @@ static color GetColorFromMTLfile(const char* path, const char* base);
 * @brief Open .obj file and get vertexes/indexes from it
 **/
 Model::Model(const char* path)
-	: BaseModel(path)
+	: DrawableModel(path)
 {
 	FILE* in = fopen(path, "r");
 	if (in == nullptr)
@@ -55,7 +55,7 @@ Model::Model(const char* path)
 }
 
 
-void Model::ConcreteDraw() const
+void Model::PolygoneRender() const
 {
 	for (auto part : Parts)
 	{
@@ -90,7 +90,7 @@ inline void Model::DrawPolyOutline(const poly& p) const
 	Points[p.begin].draw();
 }
 
-inline void Model::ActiveOutlineDraw() const
+inline void Model::OutlineRender() const
 {
 	glLineWidth(1);
 	for (auto polies : Parts)
@@ -108,12 +108,13 @@ inline void Model::ActiveOutlineDraw() const
 *	so it could differ from others
 * @param ID will be converted to color
 **/
-void Model::DrawSelectionMode(uint32_t ID) const
+void Model::SelectRender(int ID)
 {
 	glPushMatrix();
 
 	glScalef(Scale, Scale, Scale);
-	ApplyMovement(Translation, Rotation);
+	ApplyHierarchyMovement();
+	ApplyOwnMovement();
 
 	setColorFrom(ID);
 
@@ -204,6 +205,5 @@ inline vertex Model::stringContainerToVertex(const std::vector<std::string>& str
 	vertex v(strtof(strings[1].c_str(), nullptr),
 				strtof(strings[2].c_str(), nullptr),
 				strtof(strings[3].c_str(), nullptr));
-	// Scale = std::max( v.max(), Scale );
 	return v;
 }

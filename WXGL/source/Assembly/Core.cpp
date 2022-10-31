@@ -1,7 +1,7 @@
 #include <Assembly/Core.hpp>
 using namespace Assembly;
 
-void Core::append(BaseModel* model) 
+void Core::append(DrawableModel* model)
 {
 	Models.push_back(model);
 	setActive(size() - 1);

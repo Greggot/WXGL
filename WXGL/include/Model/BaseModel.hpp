@@ -46,7 +46,7 @@ protected:
     vertex Translation;
     vertex Rotation;
     
-    void SetMovement(const vertex& r, const vertex& t) const {
+    void SetMovement(const vertex& t, const vertex& r) const {
         glTranslatef(t.x, t.y, t.z);
         glRotatef(r.x, 1, 0, 0);
         glRotatef(r.y, 0, 1, 0);
@@ -56,12 +56,40 @@ public:
     void Move(axis_t axis, double value){
         int index = static_cast<int>(axis);
         if (degree.raw & (1 << index))
-            Translation[index] = value;
+            Translation[index] += value;
     };
     void Rotate(angles_t angle, double value){
         int index = static_cast<int>(angle);
         if (degree.raw & (8 << index))
+            Rotation[index] += value;
+    }
+
+    void Set(axis_t axis, double value) {
+        int index = static_cast<int>(axis);
+        if (degree.raw & (1 << index))
+            Translation[index] = value;
+    };
+    void Set(angles_t angle, double value) {
+        int index = static_cast<int>(angle);
+        if (degree.raw & (8 << index))
             Rotation[index] = value;
+    }
+
+    void SetTranslation (const vertex& v) {
+        if (degree.x)
+            Translation.x = v.x;
+        if (degree.y)
+            Translation.y = v.y;
+        if (degree.z)
+            Translation.z = v.z;
+    };
+    void SetRotation(const vertex& v) {
+        if (degree.alpha)
+            Rotation.x = v.x;
+        if (degree.beta)
+            Rotation.y = v.y;
+        if (degree.gamma)
+            Rotation.z = v.z;
     }
 
     vertex GetTranslation() const { return Translation; }
@@ -178,65 +206,3 @@ public:
 
     virtual ~DrawableModel() {};
 };
-
-class BaseModel
-{
-private:
-    struct move {
-        vertex T;
-        vertex R;
-    };
-
-    BaseModel* parent = nullptr;
-    std::list<BaseModel*> children;
-
-protected:
-    const std::string Path;
-
-    static inline color GradientStep(color original, size_t steps) {
-        return color(original.maxvalue() / steps);
-    }
-    static void setColorFrom(uint32_t ID);
-
-    // TODO: Replace Euler angles with quaternions
-    inline void ApplyMovementFromBottomToTop() const;
-    void ApplyMovement(const vertex& T, const vertex& R) const;
-    void ApplyMovement() const;
-
-    virtual void ActiveOutlineDraw() const = 0;
-    virtual void ConcreteDraw() const = 0;
-public:
-    const std::string Name;
-
-    vertex Translation;
-    vertex Rotation;
-    float Scale = 1;
-    bool Active = false;
-
-    BaseModel() = default;
-    BaseModel(const char path[])
-        : Path(std::string(path)), Name(Path.substr(Path.find_last_of("\\") + 1))
-    {}
-
-    void Orphan();
-    void LinkTo(BaseModel* Parent);
-    void RemoveFromTree();
-
-    virtual void Draw() const {
-        glPushMatrix();
-        
-        glScalef(Scale, Scale, Scale);
-        ApplyMovement();
-        ConcreteDraw();
-        if (Active)
-            ActiveOutlineDraw();
-
-        glPopMatrix();
-    };
-
-    virtual void DrawSelectionMode(uint32_t ID) const {};
-    static uint32_t GetColorSelection(uint32_t x, uint32_t y);
-
-    virtual ~BaseModel() {};
-};
-

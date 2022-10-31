@@ -42,7 +42,7 @@ namespace OBJ
         Part() : Polygons{}, Color(standardColor) {}
     };
 
-    class Model : public BaseModel
+    class Model : public DrawableModel
     {
     private:
         std::vector<vertex> Points;
@@ -56,12 +56,11 @@ namespace OBJ
         color GetColorFromMTLfile(const char* path, const char* base);
         void AddPart(Part&, const char[], const char[]);
     public:
-        Model() { }
         Model(const char* FilePath);
 
-        void ConcreteDraw() const override;
-        void DrawSelectionMode(uint32_t ID) const override;
-        void ActiveOutlineDraw() const override;
+        void PolygoneRender() const override;
+        void SelectRender(int) override;
+        void OutlineRender() const override;
 
         ~Model() { }
     };

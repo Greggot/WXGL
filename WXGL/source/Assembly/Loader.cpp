@@ -20,7 +20,7 @@ inline void Loader::AppendMenuItem(int ID, wxString Name, wxString Description,
 void Loader::Load(wxString Path)
 {
     wxString extention = Path.Mid(Path.Index('.') + 1);
-    BaseModel* Model = nullptr;
+    DrawableModel* Model = nullptr;
     
     if (extention == "obj")
         Model = new OBJ::Model(Path.mb_str().data());
@@ -33,7 +33,7 @@ void Loader::Load(wxString Path)
 
 void Loader::Open(wxCommandEvent& event)
 {
-    wxFileDialog open(Host, wxString("Open Model"), "", "", "OBJ files(*.obj)|*.obj|OBJ files(*.stl)|*.stl", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    wxFileDialog open(Host, wxString("Open Model"), "", "", "OBJ files(*.obj)|*.obj|STL files(*.stl)|*.stl", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (open.ShowModal() == wxID_CANCEL)
         return;
     Load(open.GetPath());
@@ -51,8 +51,10 @@ void Loader::SaveAssembly(wxCommandEvent& event)
 
     for (auto model : core)
     {
-        fwrite(&model->Translation, sizeof(vertex), 1, out);
-        fwrite(&model->Rotation,    sizeof(vertex), 1, out);
+        vertex temp = model->GetTranslation();
+        fwrite(&temp, sizeof(vertex), 1, out);
+        temp = model->GetTranslation();
+        fwrite(&temp, sizeof(vertex), 1, out);
     }
     fclose(out);
     // Struct:  1. Models: File Path, Translate, Rotate
@@ -86,8 +88,11 @@ void Loader::LoadAssembly(wxCommandEvent& event)
     }
     for (auto model : core)
     {
-        fread(&model->Translation, sizeof(vertex), 1, in);
-        fread(&model->Rotation,    sizeof(vertex), 1, in);
+        vertex temp;
+        fread(&temp, sizeof(vertex), 1, in);
+        model->SetTranslation(temp);
+        fread(&temp, sizeof(vertex), 1, in);
+        model->SetRotation(temp);
     }
     fclose(in);
 }

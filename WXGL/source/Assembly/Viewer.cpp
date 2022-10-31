@@ -9,7 +9,7 @@ EVT_RIGHT_DOWN(Viewer::RightClickOnModel)
 
 END_EVENT_TABLE()
 
-std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(BaseModel*)> call)
+std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(DrawableModel*)> call)
 {
     return [this, call](wxKeyEvent&) {
         auto model = core.active();
@@ -31,19 +31,19 @@ void Viewer::KeyBindingsInit()
             index = 0;
         core.setActive(index);
     } });
-    keybinds.append(WXK_END, ModelChange([](BaseModel* model) { ++model->Rotation.z; }));
-    keybinds.append(WXK_HOME, ModelChange([](BaseModel* model) { --model->Rotation.z; }));
-    keybinds.append(WXK_PAGEUP, ModelChange([](BaseModel* model) { ++model->Rotation.y; }));
-    keybinds.append(WXK_PAGEDOWN, ModelChange([](BaseModel* model) { --model->Rotation.y; }));
-    keybinds.append(WXK_NUMPAD4, ModelChange([](BaseModel* model) { ++model->Rotation.x; }));
-    keybinds.append(WXK_NUMPAD6, ModelChange([](BaseModel* model) { --model->Rotation.x; }));
+    keybinds.append(WXK_END, ModelChange([](DrawableModel* model)      { model->Rotate(angles_t::z, 1); }));
+    keybinds.append(WXK_HOME, ModelChange([](DrawableModel* model)     { model->Rotate(angles_t::z, -1); }));
+    keybinds.append(WXK_PAGEUP, ModelChange([](DrawableModel* model)   { model->Rotate(angles_t::y, 1); }));
+    keybinds.append(WXK_PAGEDOWN, ModelChange([](DrawableModel* model) { model->Rotate(angles_t::y, -1);; }));
+    keybinds.append(WXK_NUMPAD4, ModelChange([](DrawableModel* model)  { model->Rotate(angles_t::x, 1); }));
+    keybinds.append(WXK_NUMPAD6, ModelChange([](DrawableModel* model)  { model->Rotate(angles_t::x, -1); }));
 
-    keybinds.append(WXK_SPACE, ModelChange([](BaseModel* model) { ++model->Translation.z; }));
-    keybinds.append(WXK_CONTROL, ModelChange([](BaseModel* model) { --model->Translation.z; }));
-    keybinds.append((wxKeyCode)'W', ModelChange([](BaseModel* model) { ++model->Translation.x; }));
-    keybinds.append((wxKeyCode)'A', ModelChange([](BaseModel* model) { ++model->Translation.y; }));
-    keybinds.append((wxKeyCode)'S', ModelChange([](BaseModel* model) { --model->Translation.x; }));
-    keybinds.append((wxKeyCode)'D', ModelChange([](BaseModel* model) { --model->Translation.y; }));
+    keybinds.append(WXK_SPACE, ModelChange([](DrawableModel* model)      { model->Move(axis_t::z, 1); }));
+    keybinds.append(WXK_CONTROL, ModelChange([](DrawableModel* model)    { model->Move(axis_t::z, -1); }));
+    keybinds.append((wxKeyCode)'W', ModelChange([](DrawableModel* model) { model->Move(axis_t::x, 1); }));
+    keybinds.append((wxKeyCode)'A', ModelChange([](DrawableModel* model) { model->Move(axis_t::y, 1); }));
+    keybinds.append((wxKeyCode)'S', ModelChange([](DrawableModel* model) { model->Move(axis_t::x, -1); }));
+    keybinds.append((wxKeyCode)'D', ModelChange([](DrawableModel* model) { model->Move(axis_t::y, -1); }));
 }
 
 Viewer::Viewer(wxFrame* parent, Core& core)
@@ -139,10 +139,10 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
 
     uint32_t ID = 0;
     for (auto model : core)
-        model->DrawSelectionMode(ID++);
+        model->SelectRender(ID++);
     
     wxPoint pixel = event.GetPosition();
-    ID = BaseModel::GetColorSelection(pixel.x, pixel.y);
+    ID = DrawableModel::GetColorSelection(pixel.x, pixel.y);
     // TODO: change condition to 'be equeal to background color'
     if (ID > core.size())
         return; // Add here scene general settings later maybe

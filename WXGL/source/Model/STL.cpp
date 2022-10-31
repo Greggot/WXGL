@@ -2,7 +2,7 @@
 using namespace STL;
 
 Model::Model(const char* path)
-	: BaseModel(path)
+	: DrawableModel(path)
 {
 	FILE* in = fopen(path, "rb");
 	header Header;
@@ -16,7 +16,7 @@ Model::Model(const char* path)
 	}
 }
 
-void Model::ConcreteDraw() const
+void Model::PolygoneRender() const
 {
 	color Color(standardColor);
 	color Gradient = GradientStep(Color, Tokens.size());
@@ -32,7 +32,7 @@ void Model::ConcreteDraw() const
 	glEnd();
 }
 
-inline void Model::ActiveOutlineDraw() const
+inline void Model::OutlineRender() const
 {
 	glLineWidth(1);
 	glBegin(GL_LINES);
@@ -51,10 +51,13 @@ inline void Model::ActiveOutlineDraw() const
 	glEnd();
 }
 
-void Model::DrawSelectionMode(uint32_t ID) const
+void Model::SelectRender(int ID)
 {
 	glPushMatrix();
-	ApplyMovement();
+	
+	glScalef(Scale, Scale, Scale);
+	ApplyHierarchyMovement();
+	ApplyOwnMovement();
 
 	glBegin(GL_TRIANGLES);
 	setColorFrom(ID);

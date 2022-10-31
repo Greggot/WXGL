@@ -31,19 +31,18 @@ namespace STL
         uint16_t attrbytecount;
     };
 
-    class Model : public BaseModel
+    class Model : public DrawableModel
     {
     private:
         std::vector<token> Tokens;
 
         inline void ApplyMovementFromBottomToTop() const {};
     public:
-        Model() { }
         Model(const char* FilePath);
 
-        void ConcreteDraw() const override;
-        void DrawSelectionMode(uint32_t ID) const override;
-        void ActiveOutlineDraw() const override;
+        void PolygoneRender() const override;
+        void SelectRender(int ID) override;
+        void OutlineRender() const override;
 
         ~Model() { };
     };

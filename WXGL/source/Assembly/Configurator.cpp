@@ -50,16 +50,16 @@ void Configurator::Delete(wxCommandEvent&)
 
 void Configurator::Translation(wxCommandEvent&)
 {
-	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
+	/*DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
 		{"X", &core[index].Translation.x}, {"Y", &core[index].Translation.y}, {"Z", &core[index].Translation.z} });
-	value->Show();
+	value->Show();*/
 }
 
 void Configurator::Rotation(wxCommandEvent&)
 {
-	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
+	/*DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
 		{"angle X", &core[index].Rotation.x}, {"angle Y", &core[index].Rotation.y}, {"angle Z", &core[index].Rotation.z} });
-	value->Show();
+	value->Show();*/
 }
 void Configurator::Scale(wxCommandEvent&)
 {

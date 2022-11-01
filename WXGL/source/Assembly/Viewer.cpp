@@ -81,21 +81,19 @@ inline void Viewer::FinishRender()
 
 void Viewer::DrawAxis()
 {
-    static const vertex ZERO = { 0, 0, 0 };
-    static vertex Axises[3] = {
+    static const vertex Axises[3] = {
         { 1, 0, 0 },
         { 0, 1, 0 },
         { 0, 0, 1 }
     };
-
     float scale = camera.getScale() * 4;
 
-    glLineWidth(3);
+    glLineWidth(2.4);
     glBegin(GL_LINES);
     for (auto axis : Axises)
     {
         glColor3f(axis.x, axis.y, axis.z);
-        glVertex3f(ZERO.x, ZERO.y, ZERO.z);
+        glVertex3f(0, 0, 0);
         glVertex3f(axis.x / scale, axis.y / scale, axis.z / scale);
     }
     glEnd();

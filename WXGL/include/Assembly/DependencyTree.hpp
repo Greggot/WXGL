@@ -5,6 +5,7 @@
 #endif
 #include <wx/treectrl.h>
 
+#include "Configurator.hpp"
 #include "Core.hpp"
 #include <map>
 
@@ -57,6 +58,21 @@ namespace Assembly
 					core.setActive((DrawableModel*)items[e.GetItem()]);
 			});
 		}
+
+		void ContexMenuOnRMBinit()
+		{
+			tree->Bind(wxEVT_TREE_ITEM_RIGHT_CLICK, [this](wxTreeEvent& e) {
+				if (e.GetItem() == tree->GetRootItem())
+					return;
+				auto model = items[e.GetItem()];
+				const auto& it = std::find(core.begin(), core.end(), model);
+				if (it == core.end())
+					return;
+
+				Configurator config(static_cast<uint16_t>(it - core.begin()), core);
+				PopupMenu(&config, wxGetMousePosition());
+			});
+		}
 	public:
 		DependencyTree(wxWindow* host, Core& core) 
 			: wxPanel(host), core(core)
@@ -66,6 +82,7 @@ namespace Assembly
 
 			HierarchyDragAndDropChange();
 			ActiveLMBinit();
+			ContexMenuOnRMBinit();
 		}
 
 		void Update()

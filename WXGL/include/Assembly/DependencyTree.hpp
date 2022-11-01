@@ -39,8 +39,6 @@ namespace Assembly
 
 			tree->Bind(wxEVT_TREE_END_DRAG, [this](wxTreeEvent& e) {
 				auto newnode = items[e.GetItem()];
-				if (newnode == dragged)
-					return;
 				if (newnode == tree->GetRootItem())
 					dragged->MakeIndependent();
 				else

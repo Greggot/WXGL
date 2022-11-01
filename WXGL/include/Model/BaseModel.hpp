@@ -136,6 +136,8 @@ public:
     DependencyNode(std::string Name) : Name(Name) {}
 
     void LinkTo(DependencyNode* node) {
+        if (node == this)
+            return;
         if (parent)
             parent->children.remove(this);
         parent = node;
@@ -145,7 +147,7 @@ public:
     void MakeIndependent() { LinkTo(nullptr); }
 
     void AddChild(DependencyNode* node) {
-        if (node == nullptr)
+        if (node == nullptr || node == this)
             return;
         children.push_back(node);
         node->parent = this;

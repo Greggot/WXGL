@@ -5,10 +5,11 @@
 #endif
 
 #include <PhysicalDevice/CameraWindow.hpp>
-#include <Common/DialogValue.hpp>
-#include <Common/Dialog.ModelProperty.hpp>
+#include <Dialog/Values.Change.hpp>
+#include <Dialog/Model.Property.hpp>
 
 #include "Core.hpp"
+#include "DependencyTree.hpp"
 
 enum ConfiguratorID
 {

@@ -9,7 +9,7 @@
 #include <Assembly/Viewer.hpp>
 #include <Assembly/DependencyTree.hpp>
 
-#include <Common/Dialog.APIconnect.hpp>
+#include <Dialog/API.Connect.hpp>
 
 #include <thread>
 

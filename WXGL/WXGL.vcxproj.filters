@@ -55,6 +55,9 @@
     <Filter Include="Исходные файлы\Network\SkyBlue">
       <UniqueIdentifier>{83c24bcc-2cf4-4cc1-a9ec-405c5ef3a920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Dialog">
+      <UniqueIdentifier>{c2c1617b-1e8c-4a73-b825-d567c2026ec4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Assembly\Configurator.hpp">
@@ -93,9 +96,6 @@
     <ClInclude Include="include\UserInput\KeyBindController.hpp">
       <Filter>Файлы заголовков\UserInput</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\DialogValue.hpp">
-      <Filter>Исходные файлы\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>
@@ -111,17 +111,20 @@
     <ClInclude Include="include\PhysicalDevice\RGB565.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\Dialog.APIconnect.hpp">
-      <Filter>Исходные файлы\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Common\API.Server.Panel.hpp">
       <Filter>Исходные файлы\Common</Filter>
     </ClInclude>
     <ClInclude Include="include\Assembly\DependencyTree.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\Dialog.ModelProperty.hpp">
-      <Filter>Исходные файлы\Common</Filter>
+    <ClInclude Include="include\Dialog\Model.Property.hpp">
+      <Filter>Файлы заголовков\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dialog\Values.Change.hpp">
+      <Filter>Файлы заголовков\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dialog\API.Connect.hpp">
+      <Filter>Файлы заголовков\Dialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,16 @@ namespace Assembly
 				Update();
 			});
 		}
+
+		void ActiveLMBinit()
+		{
+			tree->Bind(wxEVT_TREE_SEL_CHANGED, [this](wxTreeEvent& e) {
+				if (e.GetItem() == tree->GetRootItem())
+					core.dropSelection();
+				else
+					core.setActive((DrawableModel*)items[e.GetItem()]);
+			});
+		}
 	public:
 		DependencyTree(wxWindow* host, Core& core) 
 			: wxPanel(host), core(core)
@@ -55,6 +65,7 @@ namespace Assembly
 			auto root = tree->AddRoot("Model");
 
 			HierarchyDragAndDropChange();
+			ActiveLMBinit();
 		}
 
 		void Update()

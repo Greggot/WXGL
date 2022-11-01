@@ -27,6 +27,8 @@ namespace Assembly
 		DrawableModel* active() const { return Active; }
 		size_t activeindex() const { return Index; }
 		void setActive(size_t Index);
+		void setActive(DrawableModel*);
+		void dropSelection() { setActive(nullptr); }
 
 		~Core() { clear(); }
 	};

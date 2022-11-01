@@ -26,3 +26,12 @@ void Core::setActive(size_t Index) {
 	Active = Models[Index];
 	Active->Active = true;
 }
+
+void Core::setActive(DrawableModel* model)
+{
+	if (Active)
+		Active->Active = false;
+	Active = model;
+	if(Active)
+		Active->Active = true;
+}

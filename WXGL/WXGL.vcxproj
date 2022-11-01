@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="source\Assembly\Configurator.cpp" />
     <ClCompile Include="source\Assembly\Core.cpp" />
+    <ClCompile Include="source\Assembly\DependencyTree.cpp" />
     <ClCompile Include="source\Assembly\Loader.cpp" />
     <ClCompile Include="source\Assembly\Viewer.cpp" />
     <ClCompile Include="source\Lamp.cpp" />

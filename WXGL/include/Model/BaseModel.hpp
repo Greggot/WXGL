@@ -134,11 +134,15 @@ public:
     const std::string Name;
 
     DependencyNode(std::string Name) : Name(Name) {}
+
     void LinkTo(DependencyNode* node) {
+        if (parent)
+            parent->children.remove(this);
         parent = node;
         if(parent)
             parent->children.push_back(this);
     }
+    void MakeIndependent() { LinkTo(nullptr); }
 
     void AddChild(DependencyNode* node) {
         if (node == nullptr)

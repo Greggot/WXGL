@@ -4,17 +4,21 @@ using namespace Assembly;
 Configurator::Configurator(uint16_t index, Core& core)
 	: index(index), core(core), wxMenu(core[index].Name)
 {
-	AppendItem("Lock...");	// Window changing degrees of freedom
 	AppendMenuItem(ConfiguratorID::Delete, "Delete", "", &Configurator::Delete);
 	AppendSeparator();
 
-	AppendMenuItem(ConfiguratorID::Coordinates, "Coordinates...", "", &Configurator::Translation);
-	AppendMenuItem(ConfiguratorID::Angles, "Angles...", "", &Configurator::Rotation);
+	const auto degree = core[index].GetDegreeOfFreedom();
+
+	if(degree.raw & 0b111)
+		AppendMenuItem(ConfiguratorID::Coordinates, "Coordinates...", "", &Configurator::Translation);
+	if(degree.raw & 0b111000)
+		AppendMenuItem(ConfiguratorID::Angles, "Angles...", "", &Configurator::Rotation);
 	AppendMenuItem(ConfiguratorID::Scale, "Scale...", "", &Configurator::Scale);
 	AppendSeparator();
 	AppendMenuItem(ConfiguratorID::Test, "Camera View...", "", &Configurator::ShowCamera);
-	
-	AppendItem("Connect to...");	// Window for Desktop-Controller API
+
+	AppendSeparator();
+	AppendMenuItem(ConfiguratorID::Properties, "Properties", "", &Configurator::Properties);
 }
 
 inline void Configurator::AppendItem(wxString Name)
@@ -27,7 +31,7 @@ inline void Configurator::AppendItem(wxString Name)
 inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString Name, wxString Description,
 	void(Assembly::Configurator::* Method)(wxCommandEvent&))
 {
-	wxMenuItem* item = new wxMenuItem(NULL, ID, Name, Description, wxITEM_NORMAL, NULL);
+	wxMenuItem* item = new wxMenuItem(NULL, ID, Name, Description);
 	Append(item);
 	Bind(wxEVT_MENU, Method, this, ID);
 	return item;
@@ -99,4 +103,10 @@ void Configurator::Scale(wxCommandEvent&)
 	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
 		{"Scale ", &core[index].Scale} });
 	value->Show();
+}
+
+void Configurator::Properties(wxCommandEvent&)
+{
+	auto win = new ModelProperties(nullptr, core[index]);
+	win->Show();
 }

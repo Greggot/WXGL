@@ -12,29 +12,33 @@
 enum class axis_t { x, y, z };
 enum class angles_t { x, y, z };
 
+union DegreeOfFreedom {
+    uint8_t raw = 0xFF;
+    struct
+    {
+        uint8_t x : 1;
+        uint8_t y : 1;
+        uint8_t z : 1;
+
+        uint8_t alpha : 1;
+        uint8_t beta : 1;
+        uint8_t gamma : 1;
+
+        uint8_t reserved : 2;
+    };
+
+    DegreeOfFreedom(uint8_t raw = 0xFF) : raw(raw) {}
+};
+
 class ModuleModel
 {
 private:
-    union DegreeOfFreedom {
-        uint8_t raw = 0xFF;
-        struct
-        {
-            uint8_t x : 1;
-            uint8_t y : 1;
-            uint8_t z : 1;
-            
-            uint8_t alpha : 1;
-            uint8_t beta  : 1;
-            uint8_t gamma : 1;
-
-            uint8_t reserved : 2;
-        };
-    };
     SkyBlue::ID id;
 protected:
     DegreeOfFreedom degree;
 public:
     void Change(SkyBlue::ID id) { this->id = id; }
+    const SkyBlue::ID getID() const { return id; }
 
     DegreeOfFreedom GetDegreeOfFreedom() const { return degree; }
     void Set(DegreeOfFreedom degree) { this->degree = degree; }
@@ -53,23 +57,23 @@ protected:
         glRotatef(r.z, 0, 0, 1);
     }
 public:
-    void Move(axis_t axis, double value){
+    void Move(axis_t axis, float value){
         int index = static_cast<int>(axis);
         if (degree.raw & (1 << index))
             Translation[index] += value;
     };
-    void Rotate(angles_t angle, double value){
+    void Rotate(angles_t angle, float value){
         int index = static_cast<int>(angle);
         if (degree.raw & (8 << index))
             Rotation[index] += value;
     }
 
-    void Set(axis_t axis, double value) {
+    void Set(axis_t axis, float value) {
         int index = static_cast<int>(axis);
         if (degree.raw & (1 << index))
             Translation[index] = value;
     };
-    void Set(angles_t angle, double value) {
+    void Set(angles_t angle, float value) {
         int index = static_cast<int>(angle);
         if (degree.raw & (8 << index))
             Rotation[index] = value;
@@ -186,10 +190,10 @@ protected:
         Color[0] = ID & 0xFF;
         glColor3ub(Color[0], Color[1], Color[2]);
     }
-    const std::string Path;
 public:
     DrawableModel(std::string&& Path) : DependencyNode(Path.substr(Path.find_last_of("\\") + 1)), Path(Path) {}
 
+    const std::string Path;
     float Scale = 1;
     bool Active = false;
 

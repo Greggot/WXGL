@@ -120,6 +120,9 @@
     <ClInclude Include="include\Assembly\DependencyTree.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
+    <ClInclude Include="include\Common\Dialog.ModelProperty.hpp">
+      <Filter>Исходные файлы\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">

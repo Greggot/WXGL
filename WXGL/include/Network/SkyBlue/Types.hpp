@@ -18,13 +18,22 @@ namespace SkyBlue
 
     enum class type_t : uint16_t
     {
+        none,
+        steady,
+
         rotorservo,
         linearservo,
-        camera
+        camera,
+
+        amount
     };
+    inline const char** TypeDescriptions() {
+        static const char* descr[] = { "none", "steady peace", "rotor", "linear", "camera" };
+        return descr;
+    }
+
     inline const char* typeToString(type_t type) {
-        static const char* descr[] = { "rotor", "linear", "camera" };
-        return descr[static_cast<int>(type)];
+        return TypeDescriptions()[static_cast<int>(type)];
     }
 
     union ID
@@ -54,6 +63,4 @@ namespace SkyBlue
         uint8_t data[BUFFER_ARG_SIZE()];
     };
     #pragma pack(pop)
-
-    
 }

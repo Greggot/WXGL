@@ -1,5 +1,4 @@
 #pragma once
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
@@ -7,6 +6,8 @@
 
 #include <PhysicalDevice/CameraWindow.hpp>
 #include <Common/DialogValue.hpp>
+#include <Common/Dialog.ModelProperty.hpp>
+
 #include "Core.hpp"
 
 enum ConfiguratorID
@@ -15,7 +16,8 @@ enum ConfiguratorID
 	Coordinates,
 	Angles,
 	Scale,
-	Test
+	Test,
+	Properties
 };
 
 namespace Assembly
@@ -36,6 +38,7 @@ namespace Assembly
 		void Scale(wxCommandEvent&);
 		
 		void ShowCamera(wxCommandEvent&);
+		void Properties(wxCommandEvent&);
 	public:
 		Configurator(uint16_t index, Core& core);
 	};

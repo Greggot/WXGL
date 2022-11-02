@@ -19,7 +19,7 @@ MainFrame::MainFrame()
     
     Viewer = new Assembly::Viewer(this, core);
     Tree = new Assembly::DependencyTree(this, core);
-    apipanel = new SkyBlue::APIPanel(this);
+    apipanel = new SkyBlue::APIPanel(this, core);
     connectPanel = new wxPanel(this);
     connector = new wxButton(connectPanel, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     

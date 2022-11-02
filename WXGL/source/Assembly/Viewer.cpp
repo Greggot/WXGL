@@ -62,8 +62,6 @@ Viewer::Viewer(wxWindow* parent, Core& core)
     });
 
     Bind(wxEVT_PAINT, &Viewer::InitScene, this);
-
-    auto apen = new NameClosePanel(this, { 0x42, 0x87,0xF5 }, "CAM 0");
 }
 
 inline void Viewer::PrepareRender()

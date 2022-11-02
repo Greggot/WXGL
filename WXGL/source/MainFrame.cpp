@@ -18,6 +18,25 @@ MainFrame::MainFrame()
     SetBackgroundColour(wxColor(0xE5, 0xE5, 0xE5));
     
     Viewer = new Assembly::Viewer(this, core);
+
+    PhysicalDevice::RGB565* data = new PhysicalDevice::RGB565[320 * 240];
+    FILE* f = fopen("C:/Users/007/Desktop/photos/2.jpg", "rb");
+    fread(data, sizeof(PhysicalDevice::RGB565), 320 * 240, f);
+    fclose(f);
+
+    auto image = new ImagePanel(nullptr, { 0x42, 0x87,0xF5 }, "CAM 0", 320, 240);
+    image->Show();
+    for (int row = 0; row < 240; ++row)
+    {
+        for (int column = 0; column < 320; ++column)
+        {
+            const PhysicalDevice::RGB565 color = data[row * 320 + column];
+            image->Set(column, row, color.red8(), color.green8(), color.blue8());
+        }
+    }
+    image->Update();
+    delete[] data;
+
     Tree = new Assembly::DependencyTree(this, core);
     apipanel = new SkyBlue::APIPanel(this);
     connectPanel = new wxPanel(this);

@@ -18,6 +18,8 @@ enum ConfiguratorID
 	Angles,
 	Scale,
 	Properties,
+
+	Camera,
 };
 
 namespace Assembly
@@ -40,5 +42,31 @@ namespace Assembly
 			void(Assembly::Configurator::* Method)(wxCommandEvent&), wxString Description = "");
 	public:
 		Configurator(uint16_t index, Core& core);
+	};
+}
+
+#include <Common/MovablePanel.hpp>
+namespace Assembly
+{
+	class CameraConfigurator : public Configurator
+	{
+	private:
+		SkyBlue::TCPclientAPI& api;
+		ImagePanel* image;
+	public:
+		CameraConfigurator(uint16_t index, Core& core, SkyBlue::TCPclientAPI& api)
+			: Configurator(index, core), api(api)
+		{
+			AppendSeparator();
+
+			wxMenuItem* item = new wxMenuItem(NULL, ConfiguratorID::Camera, "Camera View...");
+			Append(item);
+			Bind(wxEVT_MENU, [this](wxCommandEvent& e) {
+				image = new ImagePanel(nullptr, { 0x42, 0x87,0xF5 }, "CAM 0", 320, 240);
+				image->Show();
+			}, ConfiguratorID::Camera);
+		}
+
+		ImagePanel& GetImage() { return *image; }
 	};
 }

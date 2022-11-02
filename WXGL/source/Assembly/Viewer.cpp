@@ -141,8 +141,23 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     if (ID > core.size())
         return; // Add here scene general settings later maybe
 
-    Configurator config(ID, core);
-    PopupMenu(&config, event.GetPosition());
+
+    wxMenu* config;
+    static SkyBlue::TCPclientAPI api;
+    const auto& id = core[ID].getID();
+    switch (id.type)
+    {
+    case SkyBlue::type_t::camera:
+        config = new CameraConfigurator(ID, core, api);
+        break;
+    default:
+        config = new Configurator(ID, core);
+        break;
+    }
+
+    //Configurator config(ID, core);
+    PopupMenu(config, event.GetPosition());
+    delete config;
 }
 
 Viewer::~Viewer() {

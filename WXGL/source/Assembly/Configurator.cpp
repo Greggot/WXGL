@@ -4,21 +4,18 @@ using namespace Assembly;
 Configurator::Configurator(uint16_t index, Core& core)
 	: index(index), core(core), wxMenu(core[index].Name)
 {
-	AppendMenuItem(ConfiguratorID::Delete, "Delete", "", &Configurator::Delete);
+	AppendMenuItem(ConfiguratorID::Delete, "Delete", &Configurator::Delete);
 	AppendSeparator();
 
 	const auto degree = core[index].GetDegreeOfFreedom();
-
 	if(degree.raw & 0b111)
-		AppendMenuItem(ConfiguratorID::Coordinates, "Coordinates...", "", &Configurator::Translation);
+		AppendMenuItem(ConfiguratorID::Coordinates, "Coordinates...", &Configurator::Translation);
 	if(degree.raw & 0b111000)
-		AppendMenuItem(ConfiguratorID::Angles, "Angles...", "", &Configurator::Rotation);
-	AppendMenuItem(ConfiguratorID::Scale, "Scale...", "", &Configurator::Scale);
+		AppendMenuItem(ConfiguratorID::Angles, "Angles...", &Configurator::Rotation);
+	AppendMenuItem(ConfiguratorID::Scale, "Scale...", &Configurator::Scale);
+	
 	AppendSeparator();
-	AppendMenuItem(ConfiguratorID::Test, "Camera View...", "", &Configurator::ShowCamera);
-
-	AppendSeparator();
-	AppendMenuItem(ConfiguratorID::Properties, "Properties", "", &Configurator::Properties);
+	AppendMenuItem(ConfiguratorID::Properties, "Properties...", &Configurator::Properties);
 }
 
 inline void Configurator::AppendItem(wxString Name)
@@ -27,23 +24,13 @@ inline void Configurator::AppendItem(wxString Name)
 	Append(Item);
 }
 
-
-inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString Name, wxString Description,
-	void(Assembly::Configurator::* Method)(wxCommandEvent&))
+inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString&& Name,
+	void(Assembly::Configurator::* Method)(wxCommandEvent&), wxString Description)
 {
 	wxMenuItem* item = new wxMenuItem(NULL, ID, Name, Description);
 	Append(item);
 	Bind(wxEVT_MENU, Method, this, ID);
 	return item;
-}
-
-void Configurator::ShowCamera(wxCommandEvent&)
-{
-	static TCP::client client;
-	static SkyBlue::TCPclientAPI api;
-
-	auto win = new PhysicalDevice::CameraWindow(nullptr, 320, 240, api);
-	win->Show();
 }
 
 void Configurator::Delete(wxCommandEvent&)

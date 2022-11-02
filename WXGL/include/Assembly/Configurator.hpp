@@ -17,8 +17,7 @@ enum ConfiguratorID
 	Coordinates,
 	Angles,
 	Scale,
-	Test,
-	Properties
+	Properties,
 };
 
 namespace Assembly
@@ -26,20 +25,19 @@ namespace Assembly
 	class Configurator : public wxMenu
 	{
 	private:
-		inline void AppendItem(wxString Name);
-		uint16_t index;
-		Core& core;
-
-		inline wxMenuItem* AppendMenuItem(int ID, wxString Name, wxString Description,
-			void(Assembly::Configurator::* Method)(wxCommandEvent&));
-
 		void Delete(wxCommandEvent&);
 		void Translation(wxCommandEvent&);
 		void Rotation(wxCommandEvent&);
 		void Scale(wxCommandEvent&);
 		
-		void ShowCamera(wxCommandEvent&);
 		void Properties(wxCommandEvent&);
+	protected:
+		uint16_t index;
+		Core& core;
+
+		inline void AppendItem(wxString Name);
+		inline wxMenuItem* AppendMenuItem(int ID, wxString&& Name,
+			void(Assembly::Configurator::* Method)(wxCommandEvent&), wxString Description = "");
 	public:
 		Configurator(uint16_t index, Core& core);
 	};

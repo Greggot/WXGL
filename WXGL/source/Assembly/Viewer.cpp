@@ -46,7 +46,7 @@ void Viewer::KeyBindingsInit()
     keybinds.append((wxKeyCode)'D', ModelChange([](DrawableModel* model) { model->Move(axis_t::y, -1); }));
 }
 
-Viewer::Viewer(wxFrame* parent, Core& core)
+Viewer::Viewer(wxWindow* parent, Core& core)
     :wxGLCanvas(parent),
     core(core), context(new wxGLContext(this)), camera(this), keybinds(this)
 {
@@ -62,6 +62,8 @@ Viewer::Viewer(wxFrame* parent, Core& core)
     });
 
     Bind(wxEVT_PAINT, &Viewer::InitScene, this);
+
+    auto apen = new NameClosePanel(this, { 0x42, 0x87,0xF5 }, "CAM 0");
 }
 
 inline void Viewer::PrepareRender()

@@ -149,6 +149,7 @@
     <ClInclude Include="include\Assembly\Loader.hpp" />
     <ClInclude Include="include\Assembly\Viewer.hpp" />
     <ClInclude Include="include\Common\API.Server.Panel.hpp" />
+    <ClInclude Include="include\Common\MovablePanel.hpp" />
     <ClInclude Include="include\Compression.hpp" />
     <ClInclude Include="include\Dialog\API.Connect.hpp" />
     <ClInclude Include="include\Dialog\Model.Property.hpp" />

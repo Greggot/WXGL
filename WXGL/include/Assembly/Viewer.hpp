@@ -16,6 +16,7 @@
 
 #include <UserInput/Operator.hpp>
 #include <UserInput/KeyBindController.hpp>
+#include <Common/MovablePanel.hpp>
 
 namespace Assembly
 {
@@ -41,7 +42,7 @@ namespace Assembly
         void KeyBindingsInit();
         std::function<void(wxKeyEvent&)> ModelChange(std::function<void(DrawableModel*)>);
     public:
-        Viewer(wxFrame* parent, Core& core);
+        Viewer(wxWindow* parent, Core& core);
 
         ~Viewer();
     protected:

@@ -84,7 +84,7 @@ void Viewer::DrawAxis()
     static const vertex Axises[3] = { eX, eY, eZ };
     float scale = camera.getScale() * 4;
 
-    glLineWidth(2.4);
+    glLineWidth(2.4f);
     glBegin(GL_LINES);
     for (auto axis : Axises)
     {

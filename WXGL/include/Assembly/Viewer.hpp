@@ -18,6 +18,8 @@
 #include <UserInput/KeyBindController.hpp>
 #include <Common/MovablePanel.hpp>
 
+#include <SkyBlue/Client.API.hpp>
+
 namespace Assembly
 {
 

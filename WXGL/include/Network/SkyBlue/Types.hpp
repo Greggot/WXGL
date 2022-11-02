@@ -46,6 +46,10 @@ namespace SkyBlue
 
         ID(uint16_t number, type_t type) : number(number), type(type) {}
         ID(uint32_t raw = 0) : raw(raw) {}
+
+        bool operator==(const ID& id) const {
+            return raw == id.raw;
+        }
     };
 
     #define BUFFER_SIZE 1440

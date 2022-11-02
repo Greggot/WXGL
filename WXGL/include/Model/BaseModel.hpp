@@ -30,6 +30,7 @@ union DegreeOfFreedom {
     DegreeOfFreedom(uint8_t raw = 0xFF) : raw(raw) {}
 };
 
+#include <functional>
 class ModuleModel
 {
 private:
@@ -46,37 +47,40 @@ public:
 
 class MovableModel : public ModuleModel
 {
-protected:
-    vertex Translation;
-    vertex Rotation;
-    
-    void SetMovement(const vertex& t, const vertex& r) const {
-        glTranslatef(t.x, t.y, t.z);
-        glRotatef(r.x, 1, 0, 0);
-        glRotatef(r.y, 0, 1, 0);
-        glRotatef(r.z, 0, 0, 1);
-    }
 public:
+    using callback = std::function<void(const vertex&)>;
     void Move(axis_t axis, float value){
         int index = static_cast<int>(axis);
         if (degree.raw & (1 << index))
+        {
             Translation[index] += value;
+            Transcall(Translation);
+        }
     };
     void Rotate(angles_t angle, float value){
         int index = static_cast<int>(angle);
         if (degree.raw & (8 << index))
+        {
             Rotation[index] += value;
+            Rotatecall(Rotation);
+        }
     }
 
     void Set(axis_t axis, float value) {
         int index = static_cast<int>(axis);
         if (degree.raw & (1 << index))
+        {
             Translation[index] = value;
+            Transcall(Translation);
+        }
     };
     void Set(angles_t angle, float value) {
         int index = static_cast<int>(angle);
         if (degree.raw & (8 << index))
+        {
             Rotation[index] = value;
+            Rotatecall(Rotation);
+        }
     }
 
     void SetTranslation (const vertex& v) {
@@ -86,6 +90,7 @@ public:
             Translation.y = v.y;
         if (degree.z)
             Translation.z = v.z;
+        Transcall(Translation);
     };
     void SetRotation(const vertex& v) {
         if (degree.alpha)
@@ -94,6 +99,7 @@ public:
             Rotation.y = v.y;
         if (degree.gamma)
             Rotation.z = v.z;
+        Rotatecall(Rotation);
     }
 
     vertex GetTranslation() const { return Translation; }
@@ -105,6 +111,21 @@ public:
         glRotatef(Rotation.y, 0, 1, 0);
         glRotatef(Rotation.z, 0, 0, 1);
     }
+
+    void SetTranslation(callback call) { Transcall = call; }
+    void SetRotation(callback call) { Rotatecall = call; }
+protected:
+    vertex Translation;
+    vertex Rotation;
+
+    void SetMovement(const vertex& t, const vertex& r) const {
+        glTranslatef(t.x, t.y, t.z);
+        glRotatef(r.x, 1, 0, 0);
+        glRotatef(r.y, 0, 1, 0);
+        glRotatef(r.z, 0, 0, 1);
+    }
+private:
+    callback Transcall, Rotatecall;
 };
 
 class DependencyNode : public MovableModel

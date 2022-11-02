@@ -4,8 +4,8 @@
 #include <wx/wx.h>
 #endif
 
-#include <PhysicalDevice/CameraWindow.hpp>
-#include <Dialog/Values.Change.hpp>
+#include <Dialog/Value.Change.hpp>
+#include <Dialog/Lambda.Change.hpp>
 #include <Dialog/Model.Property.hpp>
 
 #include "Core.hpp"
@@ -46,6 +46,7 @@ namespace Assembly
 }
 
 #include <Common/MovablePanel.hpp>
+#include <SkyBlue/Client.API.hpp>
 namespace Assembly
 {
 	class CameraConfigurator : public Configurator

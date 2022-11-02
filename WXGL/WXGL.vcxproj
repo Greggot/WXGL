@@ -152,8 +152,9 @@
     <ClInclude Include="include\Common\MovablePanel.hpp" />
     <ClInclude Include="include\Compression.hpp" />
     <ClInclude Include="include\Dialog\API.Connect.hpp" />
+    <ClInclude Include="include\Dialog\Lambda.Change.hpp" />
     <ClInclude Include="include\Dialog\Model.Property.hpp" />
-    <ClInclude Include="include\Dialog\Values.Change.hpp" />
+    <ClInclude Include="include\Dialog\Value.Change.hpp" />
     <ClInclude Include="include\Lamp.hpp" />
     <ClInclude Include="include\MainFrame.hpp" />
     <ClInclude Include="include\Model\BaseModel.hpp" />
@@ -173,11 +174,15 @@
     <ClCompile Include="source\Assembly\DependencyTree.cpp" />
     <ClCompile Include="source\Assembly\Loader.cpp" />
     <ClCompile Include="source\Assembly\Viewer.cpp" />
+    <ClCompile Include="source\DIalog\API.Connect.cpp" />
+    <ClCompile Include="source\DIalog\Model.Property.cpp" />
+    <ClCompile Include="source\DIalog\Value.Change.cpp" />
     <ClCompile Include="source\Lamp.cpp" />
     <ClCompile Include="source\MainFrame.cpp" />
     <ClCompile Include="source\Model\BaseModel.cpp" />
     <ClCompile Include="source\Model\OBJ.cpp" />
     <ClCompile Include="source\Model\STL.cpp" />
+    <ClCompile Include="source\Network\SkyBlue\TCPclientAPI.cpp" />
     <ClCompile Include="source\PhysicalDevice\CameraWindow.cpp" />
     <ClCompile Include="source\UserInput\KeyBindController.cpp" />
     <ClCompile Include="source\UserInput\Operator.cpp" />

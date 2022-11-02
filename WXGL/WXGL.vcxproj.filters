@@ -58,6 +58,15 @@
     <Filter Include="Файлы заголовков\Dialog">
       <UniqueIdentifier>{c2c1617b-1e8c-4a73-b825-d567c2026ec4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Network">
+      <UniqueIdentifier>{bed9923d-a9a1-4405-82b7-9ee461b4b676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Network\SkyBlue">
+      <UniqueIdentifier>{440444b2-4db0-423c-9c10-90207a3468c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Dialog">
+      <UniqueIdentifier>{6bdf9366-618e-4e6d-b08e-7763089ad796}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Assembly\Configurator.hpp">
@@ -99,12 +108,6 @@
     <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>
-    <ClInclude Include="include\Network\SkyBlue\Client.API.hpp">
-      <Filter>Исходные файлы\Network\SkyBlue</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Network\SkyBlue\Types.hpp">
-      <Filter>Исходные файлы\Network\SkyBlue</Filter>
-    </ClInclude>
     <ClInclude Include="include\Compression.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -120,7 +123,7 @@
     <ClInclude Include="include\Dialog\Model.Property.hpp">
       <Filter>Файлы заголовков\Dialog</Filter>
     </ClInclude>
-    <ClInclude Include="include\Dialog\Values.Change.hpp">
+    <ClInclude Include="include\Dialog\Value.Change.hpp">
       <Filter>Файлы заголовков\Dialog</Filter>
     </ClInclude>
     <ClInclude Include="include\Dialog\API.Connect.hpp">
@@ -128,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="include\Common\MovablePanel.hpp">
       <Filter>Файлы заголовков\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Network\SkyBlue\Types.hpp">
+      <Filter>Файлы заголовков\Network\SkyBlue</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Network\SkyBlue\Client.API.hpp">
+      <Filter>Файлы заголовков\Network\SkyBlue</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dialog\Lambda.Change.hpp">
+      <Filter>Файлы заголовков\Dialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +181,18 @@
     </ClCompile>
     <ClCompile Include="source\Assembly\DependencyTree.cpp">
       <Filter>Исходные файлы\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\SkyBlue\TCPclientAPI.cpp">
+      <Filter>Исходные файлы\Network\SkyBlue</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DIalog\API.Connect.cpp">
+      <Filter>Исходные файлы\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DIalog\Model.Property.cpp">
+      <Filter>Исходные файлы\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DIalog\Value.Change.cpp">
+      <Filter>Исходные файлы\Dialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

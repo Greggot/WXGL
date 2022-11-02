@@ -81,11 +81,7 @@ inline void Viewer::FinishRender()
 
 void Viewer::DrawAxis()
 {
-    static const vertex Axises[3] = {
-        { 1, 0, 0 },
-        { 0, 1, 0 },
-        { 0, 0, 1 }
-    };
+    static const vertex Axises[3] = { eX, eY, eZ };
     float scale = camera.getScale() * 4;
 
     glLineWidth(2.4);

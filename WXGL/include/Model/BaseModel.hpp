@@ -54,7 +54,8 @@ public:
         if (degree.raw & (1 << index))
         {
             Translation[index] += value;
-            Transcall(Translation);
+            if(Transcall)
+                Transcall(Translation);
         }
     };
     void Rotate(angles_t angle, float value){
@@ -62,7 +63,8 @@ public:
         if (degree.raw & (8 << index))
         {
             Rotation[index] += value;
-            Rotatecall(Rotation);
+            if(Rotatecall)
+                Rotatecall(Rotation);
         }
     }
 
@@ -71,7 +73,8 @@ public:
         if (degree.raw & (1 << index))
         {
             Translation[index] = value;
-            Transcall(Translation);
+            if (Transcall)
+                Transcall(Translation);
         }
     };
     void Set(angles_t angle, float value) {
@@ -79,7 +82,8 @@ public:
         if (degree.raw & (8 << index))
         {
             Rotation[index] = value;
-            Rotatecall(Rotation);
+            if (Rotatecall)
+                Rotatecall(Rotation);
         }
     }
 
@@ -90,7 +94,8 @@ public:
             Translation.y = v.y;
         if (degree.z)
             Translation.z = v.z;
-        Transcall(Translation);
+        if (Transcall)
+            Transcall(Translation);
     };
     void SetRotation(const vertex& v) {
         if (degree.alpha)
@@ -99,7 +104,8 @@ public:
             Rotation.y = v.y;
         if (degree.gamma)
             Rotation.z = v.z;
-        Rotatecall(Rotation);
+        if (Rotatecall)
+            Rotatecall(Rotation);
     }
 
     vertex GetTranslation() const { return Translation; }

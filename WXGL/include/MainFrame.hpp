@@ -27,7 +27,7 @@ private:
     wxPanel* connectPanel;
     wxButton* connector;
 
-    SkyBlue::TCPclientAPI api;
+    SkyBlue::Device api;
     SkyBlue::APIPanel* apipanel;
 
     Assembly::Core core;

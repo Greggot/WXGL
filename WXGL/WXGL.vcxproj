@@ -182,7 +182,8 @@
     <ClCompile Include="source\Model\BaseModel.cpp" />
     <ClCompile Include="source\Model\OBJ.cpp" />
     <ClCompile Include="source\Model\STL.cpp" />
-    <ClCompile Include="source\Network\SkyBlue\TCPclientAPI.cpp" />
+    <ClCompile Include="source\Network\SkyBlue\Collector.cpp" />
+    <ClCompile Include="source\Network\SkyBlue\Device.cpp" />
     <ClCompile Include="source\PhysicalDevice\CameraWindow.cpp" />
     <ClCompile Include="source\UserInput\KeyBindController.cpp" />
     <ClCompile Include="source\UserInput\Operator.cpp" />

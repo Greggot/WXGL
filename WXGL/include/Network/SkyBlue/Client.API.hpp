@@ -8,38 +8,77 @@
 
 namespace SkyBlue
 {
-	class clientAPI
+	class Device;
+	/**
+	* @brief Robot's part communication protocol 
+	*	without connection to lower lever transport protocol (e.g. TCP, UDP, USB...)
+	* 
+	* @member read/write are callbacks, because there are several Modules at one end
+	*	Thus, it's 'server' job to select appropriate module to retransmit data to
+	*/
+	class Module
 	{
-	private:
 	public:
-		using callback = std::function<void(const buffer&)>;
+		using requestHandler = std::function<void(const void*, unsigned int)>;
+		Module() = default;
 
-		virtual std::vector<ID> report() = 0;
-		virtual void write(ID, const void*, unsigned int) = 0;
-		virtual void read(callback) = 0;
-		virtual void askread(ID, const void*, unsigned int, callback) = 0;
-
-		virtual bool isConnected() const { return false; }
-	};
-
-	class TCPclientAPI : public clientAPI
-	{
+		// Application polymorphism
+		void setRead(requestHandler call) { read = call; }
+		void setWrite(requestHandler call) { write = call; }
 	private:
+		friend class Device;
+		requestHandler read, write;
+	};
+}
+
+#include <map>
+#include <thread>
+namespace SkyBlue
+{
+	// Invariant - size is not limited by buffer size
+	// TODO: Add templates for buffer and client
+	class Collector
+	{
+	protected:
 		buffer rx, tx;
 		TCP::client client;
-
-		void send(ID id, command com, const void* data = nullptr, unsigned int size = 0);
-		bool connected = false;
 	public:
-		TCPclientAPI() = default;
+		void disconnect();
+		void connect(void* connectdata);
 
-		void connect(const TCP::Address& address);
-		std::vector<ID> report() override;
+		void receive();
+		void transmit(const void* data, size_t size);
+	};
+}
 
-		void write(ID, const void* data, unsigned int size) override;
-		void read(callback) override;
-		void askread(ID, const void* request, unsigned int size, callback) override;
+namespace SkyBlue
+{
+	class Device : public Collector
+	{
+	private:
+		std::map<ID, Module*> modules;
+		bool islistening = false;
+		std::thread main;
+		
+		void Report();
+		void Execute();
+	public:
+		Device() = default;
+		
+		// Process receive
+		void listen();
+		void deaf();
+		bool doeslisten() const;
 
-		bool isConnected() const override;
+		// Process transmit
+		std::vector<ID> report();
+		void write(ID, const void* data, unsigned int length);
+		void read(ID, const void* request, unsigned int length);
+
+		// process system of modules
+		Module* get(ID);
+		void add(ID, Module*);
+		void remove(ID id) { modules.erase(id); }
+		void clear();
 	};
 }

@@ -46,9 +46,9 @@ void Viewer::KeyBindingsInit()
     keybinds.append((wxKeyCode)'D', ModelChange([](DrawableModel* model) { model->Move(axis_t::y, -1); }));
 }
 
-Viewer::Viewer(wxWindow* parent, Core& core)
+Viewer::Viewer(wxWindow* parent, Core& core, SkyBlue::Device& device)
     :wxGLCanvas(parent),
-    core(core), context(new wxGLContext(this)), camera(this), keybinds(this)
+    core(core), context(new wxGLContext(this)), camera(this), keybinds(this), device(device)
 {
     KeyBindingsInit();
     Bind(wxEVT_SIZE, [this](wxSizeEvent& evt) {
@@ -141,14 +141,12 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     if (ID > core.size())
         return; // Add here scene general settings later maybe
 
-
     wxMenu* config;
-    static SkyBlue::TCPclientAPI api;
     const auto& id = core[ID].getID();
     switch (id.type)
     {
     case SkyBlue::type_t::camera:
-        config = new CameraConfigurator(ID, core, api);
+        config = new CameraConfigurator(ID, core, device);
         break;
     default:
         config = new Configurator(ID, core);

@@ -60,14 +60,26 @@ namespace Assembly
 		{
 			AppendSeparator();
 
+namespace Assembly
+{
+	class CameraConfigurator : public Configurator
+	{
+	private:
+		void ShowInit(SkyBlue::Device& api) {
 			wxMenuItem* item = new wxMenuItem(NULL, ConfiguratorID::Camera, "Camera View...");
 			Append(item);
-			Bind(wxEVT_MENU, [this](wxCommandEvent& e) {
-				image = new ImagePanel(nullptr, { 0x42, 0x87,0xF5 }, "CAM 0", 320, 240);
+			Bind(wxEVT_MENU, [&api, this](wxCommandEvent& e) {
+				auto image = new ImagePanel(nullptr, { 0x42, 0x87,0xF5 }, "CAM 0", 320, 240);
 				image->Show();
 			}, ConfiguratorID::Camera);
 		}
+	public:
+		CameraConfigurator(uint16_t index, Core& core, SkyBlue::Device& api)
+			: Configurator(index, core)
+		{
+			AppendSeparator();
 
-		ImagePanel& GetImage() { return *image; }
+			ShowInit(api);
+		}
 	};
 }

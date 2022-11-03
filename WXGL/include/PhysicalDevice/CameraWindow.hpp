@@ -27,7 +27,7 @@ namespace PhysicalDevice
 		const int width;
 		const int height;
 
-		SkyBlue::clientAPI& api;
+		SkyBlue::Device& api;
 		UDP::server server;
 
 		bool isRunning = true;
@@ -36,7 +36,7 @@ namespace PhysicalDevice
 
 		void TakePicture();
 	public:
-		CameraWindow(wxFrame* host, int width, int height, SkyBlue::clientAPI& api);
+		CameraWindow(wxFrame* host, int width, int height, SkyBlue::Device& api);
 
 		~CameraWindow();
 	};

@@ -3,7 +3,7 @@
 
 namespace SkyBlue
 {
-    enum command : uint8_t
+    enum command_t : uint8_t
     {
         report,
         read,
@@ -11,7 +11,7 @@ namespace SkyBlue
 
         amount
     };
-    inline const char* commandstring(command cmd) {
+    inline const char* commandstring(command_t cmd) {
         static const char* descr[] = { "report", "read", "write" };
         return descr[cmd];
     }
@@ -50,10 +50,13 @@ namespace SkyBlue
         bool operator==(const ID& id) const {
             return raw == id.raw;
         }
+        bool operator<(const ID& id) const {
+            return raw < id.raw;
+        }
     };
 
     #define BUFFER_SIZE 1440
-    constexpr size_t BUFFER_HEADER_SiZE() { return sizeof(ID) + sizeof(command) + sizeof(size_t); }
+    constexpr size_t BUFFER_HEADER_SiZE() { return sizeof(ID) + sizeof(command_t) + sizeof(size_t); }
     constexpr size_t BUFFER_ARG_SIZE() {
         return BUFFER_SIZE - BUFFER_HEADER_SiZE();
     }
@@ -62,7 +65,7 @@ namespace SkyBlue
     struct buffer
     {
         ID id;
-        command service;
+        command_t command;
         uint32_t length;
         uint8_t data[BUFFER_ARG_SIZE()];
     };

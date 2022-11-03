@@ -30,6 +30,7 @@ namespace Assembly
         UserInput::Operator camera;
         UserInput::KeyBindController keybinds;
         Core& core;
+        SkyBlue::Device& device;
 
         inline void PrepareRender();
         inline void FinishRender();
@@ -44,7 +45,7 @@ namespace Assembly
         void KeyBindingsInit();
         std::function<void(wxKeyEvent&)> ModelChange(std::function<void(DrawableModel*)>);
     public:
-        Viewer(wxWindow* parent, Core& core);
+        Viewer(wxWindow* parent, Core& core, SkyBlue::Device& device);
 
         ~Viewer();
     protected:

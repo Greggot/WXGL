@@ -182,7 +182,7 @@
     <ClCompile Include="source\Assembly\DependencyTree.cpp">
       <Filter>Исходные файлы\Assembly</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\SkyBlue\TCPclientAPI.cpp">
+    <ClCompile Include="source\Network\SkyBlue\Collector.cpp">
       <Filter>Исходные файлы\Network\SkyBlue</Filter>
     </ClCompile>
     <ClCompile Include="source\DIalog\API.Connect.cpp">
@@ -193,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="source\DIalog\Value.Change.cpp">
       <Filter>Исходные файлы\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\SkyBlue\Device.cpp">
+      <Filter>Исходные файлы\Network\SkyBlue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

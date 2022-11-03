@@ -17,7 +17,7 @@ MainFrame::MainFrame()
 {
     SetBackgroundColour(wxColor(0xE5, 0xE5, 0xE5));
     
-    Viewer = new Assembly::Viewer(this, core);
+    Viewer = new Assembly::Viewer(this, core, api);
     Tree = new Assembly::DependencyTree(this, core);
     apipanel = new SkyBlue::APIPanel(this, core);
     connectPanel = new wxPanel(this);

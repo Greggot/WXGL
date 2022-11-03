@@ -2,7 +2,7 @@
 #include <Compression.hpp>
 using namespace PhysicalDevice;
 
-CameraWindow::CameraWindow(wxFrame* host, int width, int height, SkyBlue::clientAPI& api)
+CameraWindow::CameraWindow(wxFrame* host, int width, int height, SkyBlue::Device& api)
 	: wxFrame(host, wxID_ANY, "Camera View", wxDefaultPosition, wxSize(width, height)), api(api),
 	width(width), height(height)
 {
@@ -45,7 +45,7 @@ void CameraWindow::TakePicture() {
 	api.write(cameraID, nullptr, 0);
 
 	static uint32_t index = 0;
-	api.read([this](const SkyBlue::buffer&) {
+	/*api.read([this](const SkyBlue::buffer&) {
 		for (int i = 0; i < height; ++i)
 		{
 			for (int j = 0; j < width; ++j)
@@ -55,7 +55,7 @@ void CameraWindow::TakePicture() {
 			}
 		}
 		Refresh();
-	});
+	});*/
 }
 
 CameraWindow::~CameraWindow() {

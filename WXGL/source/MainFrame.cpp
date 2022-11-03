@@ -62,10 +62,10 @@ void MainFrame::SizerInit()
     *         |                                  |
     *     EXPANDABLE                         EXPANDABLE
     */    
-    sizer = new wxFlexGridSizer(2,2, 10,10);
+    sizer = new wxFlexGridSizer(2,2, 5,10);
     sizer->Add(connectPanel);
     sizer->Add(apipanel);
-    sizer->Add(Tree);
+    sizer->Add(Tree, 1, wxEXPAND);
     sizer->Add(Viewer, 1, wxEXPAND);
     
     sizer->AddGrowableRow(1);

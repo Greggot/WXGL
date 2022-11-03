@@ -175,6 +175,8 @@ public:
         if (parent)
             parent->children.remove(this);
 
+        if (children.size() == 0)
+            return;
         auto it = children.begin();
         do
         {

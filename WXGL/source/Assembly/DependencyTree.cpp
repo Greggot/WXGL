@@ -5,7 +5,11 @@ using namespace Assembly;
 DependencyTree::DependencyTree(wxWindow* host, Core& core)
 	: wxPanel(host), core(core)
 {
-	tree = new wxTreeCtrl(this, wxID_ANY, wxPoint{ 20, 10 });
+	auto sizer = new wxBoxSizer(wxVERTICAL);
+	tree = new wxTreeCtrl(this, wxID_ANY);
+	sizer->Add(tree, wxALIGN_BOTTOM | wxALIGN_RIGHT);
+	SetSizer(sizer);
+
 	auto root = tree->AddRoot("Model");
 
 	HierarchyDragAndDropChange();

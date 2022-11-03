@@ -171,18 +171,17 @@ public:
     }
     void MakeIndependent() { LinkTo(nullptr); }
 
-    void AddChild(DependencyNode* node) {
-        if (node == nullptr || node == this)
-            return;
-        children.push_back(node);
-        node->parent = this;
-    }
-
     void RemoveFromTree() {
         if (parent)
             parent->children.remove(this);
-        for (auto child : children)
-            child->LinkTo(parent);
+
+        auto it = children.begin();
+        do
+        {
+            auto& removed = it;
+            ++it;
+            (*removed)->LinkTo(parent);
+        } while (it != children.end());
     }
 
     DependencyNode* getParent() const { return parent; }

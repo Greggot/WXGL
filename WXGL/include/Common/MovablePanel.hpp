@@ -123,19 +123,19 @@ private:
     wxPoint startPos;
 
     bool shouldUpdate = false;
-    wxButton* Close;
+    wxButton* CloseB;
     wxStaticText* WinName;
 
     void CloseButtonInit()
     {
-        Close = new wxButton(this, wxID_ANY, "x", wxDefaultPosition, { 20, 20 });
-        Close->SetForegroundColour({ 0xFF, 0xFF, 0xFF });
-        Close->SetBackgroundColour({ 0xFF, 0x00, 0x00 });
-        Close->SetWindowStyle(wxNO_BORDER);
+        CloseB = new wxButton(this, wxID_ANY, "x", wxDefaultPosition, { 20, 20 });
+        CloseB->SetForegroundColour({ 0xFF, 0xFF, 0xFF });
+        CloseB->SetBackgroundColour({ 0xFF, 0x00, 0x00 });
+        CloseB->SetWindowStyle(wxNO_BORDER);
 
-        Close->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-            Destroy();
-            });
+        CloseB->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+            Close();
+        });
     }
 
     void LabelInit(wxString&& name)
@@ -154,7 +154,7 @@ public:
         CloseButtonInit();
         LabelInit(std::move(name));
         auto HeaderSizer = new wxFlexGridSizer(1, 2, 0, 0);
-        HeaderSizer->Add(Close, 0, wxALIGN_RIGHT | wxFIXED_MINSIZE);
+        HeaderSizer->Add(CloseB, 0, wxALIGN_RIGHT | wxFIXED_MINSIZE);
         HeaderSizer->Add(WinName, 1, wxEXPAND);
 
 

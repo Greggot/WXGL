@@ -5,6 +5,7 @@
 
 #include <SkyBlue/Client.API.hpp>
 #include <Assembly/Core.hpp>
+#include <Common/PaddingSizer.hpp>
 #include <map>
 
 namespace SkyBlue
@@ -22,12 +23,39 @@ namespace SkyBlue
 		const ID& getID() { return id; }
 	};
 
+	/* TODO: Add inherited from ModuleUI class, which will handle camera type
+	*	class CameraModulePanel : ModuleUI
+	*	{
+	*		CameraModulePanel()
+	*			Change icon to something camera like
+	*			Set wxMenu with "Camera view"
+	*							"Passport"
+	*	}
+	* 
+	*	class ServoModulePanel : ModuleUI
+	*	{
+	*		ServoModulePanel
+	*			Change icon
+	*			Set wxMenu with "Real time value"
+	*							"Passport"
+	*							"Properties"
+	*	}
+	* 
+	*	class SDpanel : ModuleUI
+	*	{
+	*		SDpanel 
+	*			Change icon
+	*			Fileview
+	*	}
+	*
+	*/
+
 	class APIPanel : public wxPanel
 	{
 	private:
 		Assembly::Core& core;
 		std::map<ModuleUI*, DrawableModel*> modules;
-		wxBoxSizer* sizer;
+		PaddingSizer* sizer;
 
 		DrawableModel* FindModelWith(ID id) {
 			for (auto model : core)
@@ -38,14 +66,14 @@ namespace SkyBlue
 	public:
 		APIPanel(wxWindow* Host, Assembly::Core& core) 
 			: wxPanel(Host), core(core) {
-			sizer = new wxBoxSizer(wxHORIZONTAL);
+			sizer = new PaddingSizer(5, wxHORIZONTAL);
 			SetSizer(sizer);
 		}
 
 		void Apply(ID id) {
 			auto mod = new ModuleUI(this, id);
 			modules.insert({ mod, FindModelWith(id)});
-			sizer->Add(mod);
+			sizer->AddNonStretched(mod);
 		}
 
 		void Update() {

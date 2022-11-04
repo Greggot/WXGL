@@ -5,7 +5,7 @@ ModelProperties::ModelProperties(wxWindow* host, DrawableModel& model)
 	model(model)
 {
 	SetBackgroundColour({ 0xFF, 0xFF, 0xFF });
-	vertical = new wxBoxSizer(wxVERTICAL);
+	vertical = new PaddingSizer(5, wxVERTICAL);
 
 	TextVariablesInit();
 	CheckboxesInit();
@@ -26,16 +26,16 @@ wxCheckBox* ModelProperties::Checkbox(wxString&& text) {
 
 void ModelProperties::TextVariablesInit()
 {
-	auto sizer = new wxFlexGridSizer(2, 2, wxSize(10, 10));
-	
-	sizer->Add(Label("Path"));
-	sizer->Add(new wxTextCtrl(this, wxID_ANY, model.Path), 1, wxEXPAND);
-	
-	sizer->Add(Label("Name"));
-	sizer->Add(new wxTextCtrl(this, wxID_ANY, model.Name));
+	auto pathtxt = new wxTextCtrl(this, wxID_ANY, model.Path);
+	pathtxt->SetWindowStyle(wxTE_READONLY);
+	auto nametxt = new wxTextCtrl(this, wxID_ANY, model.Name);
 
-	sizer->AddGrowableCol(1);
-	vertical->Add(sizer, 1, wxEXPAND);
+	auto pathsizer = new PaddingSizer(10, { Label("Path"), pathtxt });
+	auto namesizer = new PaddingSizer(10, { Label("Name"), nametxt });
+	
+	vertical->AddNonStretched(pathsizer);
+	vertical->AddNonStretched(namesizer);
+	vertical->AddStretchSpacer(1);
 }
 
 void ModelProperties::CheckboxesInit()
@@ -44,20 +44,23 @@ void ModelProperties::CheckboxesInit()
 	checks[0] = Checkbox("X");
 	checks[1] = Checkbox("Y");
 	checks[2] = Checkbox("Z");
-	checks[3] = Checkbox("angle X");
-	checks[4] = Checkbox("angle Y");
-	checks[5] = Checkbox("angle Z");
+	checks[3] = Checkbox("X");
+	checks[4] = Checkbox("Y");
+	checks[5] = Checkbox("Z");
 
 	for (int i = 0; i < 6; ++i)
 		checks[i]->SetValue(degree.raw & (1 << i));
 
-	auto horizontal = new wxBoxSizer(wxHORIZONTAL);
+	auto sizer = new PaddingSizer(10, { Label("Linear DoF") });
+	for (int i = 0; i < 3; ++i)
+		sizer->AddStretched(checks[i]);
+	auto anglesizer = new PaddingSizer(10, { Label("Angle DoF") });
+	for (int i = 3; i < 6; ++i)
+		anglesizer->AddStretched(checks[i]);
 
-	horizontal->Add(Label("Degrees of freedom"));
-	for (const auto& check : checks)
-		horizontal->Add(check, 1, wxEXPAND);
-
-	vertical->Add(horizontal, 1, wxEXPAND);
+	vertical->AddNonStretched(sizer);
+	vertical->AddNonStretched(anglesizer);
+	vertical->AddStretchSpacer(1);
 }
 
 void ModelProperties::IDchangeInit()
@@ -69,10 +72,12 @@ void ModelProperties::IDchangeInit()
 	descrs = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, choises, wxCB_READONLY);
 	descrs->SetSelection(descrs->FindString(SkyBlue::typeToString(id.type)));
 
-	auto horizontal = new wxBoxSizer(wxHORIZONTAL);
-	horizontal->Add(Label("Type"), 1, wxEXPAND);
-	horizontal->Add(descrs);
-	vertical->Add(horizontal, 0, wxEXPAND);
+	auto sizer = new PaddingSizer(10, { Label("Type") , descrs });
+	sizer->AddStatic(Label("ID"));
+	sizer->AddStretched(new wxTextCtrl(this, wxID_ANY, std::to_string(id.number)));
+
+	vertical->AddNonStretched(sizer);
+	vertical->AddStretchSpacer(1);
 }
 
 void ModelProperties::OkInit()
@@ -88,6 +93,7 @@ void ModelProperties::OkInit()
 		model.Change({ id.number, static_cast<SkyBlue::type_t>(descrs->GetSelection()) });
 
 		Close();
-		});
+	});
+	
 	vertical->Add(ok, 0, wxALIGN_CENTER_HORIZONTAL);
 }

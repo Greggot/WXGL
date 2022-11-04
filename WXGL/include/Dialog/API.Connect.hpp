@@ -6,6 +6,7 @@
 
 #include <SkyBlue/Client.API.hpp>
 #include <Common/API.Server.Panel.hpp>
+#include <Common/PaddingSizer.hpp>
 
 namespace Dialog
 {
@@ -22,7 +23,6 @@ namespace Dialog
 
 		void SizerInit();
 		void FillUpPanel();
-		void SetCorrectWindowSize();
 	public:
 		APIconnect(wxWindow* Host, wxString title,
 			SkyBlue::Device&, SkyBlue::APIPanel*, wxSizer* sizerToUpdate);

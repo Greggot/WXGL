@@ -114,9 +114,6 @@
     <ClInclude Include="include\PhysicalDevice\RGB565.hpp">
       <Filter>Исходные файлы\PhysicalDevice</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\API.Server.Panel.hpp">
-      <Filter>Исходные файлы\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Assembly\DependencyTree.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
@@ -140,6 +137,12 @@
     </ClInclude>
     <ClInclude Include="include\Dialog\Lambda.Change.hpp">
       <Filter>Файлы заголовков\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\API.Server.Panel.hpp">
+      <Filter>Файлы заголовков\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\PaddingSizer.hpp">
+      <Filter>Файлы заголовков\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

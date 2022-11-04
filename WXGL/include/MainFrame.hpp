@@ -11,6 +11,7 @@
 #include <Assembly/DependencyTree.hpp>
 
 #include <Dialog/API.Connect.hpp>
+#include <Common/PaddingSizer.hpp>
 
 #include <thread>
 
@@ -37,7 +38,7 @@ private:
     Assembly::DependencyTree* Tree;
 
     wxSplitterWindow* splitter;
-    wxBoxSizer* sizer;
+    PaddingSizer* sizer;
     
     std::thread Update;
     bool isUpdating;

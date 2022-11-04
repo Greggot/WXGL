@@ -1,17 +1,18 @@
 #include <Dialog/Value.Change.hpp>
 
 DialogValue::DialogValue(wxFrame* Host, wxPoint&& mousepos, std::initializer_list<changeValue> values)
-	: wxFrame(Host, wxID_ANY, wxT("Redact"), mousepos, wxSize(270, 150))
+	: wxFrame(Host, wxID_ANY, wxT("Redact"), mousepos)
 {
 	SetBackgroundColour({ 0xFF, 0xFF, 0xFF });
-	auto sizer = new wxGridSizer(values.size(), 2, 10, 10);
+	
+	auto sizer = new PaddingSizer(5, wxVERTICAL);
 	for (auto cv : values)
-	{
-		sizer->Add(new wxStaticText(this, wxID_ANY, cv.description), 1, wxEXPAND);
-		sizer->Add(TextField(std::move(cv)));
-	}
+		sizer->AddNonStretched(new PaddingSizer(10, {
+			Label(cv.description),
+			TextField(std::move(cv))
+		}));
 	SetSizer(sizer);
-	SetCorrectWindowSize();
+	Fit();
 
 	CloseOnEnterInit();
 }
@@ -29,6 +30,9 @@ wxTextCtrl* DialogValue::TextField(changeValue&& cv)
 	return text;
 }
 
+wxStaticText* DialogValue::Label(wxString&& text) {
+	return new wxStaticText(this, wxID_ANY, text);
+}
 
 void DialogValue::SetCorrectWindowSize()
 {

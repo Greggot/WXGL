@@ -5,12 +5,13 @@
 #endif
 
 #include <Model/BaseModel.hpp>
+#include <Common/PaddingSizer.hpp>
 
 class ModelProperties : public wxFrame
 {
 private:
 	DrawableModel& model;
-	wxBoxSizer* vertical;
+	PaddingSizer* vertical;
 	wxCheckBox* checks[6];
 	wxComboBox* descrs;
 

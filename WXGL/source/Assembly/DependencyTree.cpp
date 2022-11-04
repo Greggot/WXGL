@@ -84,6 +84,6 @@ void DependencyTree::ContexMenuOnRMBinit()
 			return;
 
 		Configurator config(static_cast<uint16_t>(it - core.begin()), core);
-		PopupMenu(&config, wxGetMousePosition());
+		PopupMenu(&config, e.GetPoint());
 		});
 }

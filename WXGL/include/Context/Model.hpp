@@ -8,23 +8,14 @@
 #include <Dialog/Lambda.Change.hpp>
 #include <Dialog/Model.Property.hpp>
 
-#include "Core.hpp"
-#include "DependencyTree.hpp"
+#include <Assembly/Core.hpp>
+#include <Assembly/DependencyTree.hpp>
 
-enum ConfiguratorID
+#include "ID.hpp"
+
+namespace Context
 {
-	Delete = 7,
-	Coordinates,
-	Angles,
-	Scale,
-	Properties,
-
-	Camera,
-};
-
-namespace Assembly
-{
-	class Configurator : public wxMenu
+	class Model : public wxMenu
 	{
 	private:
 		void Delete(wxCommandEvent&);
@@ -35,13 +26,13 @@ namespace Assembly
 		void Properties(wxCommandEvent&);
 	protected:
 		uint16_t index;
-		Core& core;
+		Assembly::Core& core;
 
 		inline void AppendItem(wxString Name);
 		inline wxMenuItem* AppendMenuItem(int ID, wxString&& Name,
-			void(Assembly::Configurator::* Method)(wxCommandEvent&), wxString Description = "");
+			void(Context::Model::* Method)(wxCommandEvent&), wxString Description = "");
 	public:
-		Configurator(uint16_t index, Core& core);
+		Model(uint16_t index, Assembly::Core& core);
 	};
 }
 
@@ -115,16 +106,18 @@ public:
 		api.remove(camid);
 		isRunning = false;
 		udp.join();
+
+		delete[] imgdata;
 	}
 };
 
-namespace Assembly
+namespace Context
 {
-	class CameraConfigurator : public Configurator
+	class Camera : public Model
 	{
 	private:
 		void ShowInit(SkyBlue::Device& api) {
-			wxMenuItem* item = new wxMenuItem(NULL, ConfiguratorID::Camera, "Camera View...");
+			wxMenuItem* item = new wxMenuItem(NULL, Mod::Camera, "Camera View...");
 			Append(item);
 			Bind(wxEVT_MENU, [&api, this](wxCommandEvent& e) {
 				auto image = new ImagePanel(nullptr, { 0x42, 0x87,0xF5 }, "CAM 0", 320, 240);
@@ -135,11 +128,11 @@ namespace Assembly
 					delete holder;
 					e.Skip();
 				});
-			}, ConfiguratorID::Camera);
+			}, Mod::Camera);
 		}
 	public:
-		CameraConfigurator(uint16_t index, Core& core, SkyBlue::Device& api)
-			: Configurator(index, core)
+		Camera(uint16_t index, Assembly::Core& core, SkyBlue::Device& api)
+			: Model(index, core)
 		{
 			AppendSeparator();
 

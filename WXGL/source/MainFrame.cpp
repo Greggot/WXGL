@@ -22,8 +22,8 @@ MainFrame::MainFrame()
     Tree = new Assembly::DependencyTree(splitter, core);
 
     apipanel = new SkyBlue::APIPanel(this, core);
-    connectPanel = new wxPanel(this);
-    connector = new wxButton(connectPanel, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
+    //connectPanel = new wxPanel(this);
+    connector = new wxButton(this, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     
     SizerInit();
     MenuBarInit();
@@ -64,21 +64,12 @@ void MainFrame::SizerInit()
     *         |                                  |
     *     EXPANDABLE                         EXPANDABLE
     */        
+    auto uppersizer = new PaddingSizer(10, { connector, apipanel });
+
     splitter->SplitVertically(Tree, Viewer, 150);
-
-    auto uppersizer = new wxBoxSizer(wxHORIZONTAL);
-    uppersizer->AddSpacer(10);
-    uppersizer->Add(connectPanel);
-    uppersizer->Add(apipanel, 1, wxEXPAND);
-    uppersizer->AddSpacer(10);
-
-    sizer = new wxBoxSizer(wxVERTICAL);
-    sizer->AddSpacer(10);
-    sizer->Add(uppersizer);
-    sizer->AddSpacer(10);
-    sizer->Add(splitter, 1, wxEXPAND);
-    sizer->AddSpacer(10);
-
+    
+    sizer = new PaddingSizer(10, { uppersizer }, wxVERTICAL);
+    sizer->AddStretched(splitter);
     SetSizer(sizer);
 }
 

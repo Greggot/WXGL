@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Исходные файлы">
@@ -67,11 +67,14 @@
     <Filter Include="Исходные файлы\Dialog">
       <UniqueIdentifier>{6bdf9366-618e-4e6d-b08e-7763089ad796}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Context">
+      <UniqueIdentifier>{3ba81957-9ff5-4e6e-af62-909c3d90bc26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Context">
+      <UniqueIdentifier>{8ad4760c-b61e-4d96-a92a-ebf2c133b993}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Assembly\Configurator.hpp">
-      <Filter>Файлы заголовков\Assembly</Filter>
-    </ClInclude>
     <ClInclude Include="include\Assembly\Core.hpp">
       <Filter>Файлы заголовков\Assembly</Filter>
     </ClInclude>
@@ -144,6 +147,12 @@
     <ClInclude Include="include\Common\PaddingSizer.hpp">
       <Filter>Файлы заголовков\Common</Filter>
     </ClInclude>
+    <ClInclude Include="include\Context\ID.hpp">
+      <Filter>Файлы заголовков\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Context\Model.hpp">
+      <Filter>Файлы заголовков\Context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Model\BaseModel.cpp">
@@ -157,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="source\Lamp.cpp">
       <Filter>Исходные файлы\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Assembly\Configurator.cpp">
-      <Filter>Исходные файлы\Assembly</Filter>
     </ClCompile>
     <ClCompile Include="source\Assembly\Core.cpp">
       <Filter>Исходные файлы\Assembly</Filter>
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="source\Network\SkyBlue\Device.cpp">
       <Filter>Исходные файлы\Network\SkyBlue</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Context\Model.cpp">
+      <Filter>Исходные файлы\Context</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

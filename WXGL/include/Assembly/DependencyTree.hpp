@@ -8,7 +8,7 @@
 #include <map>
 
 #include "Core.hpp"
-#include "Configurator.hpp"
+#include <Context/Model.hpp>
 
 namespace Assembly
 {

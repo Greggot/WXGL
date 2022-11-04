@@ -12,7 +12,7 @@
 
 #include <thread>
 #include "Core.hpp"
-#include "Configurator.hpp"
+#include <Context/Model.hpp>
 
 #include <UserInput/Operator.hpp>
 #include <UserInput/KeyBindController.hpp>

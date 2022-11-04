@@ -83,7 +83,7 @@ void DependencyTree::ContexMenuOnRMBinit()
 		if (it == core.end())
 			return;
 
-		Configurator config(static_cast<uint16_t>(it - core.begin()), core);
+		Context::Model config(static_cast<uint16_t>(it - core.begin()), core);
 		PopupMenu(&config, e.GetPoint());
-		});
+	});
 }

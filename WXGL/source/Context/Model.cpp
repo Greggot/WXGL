@@ -1,31 +1,31 @@
-#include <Assembly/Configurator.hpp>
-using namespace Assembly;
+#include <Context/Model.hpp>
+using namespace Context;
 
-Configurator::Configurator(uint16_t index, Core& core)
+Model::Model(uint16_t index, Assembly::Core& core)
 	: index(index), core(core), wxMenu(core[index].Name)
 {
-	AppendMenuItem(ConfiguratorID::Delete, "Delete", &Configurator::Delete);
+	AppendMenuItem(Mod::Delete, "Delete", &Model::Delete);
 	AppendSeparator();
 
 	const auto degree = core[index].GetDegreeOfFreedom();
 	if(degree.raw & 0b111)
-		AppendMenuItem(ConfiguratorID::Coordinates, "Coordinates...", &Configurator::Translation);
+		AppendMenuItem(Mod::Coordinates, "Coordinates...", &Model::Translation);
 	if(degree.raw & 0b111000)
-		AppendMenuItem(ConfiguratorID::Angles, "Angles...", &Configurator::Rotation);
-	AppendMenuItem(ConfiguratorID::Scale, "Scale...", &Configurator::Scale);
+		AppendMenuItem(Mod::Angles, "Angles...", &Model::Rotation);
+	AppendMenuItem(Mod::Scale, "Scale...", &Model::Scale);
 	
 	AppendSeparator();
-	AppendMenuItem(ConfiguratorID::Properties, "Properties...", &Configurator::Properties);
+	AppendMenuItem(Mod::Properties, "Properties...", &Model::Properties);
 }
 
-inline void Configurator::AppendItem(wxString Name)
+inline void Model::AppendItem(wxString Name)
 {
 	wxMenuItem* Item = new wxMenuItem(this, wxID_ANY, Name);
 	Append(Item);
 }
 
-inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString&& Name,
-	void(Assembly::Configurator::* Method)(wxCommandEvent&), wxString Description)
+inline wxMenuItem* Model::AppendMenuItem(int ID, wxString&& Name,
+	void(Context::Model::* Method)(wxCommandEvent&), wxString Description)
 {
 	wxMenuItem* item = new wxMenuItem(NULL, ID, Name, Description);
 	Append(item);
@@ -33,13 +33,13 @@ inline wxMenuItem* Configurator::AppendMenuItem(int ID, wxString&& Name,
 	return item;
 }
 
-void Configurator::Delete(wxCommandEvent&)
+void Model::Delete(wxCommandEvent&)
 {
 	core[index].RemoveFromTree();
 	core.remove(index);
 }
 
-void Configurator::Translation(wxCommandEvent&)
+void Model::Translation(wxCommandEvent&)
 {
 	auto& model = core[index];
 	vertex t = model.GetTranslation();
@@ -62,7 +62,7 @@ void Configurator::Translation(wxCommandEvent&)
 	dialog->Show();
 }
 
-void Configurator::Rotation(wxCommandEvent&)
+void Model::Rotation(wxCommandEvent&)
 {
 	auto& model = core[index];
 	vertex r = model.GetRotation();
@@ -85,14 +85,14 @@ void Configurator::Rotation(wxCommandEvent&)
 	dialog->Show();
 }
 
-void Configurator::Scale(wxCommandEvent&)
+void Model::Scale(wxCommandEvent&)
 {
 	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
 		{"Scale ", &core[index].Scale} });
 	value->Show();
 }
 
-void Configurator::Properties(wxCommandEvent&)
+void Model::Properties(wxCommandEvent&)
 {
 	auto win = new ModelProperties(nullptr, core[index]);
 	win->Show();

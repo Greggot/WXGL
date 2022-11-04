@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Assembly\Configurator.hpp" />
     <ClInclude Include="include\Assembly\Core.hpp" />
     <ClInclude Include="include\Assembly\DependencyTree.hpp" />
     <ClInclude Include="include\Assembly\Loader.hpp" />
@@ -152,6 +151,8 @@
     <ClInclude Include="include\Common\MovablePanel.hpp" />
     <ClInclude Include="include\Common\PaddingSizer.hpp" />
     <ClInclude Include="include\Compression.hpp" />
+    <ClInclude Include="include\Context\ID.hpp" />
+    <ClInclude Include="include\Context\Model.hpp" />
     <ClInclude Include="include\Dialog\API.Connect.hpp" />
     <ClInclude Include="include\Dialog\Lambda.Change.hpp" />
     <ClInclude Include="include\Dialog\Model.Property.hpp" />
@@ -170,11 +171,11 @@
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Assembly\Configurator.cpp" />
     <ClCompile Include="source\Assembly\Core.cpp" />
     <ClCompile Include="source\Assembly\DependencyTree.cpp" />
     <ClCompile Include="source\Assembly\Loader.cpp" />
     <ClCompile Include="source\Assembly\Viewer.cpp" />
+    <ClCompile Include="source\Context\Model.cpp" />
     <ClCompile Include="source\DIalog\API.Connect.cpp" />
     <ClCompile Include="source\DIalog\Model.Property.cpp" />
     <ClCompile Include="source\DIalog\Value.Change.cpp" />

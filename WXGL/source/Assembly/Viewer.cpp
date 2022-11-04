@@ -146,10 +146,10 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     switch (id.type)
     {
     case SkyBlue::type_t::camera:
-        config = new CameraConfigurator(ID, core, device);
+        config = new Context::Camera(ID, core, device);
         break;
     default:
-        config = new Configurator(ID, core);
+        config = new Context::Model(ID, core);
         break;
     }
 

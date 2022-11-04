@@ -151,6 +151,7 @@
     <ClInclude Include="include\Common\MovablePanel.hpp" />
     <ClInclude Include="include\Common\PaddingSizer.hpp" />
     <ClInclude Include="include\Compression.hpp" />
+    <ClInclude Include="include\Context\API.Panel.hpp" />
     <ClInclude Include="include\Context\ID.hpp" />
     <ClInclude Include="include\Context\Model.hpp" />
     <ClInclude Include="include\Dialog\API.Connect.hpp" />
@@ -175,6 +176,8 @@
     <ClCompile Include="source\Assembly\DependencyTree.cpp" />
     <ClCompile Include="source\Assembly\Loader.cpp" />
     <ClCompile Include="source\Assembly\Viewer.cpp" />
+    <ClCompile Include="source\Common\API.Panel.cpp" />
+    <ClCompile Include="source\Context\Camera.cpp" />
     <ClCompile Include="source\Context\Model.cpp" />
     <ClCompile Include="source\DIalog\API.Connect.cpp" />
     <ClCompile Include="source\DIalog\Model.Property.cpp" />

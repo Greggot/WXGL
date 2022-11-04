@@ -3,6 +3,7 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+#include <wx/splitter.h>
 
 #include <Assembly/Core.hpp>
 #include <Assembly/Loader.hpp>
@@ -35,7 +36,8 @@ private:
     Assembly::Loader* Loader;
     Assembly::DependencyTree* Tree;
 
-    wxFlexGridSizer* sizer;
+    wxSplitterWindow* splitter;
+    wxBoxSizer* sizer;
     
     std::thread Update;
     bool isUpdating;

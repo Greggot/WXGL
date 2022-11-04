@@ -17,8 +17,10 @@ MainFrame::MainFrame()
 {
     SetBackgroundColour(wxColor(0xE5, 0xE5, 0xE5));
     
-    Viewer = new Assembly::Viewer(this, core, api);
-    Tree = new Assembly::DependencyTree(this, core);
+    splitter = new wxSplitterWindow(this, wxID_ANY);
+    Viewer = new Assembly::Viewer(splitter, core, api);
+    Tree = new Assembly::DependencyTree(splitter, core);
+
     apipanel = new SkyBlue::APIPanel(this, core);
     connectPanel = new wxPanel(this);
     connector = new wxButton(connectPanel, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
@@ -58,19 +60,25 @@ void MainFrame::FinishUpdateThread()
 void MainFrame::SizerInit()
 {
     /* [Connect  button] [API panel with modules - EXPANDABLE]
-    *  [Dependency tree] [Model/Assembly Viewer  - EXPANDABLE]
+    *  [Dependency tree] [Model/Assembly Viewer  - EXPANDABLE]  - SPLITTER
     *         |                                  |
     *     EXPANDABLE                         EXPANDABLE
-    */    
-    sizer = new wxFlexGridSizer(2,2, 5,10);
-    sizer->Add(connectPanel);
-    sizer->Add(apipanel);
-    sizer->Add(Tree, 1, wxEXPAND);
-    sizer->Add(Viewer, 1, wxEXPAND);
-    
-    sizer->AddGrowableRow(1);
-    sizer->AddGrowableCol(1);
-    
+    */        
+    splitter->SplitVertically(Tree, Viewer, 150);
+
+    auto uppersizer = new wxBoxSizer(wxHORIZONTAL);
+    uppersizer->AddSpacer(10);
+    uppersizer->Add(connectPanel);
+    uppersizer->Add(apipanel, 1, wxEXPAND);
+    uppersizer->AddSpacer(10);
+
+    sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->AddSpacer(10);
+    sizer->Add(uppersizer);
+    sizer->AddSpacer(10);
+    sizer->Add(splitter, 1, wxEXPAND);
+    sizer->AddSpacer(10);
+
     SetSizer(sizer);
 }
 

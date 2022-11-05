@@ -186,7 +186,7 @@ public:
         auto it = children.begin();
         do
         {
-            auto& removed = it;
+            auto removed = it;
             ++it;
             (*removed)->LinkTo(parent);
         } while (it != children.end());

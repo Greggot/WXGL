@@ -13,7 +13,6 @@ namespace Dialog
 	class APIconnect : public wxFrame
 	{
 	private:
-		SkyBlue::Device& device;
 		SkyBlue::APIPanel* panel;
 		wxTextCtrl* iptext;
 		wxTextCtrl* porttext;
@@ -25,6 +24,6 @@ namespace Dialog
 		void FillUpPanel();
 	public:
 		APIconnect(wxWindow* Host, wxString title,
-			SkyBlue::Device&, SkyBlue::APIPanel*, wxSizer* sizerToUpdate);
+			SkyBlue::APIPanel*, wxSizer* sizerToUpdate);
 	};
 }

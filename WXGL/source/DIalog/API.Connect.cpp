@@ -2,8 +2,8 @@
 using namespace Dialog;
 
 APIconnect::APIconnect(wxWindow* Host, wxString title,
-	SkyBlue::Device& device, SkyBlue::APIPanel* panel, wxSizer* sizerToUpdate) :
-	wxFrame(Host, wxID_ANY, title), device(device), panel(panel)
+	SkyBlue::APIPanel* panel, wxSizer* sizerToUpdate) :
+	wxFrame(Host, wxID_ANY, title), panel(panel)
 {
 	SetBackgroundColour({ 0xFF, 0xFF, 0xFF });
 
@@ -21,7 +21,7 @@ void APIconnect::OKinit(wxSizer* sizerToUpdate)
 		auto IP = iptext->GetValue();
 		auto Port = porttext->GetValue();
 		TCP::Address address{ IP.mb_str().data(), Port.mb_str().data() };
-		device.connect(&address);
+		panel->connect(&address);
 
 		FillUpPanel();
 		sizerToUpdate->Layout();
@@ -47,7 +47,7 @@ void APIconnect::SizerInit()
 
 void APIconnect::FillUpPanel() 
 {
-	auto result = device.report();
+	auto result = panel->report();
 	for (const SkyBlue::ID id : result)
 		panel->Apply(id);
 	panel->Report();

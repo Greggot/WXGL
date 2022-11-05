@@ -13,13 +13,15 @@
 
 namespace SkyBlue
 {
-	class ModuleUI : public wxPanel
+	class ModuleUI : public wxPanel, public Module
 	{
 	private:
-		const ID id;
+		DrawableModel* model;
 	public:
-		ModuleUI(wxWindow* Host, ID id);
-		const ID& getID() { return id; }
+		ModuleUI(wxWindow* Host, wxString&& name);
+
+		DrawableModel* Model() const { return model; }
+		void SetModel(DrawableModel* m) { model = m; }
 	};
 
 	/* TODO: Add inherited from ModuleUI class, which will handle camera type
@@ -48,11 +50,10 @@ namespace SkyBlue
 	*	}
 	*
 	*/
-	class APIPanel : public wxPanel
+	class APIPanel : public wxPanel, public Device
 	{
 	private:
 		Assembly::Core& core;
-		std::map<ModuleUI*, DrawableModel*> modules;
 		PaddingSizer* sizer;
 
 		DrawableModel* FindModelWith(ID id);
@@ -61,7 +62,8 @@ namespace SkyBlue
 		
 		void Apply(ID id);
 		void Update();
-		void Clear();
+
+		void clear() override;
 
 		void Report();
 	};

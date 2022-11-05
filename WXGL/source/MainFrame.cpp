@@ -19,9 +19,9 @@ MainFrame::MainFrame()
     
     splitter = new wxSplitterWindow(this, wxID_ANY);
     Tree = new Assembly::DependencyTree(splitter);
-    Viewer = new Assembly::Viewer(splitter, *Tree, api);
-
     apipanel = new SkyBlue::APIPanel(this, *Tree);
+    Viewer = new Assembly::Viewer(splitter, *Tree, *apipanel);
+
     connector = new wxButton(this, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     
     SizerInit();
@@ -31,7 +31,7 @@ MainFrame::MainFrame()
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::CloseEvent, this);
     // TODO: Add several variants of connection
     connector->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-        Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", api, apipanel, sizer);
+        Dialog::APIconnect* apiconnect = new Dialog::APIconnect(this, "Server connect", apipanel, sizer);
         apiconnect->Show();
     });
 

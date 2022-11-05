@@ -28,7 +28,6 @@ public:
 private:
     wxButton* connector;
 
-    SkyBlue::Device api;
     SkyBlue::APIPanel* apipanel;
 
     Assembly::Viewer* Viewer;

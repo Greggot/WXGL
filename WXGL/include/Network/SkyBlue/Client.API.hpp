@@ -55,7 +55,7 @@ namespace SkyBlue
 {
 	class Device : public Collector
 	{
-	private:
+	protected:
 		std::map<ID, Module*> modules;
 		bool islistening = false;
 		std::thread main;
@@ -77,8 +77,8 @@ namespace SkyBlue
 
 		// process system of modules
 		Module* get(ID);
-		void add(ID, Module*);
+		virtual void add(ID, Module*);
 		void remove(ID id) { modules.erase(id); }
-		void clear();
+		virtual void clear();
 	};
 }

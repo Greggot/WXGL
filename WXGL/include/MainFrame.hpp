@@ -26,13 +26,11 @@ public:
     void SizerInit();
     void MenuBarInit();
 private:
-    wxPanel* connectPanel;
     wxButton* connector;
 
     SkyBlue::Device api;
     SkyBlue::APIPanel* apipanel;
 
-    Assembly::Core core;
     Assembly::Viewer* Viewer;
     Assembly::Loader* Loader;
     Assembly::DependencyTree* Tree;

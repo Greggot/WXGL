@@ -18,11 +18,10 @@ MainFrame::MainFrame()
     SetBackgroundColour(wxColor(0xE5, 0xE5, 0xE5));
     
     splitter = new wxSplitterWindow(this, wxID_ANY);
-    Viewer = new Assembly::Viewer(splitter, core, api);
-    Tree = new Assembly::DependencyTree(splitter, core);
+    Tree = new Assembly::DependencyTree(splitter);
+    Viewer = new Assembly::Viewer(splitter, *Tree, api);
 
-    apipanel = new SkyBlue::APIPanel(this, core);
-    //connectPanel = new wxPanel(this);
+    apipanel = new SkyBlue::APIPanel(this, *Tree);
     connector = new wxButton(this, wxID_ANY, "Connect...", wxPoint(20, 10), wxSize(100, 25));
     
     SizerInit();
@@ -75,7 +74,7 @@ void MainFrame::SizerInit()
 
 void MainFrame::MenuBarInit()
 {
-    Loader = new Assembly::Loader(this, core, *Tree);
+    Loader = new Assembly::Loader(this, *Tree);
 
     wxMenuBar* MenuBar = new wxMenuBar();
     MenuBar->Append(Loader, "File");

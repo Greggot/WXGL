@@ -1,9 +1,10 @@
 #pragma once
 #include <Assembly/DependencyTree.hpp>
+#include <Context/Model.hpp>
 using namespace Assembly;
 
-DependencyTree::DependencyTree(wxWindow* host, Core& core)
-	: wxPanel(host), core(core)
+DependencyTree::DependencyTree(wxWindow* host)
+	: wxPanel(host)
 {
 	auto sizer = new wxBoxSizer(wxHORIZONTAL);
 	tree = new wxTreeCtrl(this, wxID_ANY);
@@ -28,7 +29,7 @@ void DependencyTree::Update()
 	items.clear();
 
 	auto root = tree->AddRoot("Model");
-	for (auto model : core)
+	for (auto model : Models)
 		if (model->getParent() == nullptr)
 			RecursiveAppend(root, model);
 	tree->ExpandAll();
@@ -67,9 +68,9 @@ void DependencyTree::ActiveLMBinit()
 {
 	tree->Bind(wxEVT_TREE_SEL_CHANGED, [this](wxTreeEvent& e) {
 		if (e.GetItem() == tree->GetRootItem())
-			core.dropSelection();
+			dropSelection();
 		else
-			core.setActive((DrawableModel*)items[e.GetItem()]);
+			setActive((DrawableModel*)items[e.GetItem()]);
 		});
 }
 
@@ -79,11 +80,11 @@ void DependencyTree::ContexMenuOnRMBinit()
 		if (e.GetItem() == tree->GetRootItem())
 			return;
 		auto model = items[e.GetItem()];
-		const auto& it = std::find(core.begin(), core.end(), model);
-		if (it == core.end())
+		const auto& it = std::find(begin(), end(), model);
+		if (it == end())
 			return;
 
-		Context::Model config(static_cast<uint16_t>(it - core.begin()), core);
+		Context::Model config(static_cast<uint16_t>(it - begin()), *this);
 		PopupMenu(&config, e.GetPoint());
 	});
 }

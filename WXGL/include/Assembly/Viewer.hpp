@@ -10,8 +10,9 @@
 #include <gl/GLU.h>
 #include <gl/GL.h>
 
+#include "DependencyTree.hpp"
+
 #include <thread>
-#include "Core.hpp"
 #include <Context/Model.hpp>
 
 #include <UserInput/Operator.hpp>
@@ -29,7 +30,7 @@ namespace Assembly
         std::unique_ptr<wxGLContext> context;
         UserInput::Operator camera;
         UserInput::KeyBindController keybinds;
-        Core& core;
+        DependencyTree& Tree;
         SkyBlue::Device& device;
 
         inline void PrepareRender();
@@ -45,7 +46,7 @@ namespace Assembly
         void KeyBindingsInit();
         std::function<void(wxKeyEvent&)> ModelChange(std::function<void(DrawableModel*)>);
     public:
-        Viewer(wxWindow* parent, Core& core, SkyBlue::Device& device);
+        Viewer(wxWindow* parent, DependencyTree& Tree, SkyBlue::Device& device);
 
         ~Viewer();
     protected:

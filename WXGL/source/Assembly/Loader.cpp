@@ -1,8 +1,8 @@
 #include <Assembly/Loader.hpp> 
 using namespace Assembly;
 
-Loader::Loader(wxFrame* Host, Core& core, DependencyTree& Tree)
-	: wxMenu(), Host(Host), core(core), Tree(Tree)
+Loader::Loader(wxFrame* Host, DependencyTree& Tree)
+	: wxMenu(), Host(Host), Tree(Tree)
 {
 	AppendMenuItem(LoaderID::Open, "Open...", "Load OBJ model", &Loader::Open);
     AppendMenuItem(LoaderID::OpenAssembly, "Open assembly...", "", &Loader::LoadAssembly);
@@ -28,7 +28,7 @@ void Loader::Load(wxString Path)
         Model = new STL::Model(Path.mb_str().data());
     else
         return;
-    core.append(Model);
+    Tree.append(Model);
 }
 
 void Loader::Open(wxCommandEvent& event)
@@ -50,7 +50,7 @@ void Loader::SaveAssembly(wxCommandEvent& event)
     FILE* out = fopen(assemblyPath.mb_str().data(), "wb");
     fprintf(out, "b\n");
 
-    for (auto model : core)
+    for (auto model : Tree)
     {
         vertex temp = model->GetTranslation();
         fwrite(&temp, sizeof(vertex), 1, out);
@@ -87,7 +87,7 @@ void Loader::LoadAssembly(wxCommandEvent& event)
             Load(Buffer);
         }
     }
-    for (auto model : core)
+    for (auto model : Tree)
     {
         vertex temp;
         fread(&temp, sizeof(vertex), 1, in);
@@ -100,7 +100,7 @@ void Loader::LoadAssembly(wxCommandEvent& event)
 
 void Loader::UnloadAll(wxCommandEvent& event)
 {
-    core.clear();
+    Tree.clear();
 }
 
 Loader::~Loader()

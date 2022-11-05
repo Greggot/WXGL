@@ -8,11 +8,10 @@
 #include <map>
 
 #include "Core.hpp"
-#include <Context/Model.hpp>
 
 namespace Assembly
 {
-	class DependencyTree : public wxPanel
+	class DependencyTree : public wxPanel, public Core
 	{
 	private:
 		wxTreeCtrl* tree;
@@ -24,8 +23,7 @@ namespace Assembly
 		void ActiveLMBinit();
 		void ContexMenuOnRMBinit();
 	public:
-		Core& core;
-		DependencyTree(wxWindow* host, Core& core);
+		DependencyTree(wxWindow* host);
 
 		void Update();
 	};

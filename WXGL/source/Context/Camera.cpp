@@ -69,8 +69,8 @@ void Camera::ShowInit(SkyBlue::Device& api) {
 		}, Mod::CameraWin);
 }
 
-Camera::Camera(uint16_t index, Assembly::Core& core, SkyBlue::Device& api)
-	: Model(index, core)
+Camera::Camera(uint16_t index, Assembly::DependencyTree& Tree, SkyBlue::Device& api)
+	: Model(index, Tree)
 {
 	AppendSeparator();
 	ShowInit(api);

@@ -1,13 +1,13 @@
 #include <Context/Model.hpp>
 using namespace Context;
 
-Model::Model(uint16_t index, Assembly::Core& core)
-	: index(index), core(core), wxMenu(core[index].Name)
+Model::Model(uint16_t index, Assembly::DependencyTree& Tree)
+	: index(index), Tree(Tree), wxMenu(Tree[index].Name)
 {
 	AppendMenuItem(Mod::Delete, "Delete", &Model::Delete);
 	AppendSeparator();
 
-	const auto degree = core[index].GetDegreeOfFreedom();
+	const auto degree = Tree[index].GetDegreeOfFreedom();
 	if(degree.raw & 0b111)
 		AppendMenuItem(Mod::Coordinates, "Coordinates...", &Model::Translation);
 	if(degree.raw & 0b111000)
@@ -35,13 +35,14 @@ inline wxMenuItem* Model::AppendMenuItem(int ID, wxString&& Name,
 
 void Model::Delete(wxCommandEvent&)
 {
-	core[index].RemoveFromTree();
-	core.remove(index);
+	Tree[index].RemoveFromTree();
+	Tree.remove(index);
+	Tree.Update();
 }
 
 void Model::Translation(wxCommandEvent&)
 {
-	auto& model = core[index];
+	auto& model = Tree[index];
 	vertex t = model.GetTranslation();
 	auto degree = model.GetDegreeOfFreedom();
 
@@ -64,7 +65,7 @@ void Model::Translation(wxCommandEvent&)
 
 void Model::Rotation(wxCommandEvent&)
 {
-	auto& model = core[index];
+	auto& model = Tree[index];
 	vertex r = model.GetRotation();
 	auto degree = model.GetDegreeOfFreedom();
 
@@ -88,12 +89,12 @@ void Model::Rotation(wxCommandEvent&)
 void Model::Scale(wxCommandEvent&)
 {
 	DialogValue* value = new DialogValue(nullptr, wxGetMousePosition(), {
-		{"Scale ", &core[index].Scale} });
+		{"Scale ", &Tree[index].Scale} });
 	value->Show();
 }
 
 void Model::Properties(wxCommandEvent&)
 {
-	auto win = new ModelProperties(nullptr, core[index]);
+	auto win = new ModelProperties(nullptr, Tree[index]);
 	win->Show();
 }

@@ -6,7 +6,6 @@
 #include <wx/filedlg.h>
 #include <wx/frame.h>
 
-#include "Core.hpp"
 #include "DependencyTree.hpp"
 
 enum LoaderID
@@ -26,7 +25,6 @@ namespace Assembly
 	{
 	private:
 		wxFrame* Host;
-		Core& core;
 		DependencyTree& Tree;
 
 		inline void AppendMenuItem(int ID, wxString Name, wxString Description,
@@ -39,7 +37,7 @@ namespace Assembly
 
 		void Load(wxString Path);
 	public:
-		Loader(wxFrame* Host, Core& core, DependencyTree& Tree);
+		Loader(wxFrame* Host, DependencyTree& Tree);
 
 		~Loader();
 	};

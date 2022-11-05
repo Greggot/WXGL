@@ -3,7 +3,6 @@
 #include <Dialog/Lambda.Change.hpp>
 #include <Dialog/Model.Property.hpp>
 
-#include <Assembly/Core.hpp>
 #include <Assembly/DependencyTree.hpp>
 
 #include "ID.hpp"
@@ -21,13 +20,13 @@ namespace Context
 		void Properties(wxCommandEvent&);
 	protected:
 		uint16_t index;
-		Assembly::Core& core;
+		Assembly::DependencyTree& Tree;
 
 		inline void AppendItem(wxString Name);
 		inline wxMenuItem* AppendMenuItem(int ID, wxString&& Name,
 			void(Context::Model::* Method)(wxCommandEvent&), wxString Description = "");
 	public:
-		Model(uint16_t index, Assembly::Core& core);
+		Model(uint16_t index, Assembly::DependencyTree& Tree);
 	};
 }
 
@@ -64,6 +63,6 @@ namespace Context
 	private:
 		void ShowInit(SkyBlue::Device& api);
 	public:
-		Camera(uint16_t index, Assembly::Core& core, SkyBlue::Device& api);
+		Camera(uint16_t index, Assembly::DependencyTree& Tree, SkyBlue::Device& api);
 	};
 }

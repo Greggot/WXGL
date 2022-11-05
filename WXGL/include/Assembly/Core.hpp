@@ -8,7 +8,7 @@ namespace Assembly
 {
 	class Core
 	{
-	private:
+	protected:
 		std::vector<DrawableModel*> Models;
 		DrawableModel* Active = nullptr;
 		size_t Index = 0;

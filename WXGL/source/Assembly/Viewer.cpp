@@ -12,7 +12,7 @@ END_EVENT_TABLE()
 std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(DrawableModel*)> call)
 {
     return [this, call](wxKeyEvent&) {
-        auto model = core.active();
+        auto model = Tree.active();
         if (model == nullptr)
             return;
         call(model);
@@ -22,14 +22,14 @@ std::function<void(wxKeyEvent&)> Viewer::ModelChange(std::function<void(Drawable
 void Viewer::KeyBindingsInit()
 {
     keybinds.append(WXK_RETURN, { [this](wxKeyEvent&) {
-        size_t size = core.size();
+        size_t size = Tree.size();
         if (size == 0)
             return;
 
-        size_t index = core.activeindex();
+        size_t index = Tree.activeindex();
         if (++index >= size)
             index = 0;
-        core.setActive(index);
+        Tree.setActive(index);
     } });
     keybinds.append(WXK_END, ModelChange([](DrawableModel* model)      { model->Rotate(angles_t::z, 1); }));
     keybinds.append(WXK_HOME, ModelChange([](DrawableModel* model)     { model->Rotate(angles_t::z, -1); }));
@@ -46,9 +46,9 @@ void Viewer::KeyBindingsInit()
     keybinds.append((wxKeyCode)'D', ModelChange([](DrawableModel* model) { model->Move(axis_t::y, -1); }));
 }
 
-Viewer::Viewer(wxWindow* parent, Core& core, SkyBlue::Device& device)
+Viewer::Viewer(wxWindow* parent, DependencyTree& Tree, SkyBlue::Device& device)
     :wxGLCanvas(parent),
-    core(core), context(new wxGLContext(this)), camera(this), keybinds(this), device(device)
+    Tree(Tree), context(new wxGLContext(this)), camera(this), keybinds(this), device(device)
 {
     KeyBindingsInit();
     Bind(wxEVT_SIZE, [this](wxSizeEvent& evt) {
@@ -117,7 +117,7 @@ void Viewer::Render(wxPaintEvent& event)
     wxPaintDC(this);
     PrepareRender();
 
-    for (auto model : core)
+    for (auto model : Tree)
         model->Draw();
 
     glDisable(GL_DEPTH_TEST);
@@ -132,24 +132,24 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
     PrepareRender();
 
     uint32_t ID = 0;
-    for (auto model : core)
+    for (auto model : Tree)
         model->SelectRender(ID++);
     
     wxPoint pixel = event.GetPosition();
     ID = DrawableModel::GetColorSelection(pixel.x, pixel.y);
     // TODO: change condition to 'be equeal to background color'
-    if (ID > core.size())
+    if (ID > Tree.size())
         return; // Add here scene general settings later maybe
 
     wxMenu* config;
-    const auto& id = core[ID].getID();
+    const auto& id = Tree[ID].getID();
     switch (id.type)
     {
     case SkyBlue::type_t::camera:
-        config = new Context::Camera(ID, core, device);
+        config = new Context::Camera(ID, Tree, device);
         break;
     default:
-        config = new Context::Model(ID, core);
+        config = new Context::Model(ID, Tree);
         break;
     }
 
@@ -159,5 +159,5 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
 }
 
 Viewer::~Viewer() {
-    core.clear();
+    Tree.clear();
 }

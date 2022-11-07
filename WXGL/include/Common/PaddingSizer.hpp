@@ -40,6 +40,7 @@ public:
 	PaddingSizer(unsigned int pad, wxOrientation ori = wxHORIZONTAL)
 		: wxBoxSizer(ori), pad(pad)
 	{
+		AddSpacer(pad);
 	}
 
 	template<class UI>

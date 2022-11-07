@@ -16,12 +16,12 @@ void ThreadHolder::StartMain()
 			}
 		}
 		image->Update();
-		api.write(camid, nullptr, 0);
-		});
+		api.read(camid, nullptr, 0);
+	});
 
 	api.add(camid, cam);
 	api.listen();
-	api.write(camid, nullptr, 0);
+	api.read(camid, nullptr, 0);
 }
 
 ThreadHolder::ThreadHolder(SkyBlue::Device& api, ImagePanel* image) : api(api), image(image) {
@@ -41,13 +41,12 @@ ThreadHolder::ThreadHolder(SkyBlue::Device& api, ImagePanel* image) : api(api), 
 			memcpy(&pos, buffer, sizeof(pos));
 			memcpy(&imgdata[pos.start / sizeof(RGB565)], buffer + sizeof(pos), pos.length);
 		}
-		});
+	});
 	StartMain();
 }
 
 ThreadHolder::~ThreadHolder() {
 	api.deaf();
-	api.remove(camid);
 	isRunning = false;
 	udp.join();
 

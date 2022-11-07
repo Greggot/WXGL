@@ -58,7 +58,11 @@ void Device::read(ID id, const void* request, unsigned int length)
 }
 
 void Device::add(ID id, Module* mod) {
-	modules.insert({ id, mod });
+	auto res = modules.find(id);
+	if (res == modules.end())
+		modules.insert({ id, mod });
+	else
+		res->second = mod;
 }
 
 void Device::clear() {
@@ -80,10 +84,11 @@ void Device::Execute()
 		return;
 
 	const auto& mod = *res->second;
-	if (rx.command == command_t::read)
+	if (rx.command == command_t::read && mod.read)
 		mod.read(rx.data, rx.length);
 	else
-		mod.write(rx.data, rx.length);
+		if(mod.write)
+			mod.write(rx.data, rx.length);
 }
 
 Module* Device::get(ID id)

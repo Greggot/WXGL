@@ -50,5 +50,6 @@ void APIconnect::FillUpPanel()
 	auto result = panel->report();
 	for (const SkyBlue::ID id : result)
 		panel->Apply(id);
+	panel->Update();
 	panel->Report();
 }

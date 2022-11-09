@@ -3,6 +3,7 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+#include <wx/mstream.h>
 
 class MovablePanel : public wxFrame
 {
@@ -196,5 +197,10 @@ public:
 
     void Set(size_t x, size_t y, uint8_t r, uint8_t g, uint8_t b) {
         shot.SetRGB(x, y, r, g, b);
+    }
+
+    void Set(wxMemoryInputStream&& jpgstream) {
+        shot.LoadFile(jpgstream, wxBITMAP_TYPE_JPEG);
+        Update();
     }
 };

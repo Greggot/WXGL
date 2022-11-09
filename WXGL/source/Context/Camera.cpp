@@ -1,10 +1,29 @@
 #include <Context/Model.hpp>
 using namespace Context;
+
+static size_t imgsize = 0;
 void ThreadHolder::StartMain()
 {
-	cam = new SkyBlue::Module();
+	static wxImage jpegImage;
+	wxInitAllImageHandlers();
 
-	cam->setWrite([this](const void*, unsigned int) {
+	cam = new SkyBlue::Module();
+	cam->setWrite([this](const void* data, unsigned int) {
+		try {
+			int checksum = 0;
+			uint8_t* ptr = (uint8_t*)imgdata;
+			for (size_t i = 0; i < imgsize; ++i)
+				checksum += ptr[i];
+			if (checksum == *(int*)data)
+				image->Set(wxMemoryInputStream(imgdata, imgsize));
+		}
+		catch(...)
+		{ }
+
+		imgsize = 0;
+		api.read(camid, nullptr, 0);
+	});
+	/*cam->setWrite([this](const void*, unsigned int) {
 		if (!isRunning)
 			return;
 		for (int i = 0; i < 240; ++i)
@@ -17,7 +36,7 @@ void ThreadHolder::StartMain()
 		}
 		image->Update();
 		api.read(camid, nullptr, 0);
-	});
+	});*/
 
 	api.add(camid, cam);
 	api.listen();
@@ -27,7 +46,7 @@ void ThreadHolder::StartMain()
 ThreadHolder::ThreadHolder(SkyBlue::Device& api, ImagePanel* image) : api(api), image(image) {
 	udp = std::thread([this] {
 		UDP::server server;
-		server.Start({ {192, 168, 1, 134}, 5555 });
+		server.Start({ "192.168.1.134", "5555" });
 
 		struct position {
 			uint32_t start;
@@ -37,9 +56,10 @@ ThreadHolder::ThreadHolder(SkyBlue::Device& api, ImagePanel* image) : api(api), 
 		uint8_t buffer[1290];
 		while (isRunning)
 		{
-			server.Receive(buffer, 1290);
+			auto rlen = server.Receive(buffer, 1290);
 			memcpy(&pos, buffer, sizeof(pos));
 			memcpy(&imgdata[pos.start / sizeof(RGB565)], buffer + sizeof(pos), pos.length);
+			imgsize += pos.length;
 		}
 	});
 	StartMain();

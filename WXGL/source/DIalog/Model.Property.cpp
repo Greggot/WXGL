@@ -72,9 +72,11 @@ void ModelProperties::IDchangeInit()
 	descrs = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, choises, wxCB_READONLY);
 	descrs->SetSelection(descrs->FindString(SkyBlue::typeToString(id.type)));
 
+	idnumber = new wxTextCtrl(this, wxID_ANY, std::to_string(id.number));
+
 	auto sizer = new PaddingSizer(10, { Label("Type") , descrs });
 	sizer->AddStatic(Label("ID"));
-	sizer->AddStretched(new wxTextCtrl(this, wxID_ANY, std::to_string(id.number)));
+	sizer->AddStretched(idnumber);
 
 	vertical->AddNonStretched(sizer);
 	vertical->AddStretchSpacer(1);
@@ -90,6 +92,7 @@ void ModelProperties::OkInit()
 		((ModuleModel&)model).Set(degree);
 
 		auto id = model.getID();
+		id.number = std::atoi(idnumber->GetValue().mb_str().data());
 		model.Change({ id.number, static_cast<SkyBlue::type_t>(descrs->GetSelection()) });
 
 		Close();

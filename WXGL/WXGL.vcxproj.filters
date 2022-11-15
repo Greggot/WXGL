@@ -108,9 +108,6 @@
     <ClInclude Include="include\UserInput\KeyBindController.hpp">
       <Filter>Файлы заголовков\UserInput</Filter>
     </ClInclude>
-    <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp">
-      <Filter>Исходные файлы\PhysicalDevice</Filter>
-    </ClInclude>
     <ClInclude Include="include\Compression.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -187,9 +184,6 @@
     </ClCompile>
     <ClCompile Include="source\UserInput\KeyBindController.cpp">
       <Filter>Исходные файлы\UserInput</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PhysicalDevice\CameraWindow.cpp">
-      <Filter>Файлы заголовков\PhysicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="source\Assembly\DependencyTree.cpp">
       <Filter>Исходные файлы\Assembly</Filter>

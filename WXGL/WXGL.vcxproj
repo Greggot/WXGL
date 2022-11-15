@@ -165,7 +165,6 @@
     <ClInclude Include="include\Model\STL.hpp" />
     <ClInclude Include="include\Network\SkyBlue\Client.API.hpp" />
     <ClInclude Include="include\Network\SkyBlue\Types.hpp" />
-    <ClInclude Include="include\PhysicalDevice\CameraWindow.hpp" />
     <ClInclude Include="include\PhysicalDevice\RGB565.hpp" />
     <ClInclude Include="include\UserInput\KeyBindController.hpp" />
     <ClInclude Include="include\UserInput\Operator.hpp" />
@@ -189,7 +188,6 @@
     <ClCompile Include="source\Model\STL.cpp" />
     <ClCompile Include="source\Network\SkyBlue\Collector.cpp" />
     <ClCompile Include="source\Network\SkyBlue\Device.cpp" />
-    <ClCompile Include="source\PhysicalDevice\CameraWindow.cpp" />
     <ClCompile Include="source\UserInput\KeyBindController.cpp" />
     <ClCompile Include="source\UserInput\Operator.cpp" />
   </ItemGroup>

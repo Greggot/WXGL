@@ -30,6 +30,6 @@ namespace Assembly
 		void setActive(DrawableModel*);
 		void dropSelection() { setActive(nullptr); }
 
-		~Core() { clear(); }
+		virtual ~Core() { clear(); }
 	};
 }

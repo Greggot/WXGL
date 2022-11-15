@@ -98,13 +98,9 @@ void Loader::LoadAssembly(wxCommandEvent& event)
     fclose(in);
 }
 
-void Loader::UnloadAll(wxCommandEvent& event)
-{
+void Loader::UnloadAll(wxCommandEvent& event) {
     Tree.clear();
 }
 
-Loader::~Loader()
-{
-    wxCommandEvent empty;
-    UnloadAll(empty);
+Loader::~Loader(){
 }

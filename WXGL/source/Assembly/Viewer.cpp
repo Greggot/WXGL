@@ -159,5 +159,4 @@ void Viewer::RightClickOnModel(wxMouseEvent& event)
 }
 
 Viewer::~Viewer() {
-    Tree.clear();
 }

@@ -17,6 +17,7 @@ void Core::remove(uint16_t index) {
 void Core::clear() {
 	for (auto model : Models)
 		delete model;
+	Models.clear();
 }
 
 void Core::setActive(size_t Index) {
